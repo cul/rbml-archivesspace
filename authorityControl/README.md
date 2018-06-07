@@ -15,9 +15,9 @@ This is a series of scripts for a proposed authority control workflow.
 1) API call to ASpace to extract json files or all subjects and agents
 	getSubjects.py etc. (works)
 
-# will need to address duplicate records with different sources caused by discrepancy in the 100/600 import syntax
+will need to address duplicate records with different sources caused by discrepancy in the 100/600 import syntax; merge.py to combine string-matched records?
 
-# 2 alt) Skip 2 and 3; script the call in 4 directly against the json (for-each json object that has a source LC or naf)? 
+2 alt) Skip 2 and 3; script the call in 4 directly against the json (for-each json object that has a source LC or naf)? 
 
 2a) Load json export of agents  / subjects in Basex
 	(works)
