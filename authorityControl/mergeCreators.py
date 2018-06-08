@@ -2,6 +2,7 @@ import json
 import requests
 import secrets
 import time
+import csv
 
 startTime = time.time()
 
@@ -17,36 +18,24 @@ session = auth["session"]
 headers = {'X-ArchivesSpace-Session':session, 'Content_Type':'application/json'}
 print 'authenticated'
 
-#define the API call to get a list of all agent IDs
-#endpoint = '//agents/people?all_ids=true'
-#call the API
-#ids = requests.get(baseURL + endpoint, headers=headers).json()
-
-#get one at a time, for proof of concept testing
-id_target = input('Enter target (lc-containing) agent id: ')
-id_victim = input('Enter victim (to be destroyed) agent id: ')
-
-#use user-entered ID to get object
-target_endpoint = '//agents/people/'+str(id_target)
-target_output = requests.get(baseURL + target_endpoint, headers=headers).json()
-
-victim_endpoint = '//agents/people/'+str(id_victim)
-victim_output = requests.get(baseURL + victim_endpoint, headers=headers).json()
-
-#print json objects 
-print target_output
-print victim_output
-
-#mash together the target and victim records from above
-
-#endpoint = '//merge_requests/agent'
-
-#work off the syntax here? https://github.com/archivesspace/archivesspace/blob/5e1ca66f1f04f142f2695024efb7200825046325/common/schemas/merge_request.rb
-
-#record =
-
-#output = requests.post(baseURL + endpoint, headers=headers, data=record).json()
-#print output
+# need to loop through csv listing target and victim groups, creating a json object for submission for each
+#filename = input('Enter filename listing targets and victims:')
+endpoint = '//merge_requests/agent'
+with open('input.csv', 'rb') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        for row in reader:
+        	t = {}
+        	t['target'] = {}
+        	t['target']['ref'] = '/agents/people/' + row[0]
+        	v1 = {}
+        	v1['victims'] = {}
+        	v1['ref'] = '/agents/people/' + row[1]
+        	#put in test for v2; if row[2] is not blank, create v2 dict
+        	#combine them into one dict, convert to json object
+        	
+        	#works: record = '{"target" : {"ref": "/agents/people/3"}, "victims": [{ "ref": "/agents/people/102" }]}'
+        	#output = requests.post(baseURL + endpoint, headers=headers, data=record).json()
+        	#print record, output
 
 
 elapsedTime = time.time() - startTime
