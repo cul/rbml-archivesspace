@@ -1,7 +1,7 @@
 import requests, csv, json, urllib, time
 from fuzzywuzzy import fuzz
 
-startTime = time.time()
+startTime = time.time() 
 
 #this will call back LC numbers from a list of names, and output the name, lc number, AS number, and if the match isn't unique, flag it
 #one could run this in conjunction with the viaf one, to try to confirm matches and weed out some of the flagged ones
