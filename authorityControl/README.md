@@ -12,7 +12,7 @@ This is a series of scripts for a proposed authority control workflow.
 
 ***CLEAN UP PRIOR TO MATCHING NUMBERS***
 
-Extract list of duplicate agents from AS
+Extract list of duplicate agents from AS caused by 100/600 import syntax
 Extract csv of target and victom AS IDs
 Run mergeCreators.py (works, currently written only for people) to dedupe
 
@@ -21,8 +21,6 @@ Run mergeCreators.py (works, currently written only for people) to dedupe
 
 1) API call to ASpace to extract json files or all subjects and agents
 	getSubjects.py etc. (works)
-
-will need to address duplicate records with different sources caused by discrepancy in the 100/600 import syntax; merge.py to combine string-matched records?
 
 2 alt) Skip 2 and 3; script the call in 4 directly against the json (for-each json object that has a source LC or naf)? 
 
