@@ -10,6 +10,13 @@ password='{password}'
 
 This is a series of scripts for a proposed authority control workflow.
 
+***CLEAN UP PRIOR TO MATCHING NUMBERS***
+
+Extract list of duplicate agents from AS
+Extract csv of target and victom AS IDs
+Run mergeCreators.py (works, currently written only for people) to dedupe
+
+
 ***INITIAL LOAD OF AUTHORITY NUMBERS***
 
 1) API call to ASpace to extract json files or all subjects and agents
