@@ -10,7 +10,7 @@ startTime = time.time()
 baseURL = secrets.baseURL
 user = secrets.user
 password = secrets.password
-
+ 
 #authenticate session
 auth = requests.post(baseURL +
 '/users/'+user+'/login?password='+password).json()
@@ -18,25 +18,35 @@ session = auth["session"]
 headers = {'X-ArchivesSpace-Session':session, 'Content_Type':'application/json'}
 print 'authenticated'
 
-# need to loop through csv listing target and victim groups, creating a json object for submission for each
+# loops through csv listing target and one or two victims, by AS ID, (e.g. 73, 244, 345 | 72,78, | 523,859,845 ), creating a json object for submission for each
 #filename = input('Enter filename listing targets and victims:')
+#define agent type here and in refs; could add test for corporations and families if needed
 endpoint = '//merge_requests/agent'
 with open('input.csv', 'rb') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in reader:
+        	#take target AS ID from row 0
         	t = {}
-        	t['target'] = {}
-        	t['target']['ref'] = '/agents/people/' + row[0]
+        	t = {}
+        	t['ref'] = '/agents/people/' + row[0]
+        	#take victim 1 AS ID from row 1
         	v1 = {}
-        	v1['victims'] = {}
         	v1['ref'] = '/agents/people/' + row[1]
-        	#put in test for v2; if row[2] is not blank, create v2 dict
-        	#combine them into one dict, convert to json object
-        	
-        	#works: record = '{"target" : {"ref": "/agents/people/3"}, "victims": [{ "ref": "/agents/people/102" }]}'
-        	#output = requests.post(baseURL + endpoint, headers=headers, data=record).json()
-        	#print record, output
-
+        	victimList = [v1]
+        	#test for second victim AS ID in row 2; if exists, update list
+        	if row[2] != "":
+        		v2 = {}
+        		v2['ref'] = '/agents/people/' + row[2]
+        		victimList = [v1,v2]
+        	#create record	
+        	record = {}
+        	record['target'] = t
+        	record['victims'] = victimList
+        	record = json.dumps(record)
+        	#print record
+        	#syntax: record = '{"target" : {"ref": "/agents/people/3"}, "victims": [{ "ref": "/agents/people/102" }]}'
+        	output = requests.post(baseURL + endpoint, headers=headers, data=record).json()
+        	print output, record
 
 elapsedTime = time.time() - startTime
 m, s = divmod(elapsedTime, 60)
