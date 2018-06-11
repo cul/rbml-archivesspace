@@ -12,9 +12,9 @@ This is a series of scripts for a proposed authority control workflow.
 
 ***CLEAN UP PRIOR TO MATCHING NUMBERS***
 
-Extract list of duplicate agents from AS caused by 100/600 import syntax
-Extract csv of target and victim AS IDs
-Run mergeCreators.py (works, currently written only for people) to dedupe
+Extract list of duplicate agents from AS caused by 100/600 import syntax<br/>
+Extract csv of target and victim AS IDs<br/>
+Run mergeCreators.py (works, currently written only for people) to dedupe<br/>
 
 
 ***INITIAL LOAD OF AUTHORITY NUMBERS***
@@ -51,18 +51,18 @@ Run mergeCreators.py (works, currently written only for people) to dedupe
 
 4) Match strings against authority database to get LC authority numbers
 	Variety of ways to do this
-		Hit the VIAF API, but pull LC back (names only unfortunately)
+		a) Hit the VIAF API, but pull LC back (names only unfortunately)
 			getViaf.py 
 			(works; 3.5 hours)
 			Matched 6934 of 8659. Reason: some aren't in lc; and probably some VIAF weirdness too.  
 
-		Try to hit the LC api; two ways (http://id.loc.gov/techcenter/searching.html):
+		b) hit the LC api; two ways (http://id.loc.gov/techcenter/searching.html):
 			id.loc.gov/authorities/{scheme_name}/label/{term}  -> returns as 202 the url with the auth no
 				or
 			id.loc.gov/search/?q=aLabel:"Tewksbury, Donald George, 1894-1958" -> returns the record; we'd need to request the right data
 			getLC.py (tested, but not at scale)
 
-		Do it locally?
+		c) Do it locally?
 
 		IN ANY CASE REVIEW THESE BEFORE LOAD
 
