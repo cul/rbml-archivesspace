@@ -50,16 +50,16 @@ Run mergeCreators.py (works, currently written only for people) to dedupe<br/>
 	(works)
 
 4) Match strings against authority database to get LC authority numbers
-	Variety of ways to do this
+	Variety of ways to do this<br/>
 		a) Hit the VIAF API, but pull LC back (names only unfortunately)
 			getViaf.py 
 			(works; 3.5 hours)
-			Matched 6934 of 8659. Reason: some aren't in lc; and probably some VIAF weirdness too.  
+			Matched 6934 of 8659. Reason: some aren't in lc; and probably some VIAF weirdness too.  <br/>
 
 		b) hit the LC api; two ways (http://id.loc.gov/techcenter/searching.html):
 			id.loc.gov/authorities/{scheme_name}/label/{term}  -> returns as 202 the url with the auth no
 				or
-			id.loc.gov/search/?q=aLabel:"Tewksbury, Donald George, 1894-1958" -> returns the record; we'd need to request the right data
+			id.loc.gov/search/?q=aLabel:"Tewksbury, Donald George, 1894-1958" -> returns the record; we'd need to request the right data <br/>
 			getLC.py (tested, but not at scale)
 
 		c) Do it locally?
