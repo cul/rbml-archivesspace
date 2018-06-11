@@ -13,7 +13,7 @@ This is a series of scripts for a proposed authority control workflow.
 ***CLEAN UP PRIOR TO MATCHING NUMBERS***
 
 Extract list of duplicate agents from AS caused by 100/600 import syntax
-Extract csv of target and victom AS IDs
+Extract csv of target and victim AS IDs
 Run mergeCreators.py (works, currently written only for people) to dedupe
 
 
