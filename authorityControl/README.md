@@ -14,7 +14,7 @@ This is a series of scripts for a proposed authority control workflow.
 
 Extract list of duplicate agents from AS caused by 100/600 import syntax<br/>
 Extract csv of target and victim AS IDs<br/>
-Run mergeCreators.py (works, currently written only for people) to dedupe<br/>
+Run mergeCreators.py, mergeCorps.py, and mergeFamilies.py (works) to dedupe<br/>
 
 
 ***INITIAL LOAD OF AUTHORITY NUMBERS***
@@ -55,13 +55,11 @@ Run mergeCreators.py (works, currently written only for people) to dedupe<br/>
 			getViaf.py 
 			(works; 3.5 hours)
 			Matched 6934 of 8659. Reason: some aren't in lc; and probably some VIAF weirdness too.  <br/>
-
 		b) hit the LC api; two ways (http://id.loc.gov/techcenter/searching.html):
 			id.loc.gov/authorities/{scheme_name}/label/{term}  -> returns as 202 the url with the auth no
 				or
 			id.loc.gov/search/?q=aLabel:"Tewksbury, Donald George, 1894-1958" -> returns the record; we'd need to request the right data <br/>
-			getLC.py (tested, but not at scale)
-
+			getLC.py (tested, but not at scale)<br/>
 		c) Do it locally?
 
 		IN ANY CASE REVIEW THESE BEFORE LOAD
