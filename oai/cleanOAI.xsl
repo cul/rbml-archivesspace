@@ -4,7 +4,7 @@
     xmlns:marc="http://www.loc.gov/MARC21/slim"
     exclude-result-prefixes="xs marc"
     version="2.0">
-<!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v1 KS 2018-06-13  -->
+<!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2 KS 2018-06-19  -->
 <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
    <xsl:template match="/">
        <collection>
