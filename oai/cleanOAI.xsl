@@ -5,6 +5,14 @@
     exclude-result-prefixes="xs marc"
     version="2.0">
 <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v1 KS 2018-06-13  -->
+<!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
+   <xsl:template match="/">
+       <collection>
+       <xsl:for-each select="repository/record/metadata/marc:collection/marc:record">
+           <xsl:apply-templates select="."/>
+       </xsl:for-each>
+       </collection>
+   </xsl:template>
    
 <!--    three templates copy everything sans namespace -->
     <xsl:template match="*">
@@ -31,6 +39,51 @@
     <xsl:template match="marc:datafield[not(marc:subfield)]">
 <!--        do nothing  -->
     </xsl:template>
+    
+<!--    reformat 035 CULASPC to local practice, add NNC 035 field -->
+    <xsl:template match="marc:datafield[@tag='035'][marc:subfield[contains(., 'CULASPC')]]">
+        <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">
+                <xsl:text>(CULASPC)</xsl:text>
+                <xsl:value-of select="substring-after(., '-')"/>
+            </subfield>
+        </datafield>  
+        <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">
+                <xsl:text>(NNC)</xsl:text>
+                <xsl:value-of select="substring-after(., '-')"/>
+            </subfield>
+        </datafield>
+    </xsl:template>
+    
+<!--  add repo to 040 field; test for UA in 852$j  -->
+    <xsl:template match="marc:datafield[@tag='040'][marc:subfield]">
+        <datafield ind1=" " ind2=" " tag="040">
+            <xsl:variable name="fortyText">
+                <xsl:text>NNC-</xsl:text>
+                <xsl:choose>
+                    <xsl:when test="../marc:datafield[@tag='852']/marc:subfield[@code='j'][contains(., 'UA')]">
+                        <xsl:text>UA</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <!-- grab repository code from 852               -->
+                        <xsl:value-of select="../marc:datafield[@tag='852']/marc:subfield[@code='b']"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            <subfield code="a">
+                <xsl:value-of select="$fortyText"></xsl:value-of>
+            </subfield>
+            <subfield code="c">
+                <xsl:value-of select="$fortyText"></xsl:value-of>
+            </subfield>
+            <subfield code="e">
+            <xsl:value-of select="marc:subfield[@code='e']"/>
+            </subfield>
+        </datafield>  
+    </xsl:template>
+    
+<!--  once repositories are input into AS, look at 852 and modify as needed  -->
     
 <!--    reorder elements -->
     <!-- Grab the record, copy the leader and sort the control and data fields. -->
@@ -60,7 +113,5 @@
         <xsl:copy-of select="translate(., ':', '')"/>
         </xsl:element>
     </xsl:template>
-    
-<!--    for LTI, remove 500 fields-->
     
 </xsl:stylesheet>
