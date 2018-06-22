@@ -4,7 +4,7 @@
     xmlns:marc="http://www.loc.gov/MARC21/slim"
     exclude-result-prefixes="xs marc"
     version="2.0">
-<!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2 KS 2018-06-19  -->
+<!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.1 KS 2018-06-20  -->
 <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
    <xsl:template match="/">
        <collection>
@@ -44,7 +44,7 @@
     <xsl:template match="marc:datafield[@tag='035'][marc:subfield[contains(., 'CULASPC')]]">
         <datafield ind1=" " ind2=" " tag="035">
             <subfield code="a">
-                <xsl:text>(CULASPC)</xsl:text>
+                <xsl:text>(NNC)CULASPC:voyager:</xsl:text>
                 <xsl:value-of select="substring-after(., '-')"/>
             </subfield>
         </datafield>  
@@ -55,6 +55,7 @@
             </subfield>
         </datafield>
     </xsl:template>
+      
     
 <!--  add repo to 040 field; test for UA in 852$j  -->
     <xsl:template match="marc:datafield[@tag='040'][marc:subfield]">
@@ -92,6 +93,11 @@
         <xsl:element name="leader">
             <xsl:value-of select="marc:leader"/>
         </xsl:element>
+<!--            for prod, move 099 to 001 -->
+            <!--<xsl:element name="controlfield">
+                <xsl:attribute name="tag">001</xsl:attribute>
+                <xsl:value-of select="marc:datafield[@tag='099']/marc:subfield[@code='a']"/>
+            </xsl:element>-->
         <xsl:element name="controlfield">
             <xsl:attribute name="tag">008</xsl:attribute>
             <xsl:value-of select="marc:controlfield"/>
