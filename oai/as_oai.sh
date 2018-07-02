@@ -10,10 +10,10 @@ cp asDelta.xml asDelta_bak.xml
 yest=$(date --date="yesterday" +"%d/%m/%Y")
 
 #download entire OAI file
-python pyoai.py -l https://aspace-dev.library.columbia.edu/oai -m oai_marc -o asAll.xml
+python pyoai.py -l https://aspace.library.columbia.edu/public/oai -m oai_marc -o asAll.xml
 
 #download the OAI delta for last day
-python pyoai.py -l https://aspace-dev.library.columbia.edu/oai -m oai_marc -f $yest -o asDelta.xml
+python pyoai.py -l https://aspace.library.columbia.edu/public/oai -m oai_marc -f $yest -o asDelta.xml
 
 #run cleanup on big file
 java -cp saxon9he.jar net.sf.saxon.Transform -o:asClean.xml -s:asAll.xml -xsl:cleanOAI.xsl
