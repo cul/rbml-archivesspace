@@ -85,7 +85,7 @@
     <!--    if a 041 and 546 exists, copy 546 and then generate 041s from the language strings by refering to the iso 639-2b code list below -->
     <xsl:template match="marc:datafield[@tag='041'][../marc:datafield[@tag='546']]">
         <!-- tokenize, remove punctuation, and take distinctive values for 546 language field -->
-        <xsl:for-each select="distinct-values(tokenize(translate(../marc:datafield[@tag='546']/marc:subfield[@code='a']/text(), '.;:,', ''), ' '))">
+        <xsl:for-each select="distinct-values(tokenize(translate(../marc:datafield[@tag='546'][1]/marc:subfield[@code='a']/text(), '.;:,', ''), ' '))">
             <xsl:choose>
                 <!-- the test to compare the token to the lang list; if matches, populate with the code -->
                 <xsl:when test=". = $langCodes/lang/b">
