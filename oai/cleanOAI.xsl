@@ -113,10 +113,10 @@
                 <xsl:value-of select="marc:leader"/>
             </xsl:element>
             <!--            for prod, move 099 to 001 -->
-            <!--<xsl:element name="controlfield">
+            <xsl:element name="controlfield">
                 <xsl:attribute name="tag">001</xsl:attribute>
                 <xsl:value-of select="marc:datafield[@tag='099']/marc:subfield[@code='a']"/>
-            </xsl:element>-->
+            </xsl:element>
             <xsl:element name="controlfield">
                 <xsl:attribute name="tag">008</xsl:attribute>
                 <xsl:value-of select="marc:controlfield"/>
