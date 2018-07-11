@@ -41,13 +41,13 @@
         <datafield ind1=" " ind2=" " tag="035">
             <subfield code="a">
                 <xsl:text>(NNC)CULASPC:voyager:</xsl:text>
-                <xsl:value-of select="substring-after(., '-')"/>
+                <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
             </subfield>
         </datafield>
         <datafield ind1=" " ind2=" " tag="035">
             <subfield code="a">
                 <xsl:text>(NNC)</xsl:text>
-                <xsl:value-of select="substring-after(., '-')"/>
+                <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
             </subfield>
         </datafield>
     </xsl:template>
