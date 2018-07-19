@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:marc="http://www.loc.gov/MARC21/slim" exclude-result-prefixes="xs marc" version="2.0">
-    <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.1 KS 2018-06-20  -->
+    <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.2 KS 2018-07-18  -->
     <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
     <xsl:template match="/">
         <collection>
@@ -37,6 +37,7 @@
     </xsl:template>
 
     <!--    reformat 035 CULASPC to local practice, add NNC 035 field -->
+    <!--    to avoidn dupe NNC 035s: added test for adjacent silbing with 035 containing NNC; if exists, do nothing. If not, create.    -->
     <xsl:template match="marc:datafield[@tag='035'][marc:subfield[contains(., 'CULASPC')]]">
         <datafield ind1=" " ind2=" " tag="035">
             <subfield code="a">
@@ -44,12 +45,14 @@
                 <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
             </subfield>
         </datafield>
-        <datafield ind1=" " ind2=" " tag="035">
-            <subfield code="a">
-                <xsl:text>(NNC)</xsl:text>
-                <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
-            </subfield>
-        </datafield>
+        <xsl:if test="not(../marc:datafield[@tag='035'][marc:subfield[contains(., 'NNC')]])">
+            <datafield ind1=" " ind2=" " tag="035">
+                <subfield code="a">
+                    <xsl:text>(NNC)</xsl:text>
+                    <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
+                </subfield>
+            </datafield>    
+        </xsl:if>
     </xsl:template>
 
 
