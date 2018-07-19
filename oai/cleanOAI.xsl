@@ -57,30 +57,43 @@
 
 
     <!--  add repo to 040 field; test for UA in 852$j  -->
-    <xsl:template match="marc:datafield[@tag='040'][marc:subfield]">
-        <datafield ind1=" " ind2=" " tag="040">
-            <xsl:variable name="fortyText">
-                <xsl:text>NNC-</xsl:text>
-                <xsl:choose>
+    <xsl:template match="marc:datafield[@tag='040'][marc:subfield]" exclude-result-prefixes="#all">
+                <xsl:choose exclude-result-prefixes="#all">
                     <xsl:when test="../marc:datafield[@tag='852']/marc:subfield[@code='j'][contains(., 'UA')]">
-                        <xsl:text>UA</xsl:text>
+                        <datafield ind1=" " ind2=" " tag="040">
+                            <subfield code="a">
+                            <xsl:text>NNC-UA</xsl:text>
+                            </subfield>
+                            <subfield code="b">
+                                <xsl:value-of select="marc:subfield[@code='b']"/>
+                            </subfield>
+                            <subfield code="c">
+                                <xsl:text>NNC-UA</xsl:text>
+                            </subfield>
+                            <subfield code="e">
+                                <xsl:value-of select="marc:subfield[@code='e']"/>
+                            </subfield>
+                        </datafield>
                     </xsl:when>
                     <xsl:otherwise>
-                        <!-- grab repository code from 852               -->
-                        <xsl:value-of select="../marc:datafield[@tag='852']/marc:subfield[@code='b']"/>
+                        <!-- just copy the 040 -->
+                        <datafield ind1=" " ind2=" " tag="040">
+                            <subfield code="a">
+                                <xsl:value-of select="marc:subfield[@code='a']"/>
+                            </subfield>
+                            <subfield code="b">
+                                <xsl:value-of select="marc:subfield[@code='b']"/>
+                            </subfield>
+                            <subfield code="c">
+                                <xsl:value-of select="marc:subfield[@code='c']"/>
+                            </subfield>
+                            <subfield code="e">
+                                <xsl:value-of select="marc:subfield[@code='e']"/>
+                            </subfield>
+                            
+                        </datafield>
                     </xsl:otherwise>
                 </xsl:choose>
-            </xsl:variable>
-            <subfield code="a">
-                <xsl:value-of select="$fortyText"/>
-            </subfield>
-            <subfield code="c">
-                <xsl:value-of select="$fortyText"/>
-            </subfield>
-            <subfield code="e">
-                <xsl:value-of select="marc:subfield[@code='e']"/>
-            </subfield>
-        </datafield>
     </xsl:template>
 
     <!--  once repositories are input into AS, look at 852 and modify as needed  -->
