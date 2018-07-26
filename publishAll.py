@@ -6,9 +6,9 @@ import time
 startTime = time.time()
 
 #call secrets for authentication
-baseURL = secretsDev.baseURL
-user = secretsDev.user
-password = secretsDev.password
+baseURL = secrets.baseURL
+user = secrets.user
+password = secrets.password
 
 #authenticate session
 auth = requests.post(baseURL + '/users/'+user+'/login?password='+password).json()
@@ -27,28 +27,28 @@ for i in range (0, len (rbmlResources)):
 	resourceUri = '/repositories/2/resources/' + str(rbmlResources[i])
 	print resourceUri
 	resource_publish_all = requests.post(baseURL + resourceUri + '/publish',headers=headers)
-	print resourceUri  + '--resource and all children set to published'
+	print resourceUri  + '--RBML resource and all children set to published'
 
 #publish averyResources
 for i in range (0, len (averyResources)):
         resourceUri = '/repositories/3/resources/' + str(averyResources[i])
         print resourceUri
         resource_publish_all = requests.post(baseURL + resourceUri + '/publish',headers=headers)
-        print resourceUri  + '--resource and all children set to published'
+        print resourceUri  + '--Avery resource and all children set to published'
 
 #publish starrResources
 for i in range (0, len (starrResources)):
         resourceUri = '/repositories/4/resources/' + str(starrResources[i])
         print resourceUri
         resource_publish_all = requests.post(baseURL + resourceUri + '/publish',headers=headers)
-        print resourceUri  + '--resource and all children set to published'
+        print resourceUri  + '-- Starr resource and all children set to published'
 
 #publish burkeResources
 for i in range (0, len (burkeResources)):
         resourceUri = '/repositories/5/resources/' + str(burkeResources[i])
         print resourceUri
         resource_publish_all = requests.post(baseURL + resourceUri + '/publish',headers=headers)
-        print resourceUri  + '--resource and all children set to published'
+        print resourceUri  + '-- Burke resource and all children set to published'
 
 elapsedTime = time.time() - startTime
 m, s = divmod(elapsedTime, 60)
