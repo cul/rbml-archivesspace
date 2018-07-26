@@ -1,6 +1,6 @@
 import json
 import requests
-import secretsDev
+import secrets
 import time
 
 startTime = time.time()
