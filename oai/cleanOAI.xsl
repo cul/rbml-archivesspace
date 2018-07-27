@@ -121,6 +121,32 @@
         </xsl:for-each>
     </xsl:template>
     
+<!--  add "bulk" in front of 245 $g field  -->
+    <xsl:template match="marc:datafield[@tag='245']/marc:subfield[@code='g']">
+        <subfield code="g">
+            <xsl:text>bulk </xsl:text>
+            <xsl:value-of select="."/>
+        </subfield>
+    </xsl:template>
+    
+<!--  remove subfield e from 1XX  -->
+    
+    <xsl:template match="marc:datafield[@tag[starts-with(., '1')]]/marc:subfield[@code='e']">
+<!--     do nothing   -->
+    </xsl:template>
+    
+<!--  remove subfield e from 6XX  -->
+    
+    <xsl:template match="marc:datafield[@tag[starts-with(., '6')]]/marc:subfield[@code='e']">
+        <!--     do nothing   -->
+    </xsl:template>
+    
+    <!--  remove subfield e from 7XX  -->
+    
+    <xsl:template match="marc:datafield[@tag[starts-with(., '7')]]/marc:subfield[@code='e']">
+        <!--     do nothing   -->
+    </xsl:template>
+    
     <!--    reorder elements -->
     <!-- Grab the record, copy the leader and sort the control and data fields. -->
     <xsl:template match="marc:record">
@@ -155,7 +181,13 @@
         </xsl:element>
     </xsl:template>
 
-    
+    <!--    remove commas from end of sub field d -->
+    <xsl:template match="marc:subfield[@code='d'][ends-with(., ',')]">
+        <subfield code="d">
+        <xsl:variable name="d" select="." />
+        <xsl:value-of select="substring($d, 1, string-length($d) - 1)" />
+        </subfield>
+    </xsl:template>
 
     <xsl:variable name="langCodes">
         <lang>
