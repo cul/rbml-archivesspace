@@ -42,5 +42,9 @@ f=open('rbmlaccessions.json', 'w')
 json.dump(records, f)
 f.close()
 
+
+elapsedTime = time.time() - startTime
+m, s = divmod(elapsedTime, 60)
+h, m = divmod(m, 60)
 print 'Total script run time: ', '%d:%02d:%02d' % (h, m, s)
 
