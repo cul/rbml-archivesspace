@@ -15,5 +15,5 @@ print 'authenticated'
 
 endpoint = '//schemas'
 output = requests.get(baseURL + endpoint, headers=headers).json()
-print output
+print json.dumps(output)
 
