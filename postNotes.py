@@ -16,11 +16,15 @@ print 'authenticated'
 
 #create a dict with all the notes contents
 #to do : abstract and document this to make entering notes easier
-noteContents = [{'content': 'This is my new note. DEREK JETER.', 'publish': True, 'jsonmodel_type': 'note_text'}]
+noteContents = [{'content': 'Material is unprocessed. Please contact rbml@columbia.edu for more information.', 'publish': True, 'jsonmodel_type': 'note_text'}]
 localStatus = {'local_access_restriction_type': ['Available']}
 wholeNote = {'rights_restriction': localStatus, 'subnotes': noteContents, 'jsonmodel_type': 'note_multipart', 'publish': True, 'label': ' Restrictions on Access', 'type': 'accessrestrict'}
 
-print wholeNote
+note2Contents = [{'content': 'Collection-level record describing unprocessed material made public in summer 2018 as part of the Hidden Collections initiative.', 'publish': True, 'jsonmodel_type': 'note_text'}]
+whole2Note = {'subnotes': note2Contents, 'jsonmodel_type': 'note_multipart', 'publish': True, 'label': 'Processing Information', 'type': 'processinfo'}
+
+
+print wholeNote, whole2Note
 print "Is set to dev if URL contains dev:", baseURL
 print "This script will read list of AS IDs from input_AS_ids.csv and add the note above. Press any key to continue, Ctrl-C to abort."
 raw_input("Press Enter to continue...")
@@ -49,8 +53,12 @@ with open('input_AS_ids.csv', 'rb') as csvfile:
         #insert new note above into the right place in the notes list, before the existing access notes
         archival_object_json['notes'].insert(noteIndex,wholeNote)
 
+	#insert processing note after new access note
+	archival_object_json['notes'].insert(noteIndex+1,whole2Note)
+
           #prepare for repost
         archival_object_data = json.dumps(archival_object_json)
+
           # Repost the archival object containing the new note
         archival_object_update = requests.post(baseURL+ASID,headers=headers,data=archival_object_data).json()
         print archival_object_update
