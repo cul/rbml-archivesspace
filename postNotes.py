@@ -14,15 +14,17 @@ session = auth["session"]
 headers = {'X-ArchivesSpace-Session':session, 'Content_Type':'application/json'}
 print 'authenticated'
 
-print "Is set to dev if URL contains dev:", baseURL
-print "This script will read list of AS IDs from input_AS_ids.csv and add the specified note. Press any key to continue, Ctrl-C to abort."
-raw_input("Press Enter to continue...")
-
 #create a dict with all the notes contents
 #to do : abstract and document this to make entering notes easier
 noteContents = [{'content': 'This is my new note. DEREK JETER.', 'publish': True, 'jsonmodel_type': 'note_text'}]
 localStatus = {'local_access_restriction_type': ['Available']}
 wholeNote = {'rights_restriction': localStatus, 'subnotes': noteContents, 'jsonmodel_type': 'note_multipart', 'publish': True, 'label': ' Restrictions on Access', 'type': 'accessrestrict'}
+
+print wholeNote
+print "Is set to dev if URL contains dev:", baseURL
+print "This script will read list of AS IDs from input_AS_ids.csv and add the note above. Press any key to continue, Ctrl-C to abort."
+raw_input("Press Enter to continue...")
+
 
 with open('input_AS_ids.csv', 'rb') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
