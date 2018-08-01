@@ -26,8 +26,8 @@ whole2Note = {'subnotes': note2Contents, 'jsonmodel_type': 'note_multipart', 'pu
 
 print wholeNote, whole2Note
 print "Is set to dev if URL contains dev:", baseURL
-print "This script will read list of AS IDs from input_AS_ids.csv and add the note above. Press any key to continue, Ctrl-C to abort."
-raw_input("Press Enter to continue...")
+#print "This script will read list of AS IDs from input_AS_ids.csv and add the note above. Press any key to continue, Ctrl-C to abort."
+#raw_input("Press Enter to continue...")
 
 
 with open('input_AS_ids.csv', 'rb') as csvfile:
