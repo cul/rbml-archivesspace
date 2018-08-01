@@ -1,13 +1,13 @@
 import json
 import requests
 import csv
-import secretsDev
+import secrets
 import time
 
 #call secrets for authentication
-baseURL = secretsDev.baseURL
-user = secretsDev.user
-password = secretsDev.password
+baseURL = secrets.baseURL
+user = secrets.user
+password = secrets.password
 
 #authenticate session
 auth = requests.post(baseURL + '/users/'+user+'/login?password='+password).json()
@@ -20,7 +20,7 @@ startTime = time.time()
 #create a dict with all the notes contents
 #to do : abstract and document this to make entering notes easier
 noteContents = [{'content': 'Material is unprocessed. Please contact rbml@columbia.edu for more information.', 'publish': True, 'jsonmodel_type': 'note_text'}]
-localStatus = {'local_access_restriction_type': ['Available']}
+localStatus = {'local_access_restriction_type': ['AVAILABLE']}
 wholeNote = {'rights_restriction': localStatus, 'subnotes': noteContents, 'jsonmodel_type': 'note_multipart', 'publish': True, 'label': ' Restrictions on Access', 'type': 'accessrestrict'}
 
 note2Contents = [{'content': 'Collection-level record describing unprocessed material made public in summer 2018 as part of the Hidden Collections initiative.', 'publish': True, 'jsonmodel_type': 'note_text'}]
