@@ -2,6 +2,7 @@ import json
 import requests
 import csv
 import secretsDev
+import time
 
 #call secrets for authentication
 baseURL = secretsDev.baseURL
@@ -13,6 +14,8 @@ auth = requests.post(baseURL + '/users/'+user+'/login?password='+password).json(
 session = auth["session"]
 headers = {'X-ArchivesSpace-Session':session, 'Content_Type':'application/json'}
 print 'authenticated'
+
+startTime = time.time()
 
 #create a dict with all the notes contents
 #to do : abstract and document this to make entering notes easier
@@ -62,3 +65,9 @@ with open('input_AS_ids.csv', 'rb') as csvfile:
           # Repost the archival object containing the new note
         archival_object_update = requests.post(baseURL+ASID,headers=headers,data=archival_object_data).json()
         print archival_object_update
+
+
+elapsedTime = time.time() - startTime
+m, s = divmod(elapsedTime, 60)
+h, m = divmod(m, 60)
+print 'Total script run time: ', '%d:%02d:%02d' % (h, m, s)
