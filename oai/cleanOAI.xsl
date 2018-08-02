@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:marc="http://www.loc.gov/MARC21/slim" exclude-result-prefixes="xs marc" version="2.0">
-    <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.2 KS 2018-07-18  -->
+    <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.3 KS 2018-08-01  -->
     <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
     <xsl:template match="/">
         <collection>
@@ -37,7 +37,8 @@
     </xsl:template>
 
     <!--    reformat 035 CULASPC to local practice, add NNC 035 field -->
-    <!--    to avoidn dupe NNC 035s: added test for adjacent silbing with 035 containing NNC; if exists, do nothing. If not, create.    -->
+    <!--    commented out second test, no longer applicable for dupe NNC 035s: added test for adjacent silbing with 035 containing NNC; if exists, do nothing. If not, create.    -->
+    <!--  see below, added a control field 003 to allow for proper 035 building upon ingest into voyager  -->
     <xsl:template match="marc:datafield[@tag='035'][marc:subfield[contains(., 'CULASPC')]]">
         <datafield ind1=" " ind2=" " tag="035">
             <subfield code="a">
@@ -45,14 +46,14 @@
                 <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
             </subfield>
         </datafield>
-        <xsl:if test="not(../marc:datafield[@tag='035'][marc:subfield[contains(., 'NNC')]])">
+       <!-- <xsl:if test="not(../marc:datafield[@tag='035'][marc:subfield[contains(., 'NNC')]])">
             <datafield ind1=" " ind2=" " tag="035">
                 <subfield code="a">
                     <xsl:text>(NNC)</xsl:text>
                     <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
                 </subfield>
             </datafield>    
-        </xsl:if>
+        </xsl:if>-->
     </xsl:template>
 
 
@@ -90,13 +91,10 @@
                             <subfield code="e">
                                 <xsl:value-of select="marc:subfield[@code='e']"/>
                             </subfield>
-                            
                         </datafield>
                     </xsl:otherwise>
                 </xsl:choose>
     </xsl:template>
-
-    <!--  once repositories are input into AS, look at 852 and modify as needed  -->
     
     <!--    if a 041 and 546 exists, copy 546 and then generate 041s from the language strings by refering to the iso 639-2b code list below -->
     <xsl:template match="marc:datafield[@tag='041'][marc:subfield][../marc:datafield[@tag='546']]">
@@ -154,16 +152,20 @@
             <xsl:element name="leader">
                 <xsl:value-of select="marc:leader"/>
             </xsl:element>
-            <!--            for prod, move 099 to 001 -->
+            <!--           for prod, move 099 to 001 -->
             <xsl:element name="controlfield">
                 <xsl:attribute name="tag">001</xsl:attribute>
                 <xsl:value-of select="marc:datafield[@tag='099']/marc:subfield[@code='a']"/>
+            </xsl:element>
+            <!--         added 003 to allow for creation of 035 upon import   -->
+            <xsl:element name="controlfield">
+                <xsl:attribute name="tag">003</xsl:attribute>
+                <xsl:text>NNC</xsl:text>
             </xsl:element>
             <xsl:element name="controlfield">
                 <xsl:attribute name="tag">008</xsl:attribute>
                 <xsl:value-of select="marc:controlfield"/>
             </xsl:element>
-
             <xsl:for-each select="marc:datafield">
                 <xsl:sort select="@tag"/>
                 <xsl:apply-templates select="."/>
