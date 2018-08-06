@@ -29,7 +29,7 @@ for id in ids:
     endpoint = '//users/'+str(id)
     output = requests.get(baseURL + endpoint, headers=headers).json()
     records.append(output)
-    print output
+    print json.dumps(records)
 
 elapsedTime = time.time() - startTime
 m, s = divmod(elapsedTime, 60)
