@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:marc="http://www.loc.gov/MARC21/slim"
     exclude-result-prefixes="xs marc" version="2.0">
-    <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.3 KS 2018-08-01  -->
+    <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.4 KS 2018-08-07  -->
     <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
     <xsl:template match="/">
         <collection>
@@ -35,6 +35,11 @@
 
     <!--  remove elements without content (extra 035 and 040s etc being exported by AS for some reason) -->
     <xsl:template match="marc:datafield[not(marc:subfield)]">
+        <!--        do nothing  -->
+    </xsl:template>
+    
+    <!--   remove "empty" subfields having one space --> 
+    <xsl:template match="marc:subfield[text() = ' ']">
         <!--        do nothing  -->
     </xsl:template>
 
