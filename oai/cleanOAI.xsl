@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:marc="http://www.loc.gov/MARC21/slim" exclude-result-prefixes="xs marc" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:marc="http://www.loc.gov/MARC21/slim"
+    exclude-result-prefixes="xs marc" version="2.0">
     <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.3 KS 2018-08-01  -->
     <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
     <xsl:template match="/">
@@ -39,14 +41,14 @@
     <!--    reformat 035 CULASPC to local practice, add NNC 035 field -->
     <!--    commented out second test, no longer applicable for dupe NNC 035s: added test for adjacent silbing with 035 containing NNC; if exists, do nothing. If not, create.    -->
     <!--  see below, added a control field 003 to allow for proper 035 building upon ingest into voyager  -->
-    <xsl:template match="marc:datafield[@tag='035'][marc:subfield[contains(., 'CULASPC')]]">
+    <xsl:template match="marc:datafield[@tag = '035'][marc:subfield[contains(., 'CULASPC')]]">
         <datafield ind1=" " ind2=" " tag="035">
             <subfield code="a">
                 <xsl:text>(NNC)CULASPC:voyager:</xsl:text>
                 <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
             </subfield>
         </datafield>
-       <!-- <xsl:if test="not(../marc:datafield[@tag='035'][marc:subfield[contains(., 'NNC')]])">
+        <!-- <xsl:if test="not(../marc:datafield[@tag='035'][marc:subfield[contains(., 'NNC')]])">
             <datafield ind1=" " ind2=" " tag="035">
                 <subfield code="a">
                     <xsl:text>(NNC)</xsl:text>
@@ -58,93 +60,98 @@
 
 
     <!--  add repo to 040 field; test for UA in 852$j  -->
-    <xsl:template match="marc:datafield[@tag='040'][marc:subfield]" exclude-result-prefixes="#all">
-                <xsl:choose exclude-result-prefixes="#all">
-                    <xsl:when test="../marc:datafield[@tag='852']/marc:subfield[@code='j'][contains(., 'UA')]">
-                        <datafield ind1=" " ind2=" " tag="040">
-                            <subfield code="a">
-                            <xsl:text>NNC-UA</xsl:text>
-                            </subfield>
-                            <subfield code="b">
-                                <xsl:value-of select="marc:subfield[@code='b']"/>
-                            </subfield>
-                            <subfield code="c">
-                                <xsl:text>NNC-UA</xsl:text>
-                            </subfield>
-                            <subfield code="e">
-                                <xsl:value-of select="marc:subfield[@code='e']"/>
-                            </subfield>
-                        </datafield>
+    <xsl:template match="marc:datafield[@tag = '040'][marc:subfield]" exclude-result-prefixes="#all">
+        <xsl:choose exclude-result-prefixes="#all">
+            <xsl:when
+                test="../marc:datafield[@tag = '852']/marc:subfield[@code = 'j'][contains(., 'UA')]">
+                <datafield ind1=" " ind2=" " tag="040">
+                    <subfield code="a">
+                        <xsl:text>NNC-UA</xsl:text>
+                    </subfield>
+                    <subfield code="b">
+                        <xsl:value-of select="marc:subfield[@code = 'b']"/>
+                    </subfield>
+                    <subfield code="c">
+                        <xsl:text>NNC-UA</xsl:text>
+                    </subfield>
+                    <subfield code="e">
+                        <xsl:value-of select="marc:subfield[@code = 'e']"/>
+                    </subfield>
+                </datafield>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- just copy the 040 -->
+                <datafield ind1=" " ind2=" " tag="040">
+                    <subfield code="a">
+                        <xsl:value-of select="marc:subfield[@code = 'a']"/>
+                    </subfield>
+                    <subfield code="b">
+                        <xsl:value-of select="marc:subfield[@code = 'b']"/>
+                    </subfield>
+                    <subfield code="c">
+                        <xsl:value-of select="marc:subfield[@code = 'c']"/>
+                    </subfield>
+                    <subfield code="e">
+                        <xsl:value-of select="marc:subfield[@code = 'e']"/>
+                    </subfield>
+                </datafield>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <!--    if a 041 and 546 exists, copy 546 and then generate 041s from the language strings by refering to the iso 639-2b code list below -->
+    <xsl:template
+        match="marc:datafield[@tag = '041'][marc:subfield][../marc:datafield[@tag = '546']]">
+        <!-- tokenize, remove punctuation, and take distinctive values for 546 language field -->
+        <datafield ind1=" " ind2=" " tag="041">
+            <xsl:for-each
+                select="distinct-values(tokenize(translate(../marc:datafield[@tag = '546'][1]/marc:subfield[@code = 'a']/text(), '.;:,', ''), ' '))">
+                <xsl:choose>
+                    <!-- the test to compare the token to the lang list; if matches, populate with the code -->
+                    <xsl:when test=". = $langCodes/lang/b">
+                        <xsl:variable name="selectedLang">
+                            <xsl:value-of select="."/>
+                        </xsl:variable>
+                        <subfield code="a">
+                            <xsl:value-of
+                                select="$langCodes/lang/a[following-sibling::b[1] = $selectedLang]"
+                            />
+                        </subfield>
                     </xsl:when>
                     <xsl:otherwise>
-                        <!-- just copy the 040 -->
-                        <datafield ind1=" " ind2=" " tag="040">
-                            <subfield code="a">
-                                <xsl:value-of select="marc:subfield[@code='a']"/>
-                            </subfield>
-                            <subfield code="b">
-                                <xsl:value-of select="marc:subfield[@code='b']"/>
-                            </subfield>
-                            <subfield code="c">
-                                <xsl:value-of select="marc:subfield[@code='c']"/>
-                            </subfield>
-                            <subfield code="e">
-                                <xsl:value-of select="marc:subfield[@code='e']"/>
-                            </subfield>
-                        </datafield>
+                        <!--                    do nothing if the token doesn't match the code list-->
                     </xsl:otherwise>
                 </xsl:choose>
+            </xsl:for-each>
+        </datafield>
     </xsl:template>
-    
-    <!--    if a 041 and 546 exists, copy 546 and then generate 041s from the language strings by refering to the iso 639-2b code list below -->
-    <xsl:template match="marc:datafield[@tag='041'][marc:subfield][../marc:datafield[@tag='546']]">
-        <!-- tokenize, remove punctuation, and take distinctive values for 546 language field -->
-        <xsl:for-each select="distinct-values(tokenize(translate(../marc:datafield[@tag='546'][1]/marc:subfield[@code='a']/text(), '.;:,', ''), ' '))">
-            <xsl:choose>
-                <!-- the test to compare the token to the lang list; if matches, populate with the code -->
-                <xsl:when test=". = $langCodes/lang/b">
-                    <xsl:variable name="selectedLang">
-                        <xsl:value-of select="."/>
-                    </xsl:variable>
-                    <datafield ind1=" " ind2=" " tag="041">
-                        <subfield code="a">
-                            <xsl:value-of select="$langCodes/lang/a[following-sibling::b[1] = $selectedLang]"/>
-                        </subfield>
-                    </datafield>
-                </xsl:when>
-                <xsl:otherwise>
-                    <!--                    do nothing if the token doesn't match the code list-->
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:for-each>
-    </xsl:template>
-    
-<!--  add "bulk" in front of 245 $g field  -->
-    <xsl:template match="marc:datafield[@tag='245']/marc:subfield[@code='g']">
+
+    <!--  add "bulk" in front of 245 $g field  -->
+    <xsl:template match="marc:datafield[@tag = '245']/marc:subfield[@code = 'g']">
         <subfield code="g">
             <xsl:text>bulk </xsl:text>
             <xsl:value-of select="."/>
         </subfield>
     </xsl:template>
-    
-<!--  remove subfield e from 1XX  -->
-    
-    <xsl:template match="marc:datafield[@tag[starts-with(., '1')]]/marc:subfield[@code='e']">
-<!--     do nothing   -->
-    </xsl:template>
-    
-<!--  remove subfield e from 6XX  -->
-    
-    <xsl:template match="marc:datafield[@tag[starts-with(., '6')]]/marc:subfield[@code='e']">
+
+    <!--  remove subfield e from 1XX  -->
+
+    <xsl:template match="marc:datafield[@tag[starts-with(., '1')]]/marc:subfield[@code = 'e']">
         <!--     do nothing   -->
     </xsl:template>
-    
+
+    <!--  remove subfield e from 6XX  -->
+
+    <xsl:template match="marc:datafield[@tag[starts-with(., '6')]]/marc:subfield[@code = 'e']">
+        <!--     do nothing   -->
+    </xsl:template>
+
     <!--  remove subfield e from 7XX  -->
-    
-    <xsl:template match="marc:datafield[@tag[starts-with(., '7')]]/marc:subfield[@code='e']">
+
+    <xsl:template match="marc:datafield[@tag[starts-with(., '7')]]/marc:subfield[@code = 'e']">
         <!--     do nothing   -->
     </xsl:template>
-    
+
     <!--    reorder elements -->
     <!-- Grab the record, copy the leader and sort the control and data fields. -->
     <xsl:template match="marc:record">
@@ -155,7 +162,7 @@
             <!--           for prod, move 099 to 001 -->
             <xsl:element name="controlfield">
                 <xsl:attribute name="tag">001</xsl:attribute>
-                <xsl:value-of select="marc:datafield[@tag='099']/marc:subfield[@code='a']"/>
+                <xsl:value-of select="marc:datafield[@tag = '099']/marc:subfield[@code = 'a']"/>
             </xsl:element>
             <!--         added 003 to allow for creation of 035 upon import   -->
             <xsl:element name="controlfield">
@@ -184,10 +191,10 @@
     </xsl:template>
 
     <!--    remove commas from end of sub field d -->
-    <xsl:template match="marc:subfield[@code='d'][ends-with(., ',')]">
+    <xsl:template match="marc:subfield[@code = 'd'][ends-with(., ',')]">
         <subfield code="d">
-        <xsl:variable name="d" select="." />
-        <xsl:value-of select="substring($d, 1, string-length($d) - 1)" />
+            <xsl:variable name="d" select="."/>
+            <xsl:value-of select="substring($d, 1, string-length($d) - 1)"/>
         </subfield>
     </xsl:template>
 
@@ -421,8 +428,6 @@
             <b>Lower Sorbian</b>
             <a>dua</a>
             <b>Duala</b>
-            <a>dum</a>
-            <b>Dutch, Middle (ca.1050-1350)</b>
             <a>dut</a>
             <b>Dutch</b>
             <a>dyu</a>
@@ -432,17 +437,15 @@
             <a>efi</a>
             <b>Efik</b>
             <a>egy</a>
-            <b>Egyptian (Ancient)</b>
+            <b>Egyptian</b>
             <a>eka</a>
             <b>Ekajuk</b>
             <a>gre</a>
-            <b>Greek, Modern (1453-)</b>
+            <b>Greek</b>
             <a>elx</a>
             <b>Elamite</b>
             <a>eng</a>
             <b>English</b>
-            <a>enm</a>
-            <b>English, Middle (1100-1500)</b>
             <a>epo</a>
             <b>Esperanto</b>
             <a>est</a>
@@ -464,7 +467,7 @@
             <a>fij</a>
             <b>Fijian</b>
             <a>fil</a>
-            <b>Filipino Pilipino</b>
+            <b>Filipino</b>
             <a>fin</a>
             <b>Finnish</b>
             <a>fiu</a>
@@ -473,16 +476,6 @@
             <b>Fon</b>
             <a>fre</a>
             <b>French</b>
-            <a>frm</a>
-            <b>French, Middle (ca.1400-1600)</b>
-            <a>fro</a>
-            <b>French, Old (842-ca.1400)</b>
-            <a>frr</a>
-            <b>Northern Frisian</b>
-            <a>frs</a>
-            <b>Eastern Frisian</b>
-            <a>fry</a>
-            <b>Western Frisian</b>
             <a>ful</a>
             <b>Fulah</b>
             <a>fur</a>
@@ -504,17 +497,13 @@
             <a>gil</a>
             <b>Gilbertese</b>
             <a>gla</a>
-            <b>Gaelic Scottish Gaelic</b>
+            <b>Scottish</b>
             <a>gle</a>
             <b>Irish</b>
             <a>glg</a>
             <b>Galician</b>
             <a>glv</a>
             <b>Manx</b>
-            <a>gmh</a>
-            <b>German, Middle High (ca.1050-1500)</b>
-            <a>goh</a>
-            <b>German, Old High (ca.750-1050)</b>
             <a>gon</a>
             <b>Gondi</b>
             <a>gor</a>
@@ -523,14 +512,10 @@
             <b>Gothic</b>
             <a>grb</a>
             <b>Grebo</b>
-            <a>grc</a>
-            <b>Greek, Ancient (to 1453)</b>
-            <a>gre</a>
-            <b>Greek, Modern (1453-)</b>
             <a>grn</a>
             <b>Guarani</b>
             <a>gsw</a>
-            <b>Swiss German Alemannic Alsatian</b>
+            <b>Swiss</b>
             <a>guj</a>
             <b>Gujarati</b>
             <a>gwi</a>
@@ -538,7 +523,7 @@
             <a>hai</a>
             <b>Haida</b>
             <a>hat</a>
-            <b>Haitian Haitian Creole</b>
+            <b>Haitian</b>
             <a>hau</a>
             <b>Hausa</b>
             <a>haw</a>
@@ -622,7 +607,7 @@
             <a>kac</a>
             <b>Kachin Jingpho</b>
             <a>kal</a>
-            <b>Kalaallisut Greenlandic</b>
+            <b>Kalaallisut</b>
             <a>kam</a>
             <b>Kamba</b>
             <a>kan</a>
@@ -710,7 +695,7 @@
             <a>loz</a>
             <b>Lozi</b>
             <a>ltz</a>
-            <b>Luxembourgish Letzeburgesch</b>
+            <b>Luxembourgish</b>
             <a>lua</a>
             <b>Luba-Lulua</b>
             <a>lub</a>
@@ -834,11 +819,13 @@
             <a>niu</a>
             <b>Niuean</b>
             <a>dut</a>
-            <b>Dutch Flemish</b>
+            <b>Dutch</b>
+            <a>dut</a>
+            <b>Flemish</b>   
             <a>nno</a>
-            <b>Norwegian Nynorsk Nynorsk, Norwegian</b>
+            <b>Norwegian</b>
             <a>nob</a>
-            <b>Bokmål, Norwegian Norwegian Bokmål</b>
+            <b>Bokmål</b>
             <a>nog</a>
             <b>Nogai</b>
             <a>non</a>
@@ -848,7 +835,7 @@
             <a>nqo</a>
             <b>N'Ko</b>
             <a>nso</a>
-            <b>Pedi Sepedi Northern Sotho</b>
+            <b>Pedi</b>
             <a>nub</a>
             <b>Nubian</b>
             <a>nwc</a>
@@ -1012,7 +999,7 @@
             <a>sot</a>
             <b>Sotho, Southern</b>
             <a>spa</a>
-            <b>Spanish Castilian</b>
+            <b>Spanish</b>
             <a>alb</a>
             <b>Albanian</b>
             <a>srd</a>
@@ -1172,11 +1159,9 @@
             <a>zen</a>
             <b>Zenaga</b>
             <a>zgh</a>
-            <b>Standard Moroccan Tamazight</b>
+            <b>Tamazight</b>
             <a>zha</a>
             <b>Zhuang Chuang</b>
-            <a>chi</a>
-            <b>Chinese</b>
             <a>znd</a>
             <b>Zande</b>
             <a>zul</a>
@@ -1184,7 +1169,7 @@
             <a>zun</a>
             <b>Zuni</b>
             <a>zza</a>
-            <b>Zaza Dimili Dimli Kirdki Kirmanjki Zazaki</b>
+            <b>Zaza</b>
         </lang>
     </xsl:variable>
 
