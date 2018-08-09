@@ -8,27 +8,25 @@
 2a) Load json export of agents  / subjects in Basex
 	(works)
 
-2b) Extract uri, sort name, and source using xquery:
+2b) Extract uri, sort name, and source where source is lcsh or naf, using xquery. outputting pipe-delim csv
 
-	xquery version "3.0";
+xquery version "3.0";
 
 	for $person in /json/_
+  
+  where $person/names/_/source[contains(., 'lcsh') or contains(., 'naf')]
 
 	let $pm:= $person/names/_/sort__name
 	let $uri:= $person/uri
 	let $source:= $person/names/_/source
 	return
-	<r>
-	<u>{data($uri)}</u>
-	<s>{data($source)}</s>
-	<p>{data($pm)}</p>
-	</r>
+	concat(data($pm), "|", data($uri))
 
 	(works)
 
-3) Open in Excel, filter out local and other non lc/naf sources, and save as tsv
-	(maybe could skip this step by putting out original tsv from basex)
-	(works)
+# 3) Open in Excel, filter out local and other non lc/naf sources, and save as tsv
+#	(maybe could skip this step by putting out original tsv from basex)
+#	(works)
 
 4) Match strings against authority database to get LC authority numbers
 	Variety of ways to do this
