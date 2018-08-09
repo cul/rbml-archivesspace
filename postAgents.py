@@ -26,21 +26,22 @@ with open('lc_agents.csv', 'rb') as csvfile:
     for row in reader:
         ASID = row[2].strip()
 	authno = 'http://id.loc.gov/authorities/names/' + row[1].strip()
-	print authno
+	try:
+
         # Submit a get request for the archival object and store the JSON
-        agent_json = requests.get(baseURL+ASID,headers=headers).json()
-
-	agent_json['names'][0]['authority_id'] = authno
-
-	agent_json['names'][0]['source'] = "naf"
+	        agent_json = requests.get(baseURL+ASID,headers=headers).json()
+	#add authno and source to object
+		agent_json['names'][0]['authority_id'] = authno
+		agent_json['names'][0]['source'] = "naf"
 
         #prepare for repost
-        agent_data = json.dumps(agent_json)
+	        agent_data = json.dumps(agent_json)
 
         # Repost the agent with the authority number
-        archival_object_update = requests.post(baseURL+ASID,headers=headers,data=agent_data).json()
-        print archival_object_update, '|', row[0]
-
+        	archival_object_update = requests.post(baseURL+ASID,headers=headers,data=agent_data).json()
+	        print archival_object_update, '|', row[0]
+	except:
+		print "Error", ASID, autho
 
 elapsedTime = time.time() - startTime
 m, s = divmod(elapsedTime, 60)
