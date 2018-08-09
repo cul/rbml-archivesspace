@@ -18,15 +18,15 @@ print 'authenticated'
 
 startTime = time.time()
 
-print "Is set to dev if URL contains dev:", baseURL
-raw_input("Press Enter to continue...")
+#print "Is set to dev if URL contains dev:", baseURL
+#raw_input("Press Enter to continue...")
 
 with open('lc_agents.csv', 'rb') as csvfile:
     reader = csv.reader(csvfile, delimiter='|', quotechar='"')
     for row in reader:
         ASID = row[2].strip()
-	authno = 'http://id.loc.gov/authorities/names/' + row[1]
-
+	authno = 'http://id.loc.gov/authorities/names/' + row[1].strip()
+	print authno
         # Submit a get request for the archival object and store the JSON
         agent_json = requests.get(baseURL+ASID,headers=headers).json()
 
