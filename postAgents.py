@@ -41,7 +41,7 @@ with open('lc_agents.csv', 'rb') as csvfile:
         	archival_object_update = requests.post(baseURL+ASID,headers=headers,data=agent_data).json()
 	        print archival_object_update, '|', row[0]
 	except:
-		print "Error", ASID, autho
+		print "Error", ASID, authno
 
 elapsedTime = time.time() - startTime
 m, s = divmod(elapsedTime, 60)
