@@ -18,8 +18,7 @@ print 'authenticated'
 
 id = input('Enter person agent id number, e.g. 2435: ')
 endpoint = '//agents/people/'+str(id)
-output = requests.get(baseURL + endpoint, headers=headers).json()
-print output
+print json.dumps(requests.get(baseURL + endpoint, headers=headers).json())
 
 elapsedTime = time.time() - startTime
 m, s = divmod(elapsedTime, 60)
