@@ -1,5 +1,4 @@
 import requests, csv, json, urllib, time
-from fuzzywuzzy import fuzz
 
 startTime = time.time()
 
@@ -9,7 +8,7 @@ startTime = time.time()
 baseURLexact = 'http://id.loc.gov/authorities/names/label/'
 baseURL = 'http://id.loc.gov/search/?q='
 with open('input_agent.csv', 'rb') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        reader = csv.reader(csvfile, delimiter='|', quotechar='"')
         for row in reader:
             name = str(row[0])
             rowEdited = urllib.quote(name.strip())
@@ -29,7 +28,8 @@ with open('input_agent.csv', 'rb') as csvfile:
                     print name, '|', response2.split("/authorities/names/",1)[1].split('"',1)[0], '|' , row[1], '|', 'FLAGGED_MULTIPLE' 
                 else:
                     #otherwise just give back the auth no of the match
-                    print name, '|', response2.split("/authorities/names/",1)[1].split('"',1)[0], '|' , row[1]
+                    #print name, '|', response2.split("/authorities/names/",1)[1].split('"',1)[0], '|' , row[1]
+                    print name, '|', 'No match', '|', url2
             #add a one second pause for each
             time.sleep(1) 
 
