@@ -30,41 +30,39 @@ xquery version "3.0";
 
 4) Match strings against authority database to get LC authority numbers
 	Variety of ways to do this
-		Hit the VIAF API, but pull LC back (names only unfortunately)
-			getViaf.py 
-			(works; 3.5 hours)
-			Matched 6934 of 8659. Reason: some aren't in lc; and probably some VIAF weirdness too.  
-
-		Try to hit the LC api; two ways (http://id.loc.gov/techcenter/searching.html):
-			id.loc.gov/authorities/{scheme_name}/label/{term}  -> returns as 202 the url with the auth no
+		LC api; two ways (http://id.loc.gov/techcenter/searching.html):
+		id.loc.gov/authorities/{scheme_name}/label/{term}  -> returns as 202 the url with the auth no
 				or
-			id.loc.gov/search/?q=aLabel:"Tewksbury, Donald George, 1894-1958" -> returns the record; we'd need to request the right data
-	
+		id.loc.gov/search/?q=aLabel:"Tewksbury, Donald George, 1894-1958" -> returns the record
+		(works) 
+		Match 6673 of 8532 agents
+		
+		VIAF API, but pull LC back
+		Matched 6934 of 8659. Reason: some aren't in lc; and probably some VIAF weirdness too.  
+
 		Do it locally?
 
-		REVIEW THESE BEFORE LOAD
+		HUMAN REVIEW THESE BEFORE LOAD
+			grep to remove dupes and non-matches
 
 5) Load authority numbers back into the json records.
-	insertNewDataIntoJSON.py (modify to match on string and load auth numbers; not a problem)
-
-6) Post the whole shebang back in. Need to post the whole thing back in, it appears.
-	use postViaf.py (works) 
-
-#NO DOESN'T WORK Take csv with uris and authnumbers and use URIs to post auth numbers back into AS
+	postAgents.py (works)
 	
-
+	
 ***ONGOING AUTHORITY***
 
 Instead of using URI, match on authID. Write out where there is no match; either manually add auth nos, or have it match on string.
-Ensure nothing else is going on, because otherwise lock numbers will not match
+Data freeze: ensure nothing else is going on, because otherwise lock numbers will not match
 
 1) API call to ASpace to get fresh extract of json files on all subjects and agents
 	getSubjects.py etc. (works)
 
-2) Extract csv with authno, primary name, sort name, anything else we want from the authority records from LTI (MARCedit, or pymarc, or some string manipulation; should be easy)
+2) Send bib records to vendor via OAI feed (cleaned up via cleanOAI.xsl)
 
-3) Script to match csv to json record on authority number, and write in primary name, sort name, etc. Write out modified json files only.
-	insertNewDataIntoJSON.py (works)
+3) From returned MARC *authority* records, extract csv with authno, primary name, sort name, anything else we want from the authority records (MARCedit, or pymarc, or some string manipulation; should be easy)
 
-4) Post the updated json back in. Need to post the whole thing back in, not just certain fields.  However, we could add a note during 3 for modified records, and only post those (or somehow otherwise limit to only touched records)
-	use postViaf.py (works)
+3) Script to match csv to json record on authority number, and write in primary name, sort name, etc. Write out modified json files only. insertNewDataIntoJSON.py (works)
+
+4) Post the updated json back in. (would be modification of postAgents.py)
+
+
