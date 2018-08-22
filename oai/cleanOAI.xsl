@@ -156,6 +156,21 @@
     <xsl:template match="marc:datafield[@tag[starts-with(., '7')]]/marc:subfield[@code = 'e']">
         <!--     do nothing   -->
     </xsl:template>
+    
+<!--  add $3 "Finding aid" to 856 fields -->
+    <xsl:template match="marc:datafield[@tag = '856']">
+        <datafield ind1="4" ind2="2" tag="856">
+            <subfield code="u">
+                <xsl:value-of select="marc:subfield[@code='u']"/>    
+            </subfield>
+            <subfield code="z">
+                <xsl:value-of select="marc:subfield[@code='z']"/>
+            </subfield>
+            <subfield code="3">
+                <xsl:text>Finding aid</xsl:text>
+            </subfield>
+        </datafield>
+    </xsl:template>
 
     <!--    reorder elements -->
     <!-- Grab the record, copy the leader and sort the control and data fields. -->
