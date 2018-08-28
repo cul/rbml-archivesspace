@@ -172,9 +172,9 @@
             <subfield code="u">
                 <xsl:value-of select="marc:subfield[@code='u']"/>    
             </subfield>
-            <subfield code="z">
+            <!--<subfield code="z">
                 <xsl:value-of select="marc:subfield[@code='z']"/>
-            </subfield>
+            </subfield>-->
             <subfield code="3">
                 <xsl:text>Finding aid</xsl:text>
             </subfield>
