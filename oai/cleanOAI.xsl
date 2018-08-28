@@ -138,7 +138,16 @@
             <xsl:value-of select="."/>
         </subfield>
     </xsl:template>
-
+    
+    <!--  add 1st indicator 1 to 544 related materials  -->
+    <xsl:template match="marc:datafield[@tag = '544']">
+        <datafield ind1="1" ind2=" " tag="544">
+        <subfield code="d">
+            <xsl:value-of select="marc:subfield[@code='d']"/>
+        </subfield>
+        </datafield>
+    </xsl:template>
+    
     <!--  remove subfield e from 1XX  -->
 
     <xsl:template match="marc:datafield[@tag[starts-with(., '1')]]/marc:subfield[@code = 'e']">
