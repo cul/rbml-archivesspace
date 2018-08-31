@@ -200,10 +200,14 @@
     
     <!-- Strip trailing punctuation from specified text nodes  -->
     <xsl:template name="stripComma">
-        <xsl:analyze-string select="normalize-space(.)" regex="(^.*)([,])">
+        <xsl:analyze-string select="normalize-space(.)" regex="^(.*)(,)$">
             <xsl:matching-substring>
                 <xsl:value-of select="regex-group(1)"/>
             </xsl:matching-substring>
+            <xsl:non-matching-substring>
+                <!-- in case match fails -->
+                <xsl:value-of select='.'/>
+            </xsl:non-matching-substring>
         </xsl:analyze-string>
     </xsl:template>
     
