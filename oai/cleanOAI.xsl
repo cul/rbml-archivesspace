@@ -181,6 +181,34 @@
         </datafield>
     </xsl:template>
 
+    <!-- For corporate names (110 and 610), remove trailing comma if no subordinate name available. -->
+    <xsl:template match="marc:datafield[@tag = '110' or @tag = '610']/marc:subfield[@code='a']">
+        <subfield code="a">
+            <xsl:choose>
+                <xsl:when test="normalize-space(../marc:subfield[@code='b'])">
+                    <!--  there is a $b following, keep punctuation   -->
+                    <xsl:value-of select="."/>  
+                </xsl:when>
+                <xsl:otherwise>
+                    <!--  there is no $b following, strip punctuation   -->
+                    <xsl:call-template name="stripComma"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </subfield>
+    </xsl:template>
+      
+    
+    <!-- Strip trailing punctuation from specified text nodes  -->
+    <xsl:template name="stripComma">
+        <xsl:analyze-string select="normalize-space(.)" regex="(^.*)([,])">
+            <xsl:matching-substring>
+                <xsl:value-of select="regex-group(1)"/>
+            </xsl:matching-substring>
+        </xsl:analyze-string>
+    </xsl:template>
+    
+    
+
     <!--    reorder elements -->
     <!-- Grab the record, copy the leader and sort the control and data fields. -->
     <xsl:template match="marc:record">
