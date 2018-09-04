@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="cleanOAI.xsl">
+ 
+ 
+    <x:scenario pending="Not yet implemented" label="Scenario for testing template with match '/">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing template with match '*">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented" label="Scenario for testing template with match '@*">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario pending="Not yet implemented"
+        label="Scenario for testing template with match 'comment() | text() | processing-instruction()">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario 
+        label="remove elements without content (extra 035 and 040s etc being exported by AS for some reason); 'marc:datafield[not(marc:subfield)]">
+        <x:context>
+            <marc:datafield ind1=" " ind2=" " tag="035"/>
+        </x:context>
+        <x:expect label="return nothing">
+            
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario 
+        label="remove subfields having no text content; 'marc:subfield[text() = ' ']">
+        <x:context>
+            <marc:datafield ind1=" " ind2=" " tag="035">   
+             <marc:subfield code="b"> </marc:subfield>
+            </marc:datafield> 
+        </x:context>
+        <x:expect label="return nothing">
+            <datafield ind1=" " ind2=" " tag="035">   
+              
+            </datafield> 
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario
+        label="Reformat 035 CULASPC to local practice, add NNC 035 field; 'marc:datafield[@tag = '035'][marc:subfield[contains(., 'CULASPC')]]">
+        <x:context>
+            <marc:datafield ind1=" " ind2=" " tag="035">
+                <marc:subfield code="a">CULASPC-5474446</marc:subfield>
+            </marc:datafield>
+        </x:context>
+        <x:expect label="reformat 035 CULASPC to local practice, add NNC 035 field">
+            <datafield ind1=" " ind2=" " tag="035">
+                <subfield code="a">(NNC)CULASPC:voyager:5474446</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario 
+        label="Add repo to 040 field; test for UA in 852$j; 'marc:datafield[@tag = '040'][marc:subfield]">
+        <x:context>
+            <marc:datafield ind1=" " ind2=" " tag="040">
+                <marc:subfield code="a">NNC-RB</marc:subfield>
+                <marc:subfield code="b">eng</marc:subfield>
+                <marc:subfield code="c">NNC-RB</marc:subfield>
+                <marc:subfield code="e">dacs</marc:subfield>
+            </marc:datafield>
+         
+            <marc:datafield ind1=" " ind2=" " tag="852">
+                <marc:subfield code="a">Columbia University Libraries</marc:subfield>
+                <marc:subfield code="b">Rare Book and Manuscript Library</marc:subfield>
+                <marc:subfield code="c">11035855</marc:subfield>
+                <marc:subfield code="j">UA#0207</marc:subfield>
+            </marc:datafield>
+            
+        </x:context>
+        <x:expect label="fix UA repo">
+            <datafield ind1=" " ind2=" " tag="040">
+                <subfield code="a">NNC-UA</subfield>
+                <subfield code="b">eng</subfield>
+                <subfield code="c">NNC-UA</subfield>
+                <subfield code="e">dacs</subfield>
+            </datafield>
+            
+            <datafield ind1=" " ind2=" " tag="852">
+                <subfield code="a">Columbia University Libraries</subfield>
+                <subfield code="b">Rare Book and Manuscript Library</subfield>
+                <subfield code="c">11035855</subfield>
+                <subfield code="j">UA#0207</subfield>
+            </datafield>
+            
+        </x:expect>
+    </x:scenario>
+
+
+<!-- Not sure what unique case this is meant to capture. Needs refinement. -->
+    <x:scenario 
+        label="if a 041 and 546 exists, copy 546 and then generate 041s from the language strings by refering to the iso 639-2b code list below; 'marc:datafield[@tag = '041'][marc:subfield][../marc:datafield[@tag = '546']]">
+        <x:context>
+            <marc:datafield ind1="0" ind2=" " tag="041">
+                <marc:subfield code="a">eng</marc:subfield>
+            </marc:datafield>
+                       
+            <marc:datafield ind1=" " ind2=" " tag="546">
+                <marc:subfield code="a">Material is in English.</marc:subfield>
+            </marc:datafield>
+            
+        </x:context>
+ 
+        <x:expect label="copy 546 and generate 041 from list" >
+            <datafield ind1=" " ind2=" " tag="041">
+                <subfield code="a">eng</subfield>
+            </datafield> 
+            
+            <datafield ind1=" " ind2=" " tag="546">
+                <subfield code="a">Material is in English.</subfield>
+            </datafield>
+            
+        </x:expect>
+    </x:scenario>
+
+
+
+    <x:scenario 
+        label="add 'bulk' in front of 245 $g field; 'marc:datafield[@tag = '245']/marc:subfield[@code = 'g']">
+        <x:context>
+            <marc:datafield ind1="1" ind2="0" tag="245">
+                <marc:subfield code="a">Virginia P. Robinson papers,</marc:subfield>
+                <marc:subfield code="f">1847-1977</marc:subfield>
+                <marc:subfield code="g">1910-1977</marc:subfield>
+            </marc:datafield>
+        </x:context>
+
+        <x:expect label="add 'bulk' in front of 245 $g" >
+            <datafield ind1="1" ind2="0" tag="245">
+                <subfield code="a">Virginia P. Robinson papers,</subfield>
+                <subfield code="f">1847-1977</subfield>
+                <subfield code="g">bulk 1910-1977</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+
+
+    <x:scenario 
+        label="add 1st indicator 1 to 544 related materials; 'marc:datafield[@tag = '544']">
+        <x:context>
+            <marc:datafield ind1=" " ind2=" " tag="544">
+                <marc:subfield code="d">Papers relating to her work with the Otto Rank Association are part of the: Columbia.</marc:subfield>
+            </marc:datafield>
+            <marc:datafield ind1=" " ind2=" " tag="544">
+                <marc:subfield code="d">Related materials will also be found in: Columbia.</marc:subfield>
+            </marc:datafield>
+        </x:context>
+ 
+        <x:expect label="add 1st indicator 1 to 544 related materials" >
+            <datafield ind1="1" ind2=" " tag="544">
+                <subfield code="d">Papers relating to her work with the Otto Rank Association are part of the: Columbia.</subfield>
+            </datafield>
+            <datafield ind1="1" ind2=" " tag="544">
+                <subfield code="d">Related materials will also be found in: Columbia.</subfield>
+            </datafield>
+             
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario
+        label="remove subfield e from 1XX; 'marc:datafield[@tag[starts-with(., '1')]]/marc:subfield[@code = 'e']">
+        <x:context>
+            <marc:datafield ind1="2" ind2=" " tag="110">
+                <marc:subfield code="a">Columbia University,</marc:subfield>
+                <marc:subfield code="b">Bureau of Applied Social Research </marc:subfield>
+                <marc:subfield code="e">creator.</marc:subfield>
+            </marc:datafield>
+        </x:context>
+        
+        <x:expect label="remove subfield e from 1XX" >
+            <datafield ind1="2" ind2=" " tag="110">
+                <subfield code="a">Columbia University,</subfield>
+                <subfield code="b">Bureau of Applied Social Research </subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario
+        label="remove subfield e from 6XX; 'marc:datafield[@tag[starts-with(., '6')]]/marc:subfield[@code = 'e']">
+        <x:context>
+            <marc:datafield ind1="1" ind2="0" tag="600">
+                <marc:subfield code="a">Lazarsfeld, Paul F.,</marc:subfield>
+                <marc:subfield code="d">1901-1976,</marc:subfield>
+                <marc:subfield code="e">subject.</marc:subfield>
+                <marc:subfield code="0">http://id.loc.gov/authorities/names/n79082169</marc:subfield>
+            </marc:datafield>
+         </x:context>
+        
+        <x:expect label="remove subfield e from 6XX" >
+            <datafield ind1="1" ind2="0" tag="600">
+                <subfield code="a">Lazarsfeld, Paul F.,</subfield>
+                <subfield code="d">1901-1976</subfield>
+                <subfield code="0">http://id.loc.gov/authorities/names/n79082169</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+    
+
+   
+
+    <x:scenario 
+        label="remove subfield e from 7XX: 'marc:datafield[@tag[starts-with(., '7')]]/marc:subfield[@code = 'e']">
+        <x:context>
+            <marc:datafield ind1="2" ind2=" " tag="710">
+                <marc:subfield code="a">Douglas L. Elliman &amp; Co,</marc:subfield>
+                <marc:subfield code="b"> </marc:subfield>
+                <marc:subfield code="e">creator.</marc:subfield>
+            </marc:datafield>
+        </x:context>
+ 
+        <x:expect label="remove subfield e from 7XX" >
+            <datafield ind1="2" ind2=" " tag="710">
+                <subfield code="a">Douglas L. Elliman &amp; Co,</subfield>
+             </datafield>          
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario 
+        label="add $3 'Finding aid' to 856 fields; 'marc:datafield[@tag = '856']">
+        <x:context>
+            <marc:datafield ind1="4" ind2="2" tag="856">
+                <marc:subfield code="z">Finding aid online:</marc:subfield>
+                <marc:subfield code="u">http://findingaids.cul.columbia.edu/ead//nnc-rb/ldpd_4078427</marc:subfield>
+            </marc:datafield>
+        </x:context>
+        <x:expect label="add $3 'Finding aid' to 856 fields" >
+            <datafield ind1="4" ind2="2" tag="856">
+                <subfield code="u">http://findingaids.cul.columbia.edu/ead//nnc-rb/ldpd_4078427</subfield>
+                <subfield code="3">Finding aid</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+
+
+    <x:scenario 
+        label="For corporate names (110 and 610), remove trailing comma if no subordinate name available; 'marc:datafield[@tag = '110' or @tag = '610']/marc:subfield[@code='a']">
+        <x:context>
+            <marc:datafield ind1="2" ind2=" " tag="110">
+                <marc:subfield code="a">Otto Rank Association, </marc:subfield>
+                <marc:subfield code="e">creator.</marc:subfield>
+            </marc:datafield>
+        </x:context>
+        <x:expect label="110$a or 610$a has ending comma removed">
+            <datafield ind1="2" ind2=" " tag="110">
+                <subfield code="a">Otto Rank Association</subfield>
+            </datafield>
+        </x:expect>
+     </x:scenario>
+
+    <x:scenario 
+        label="For corporate names (110 and 610), don't remove trailing comma if subuordinate name available; 'marc:datafield[@tag = '110' or @tag = '610']/marc:subfield[@code='a']">
+        <x:context>
+            <marc:datafield ind1="2" ind2=" " tag="110">
+                <marc:subfield code="a">Columbia University,</marc:subfield>
+                <marc:subfield code="b">Bureau of Applied Social Research </marc:subfield>
+                <marc:subfield code="e">creator.</marc:subfield>
+            </marc:datafield>
+        </x:context>
+        <x:expect label="110$a and 610$b left alone">
+            <datafield ind1="2" ind2=" " tag="110">
+                <subfield code="a">Columbia University,</subfield>
+                <subfield code="b">Bureau of Applied Social Research </subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+    
+    
+    
+    <x:scenario  pending="Not yet implemented" label="Scenario for testing function stripComma">
+        <x:call template="stripComma"/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+
+
+    <x:scenario pending="Not yet implemented"
+        label="Scenario for testing template with match 'marc:record">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+
+    <x:scenario
+        label="remove colons from beginning of fields; 'marc:subfield[starts-with(., ':')]">
+        <x:context>
+                    <marc:subfield code="v">: Diaries</marc:subfield>
+        </x:context>
+      
+        <x:expect label="remove colons from beginning of fields">
+            <subfield code="v">Diaries</subfield>
+        </x:expect>
+    </x:scenario>
+
+    <x:scenario 
+        label="remove commas from end of sub field d;  'marc:subfield[@code = 'd'][ends-with(., ',')]">
+        <x:context>
+            <marc:datafield ind1="1" ind2="0" tag="600">
+                <marc:subfield code="a">Freud, Ernst L.,</marc:subfield>
+                <marc:subfield code="d">1892-1970,</marc:subfield>
+                <marc:subfield code="e">subject.</marc:subfield>
+                <marc:subfield code="0">http://id.loc.gov/authorities/names/n85298533</marc:subfield>
+            </marc:datafield>
+        </x:context>
+        <x:expect label="remove commas from end of sub field d">
+            <datafield ind1="1" ind2="0" tag="600">
+                <subfield code="a">Freud, Ernst L.,</subfield>
+                <subfield code="d">1892-1970</subfield>
+                <subfield code="0">http://id.loc.gov/authorities/names/n85298533</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+</x:description>
