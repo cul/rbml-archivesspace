@@ -38,8 +38,8 @@
         <!--        do nothing  -->
     </xsl:template>
     
-    <!--   remove "empty" subfields having one space --> 
-    <xsl:template match="marc:subfield[text() = ' ']">
+    <!--   remove "empty" subfields having no text content --> 
+    <xsl:template match="marc:subfield[not(normalize-space(text()))]">
         <!--        do nothing  -->
     </xsl:template>
 
@@ -247,7 +247,7 @@
             <xsl:attribute name="code">
                 <xsl:value-of select="@code"/>
             </xsl:attribute>
-            <xsl:copy-of select="translate(., ':', '')"/>
+            <xsl:copy-of select="normalize-space(translate(., ':', ''))"/>
         </xsl:element>
     </xsl:template>
 
