@@ -4,6 +4,8 @@
     exclude-result-prefixes="xs marc" version="2.0">
     <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.4 KS 2018-08-07  -->
     <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
+ <xsl:output indent="yes"/>
+ 
     <xsl:template match="/">
         <collection>
             <xsl:for-each select="repository/record/metadata/marc:collection/marc:record">
@@ -102,6 +104,12 @@
                 </datafield>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+
+    <!--    If there are 041 with empty subfields AND there are no 546 languages to parse, delete -->
+    <xsl:template
+        match="marc:datafield[@tag = '041'][marc:subfield[not(normalize-space(text()))]][../not(marc:datafield[@tag = '546'])]">
+            <!-- Do nothing -->
     </xsl:template>
 
     <!--    if a 041 and 546 exists, copy 546 and then generate 041s from the language strings by refering to the iso 639-2b code list below -->
@@ -252,13 +260,12 @@
     </xsl:template>
 
     <!--    remove commas from end of sub field d -->
-    <xsl:template match="marc:subfield[@code = 'd'][ends-with(., ',')]">
+    <xsl:template match="marc:subfield[@code = 'd']">
         <subfield code="d">
-            <xsl:variable name="d" select="."/>
-            <xsl:value-of select="substring($d, 1, string-length($d) - 1)"/>
+            <xsl:call-template name="stripComma"/>
         </subfield>
     </xsl:template>
-
+    
     <xsl:variable name="langCodes">
         <lang>
             <a>aar</a>
@@ -521,8 +528,6 @@
             <b>Fang</b>
             <a>fao</a>
             <b>Faroese</b>
-            <a>per</a>
-            <b>Persian</b>
             <a>fat</a>
             <b>Fanti</b>
             <a>fij</a>
