@@ -98,33 +98,55 @@
     </x:scenario>
 
 
-<!-- Not sure what unique case this is meant to capture. Needs refinement. -->
+<!-- Parse multiple langauges in 546 and add to 041|a subfields in correct ISO lang codes. -->
     <x:scenario 
         label="if a 041 and 546 exists, copy 546 and then generate 041s from the language strings by refering to the iso 639-2b code list below; 'marc:datafield[@tag = '041'][marc:subfield][../marc:datafield[@tag = '546']]">
         <x:context>
             <marc:datafield ind1="0" ind2=" " tag="041">
                 <marc:subfield code="a">eng</marc:subfield>
             </marc:datafield>
-                       
+ 
             <marc:datafield ind1=" " ind2=" " tag="546">
-                <marc:subfield code="a">Material is in English.</marc:subfield>
+                <marc:subfield code="a">Material is in Devanagari, English, Gujarati, Hindi, Malayalam, Persian, Rajasthani, Urdu etc.</marc:subfield>
+            </marc:datafield>
+            <marc:datafield ind1=" " ind2=" " tag="546">
+                <marc:subfield code="a">In the many different languages of the princely states.</marc:subfield>
             </marc:datafield>
             
         </x:context>
  
-        <x:expect label="copy 546 and generate 041 from list" >
+        <x:expect label="parse 546 and generate 041 a from list" >
             <datafield ind1=" " ind2=" " tag="041">
                 <subfield code="a">eng</subfield>
-            </datafield> 
-            
-            <datafield ind1=" " ind2=" " tag="546">
-                <subfield code="a">Material is in English.</subfield>
+                <subfield code="a">guj</subfield>
+                <subfield code="a">hin</subfield>
+                <subfield code="a">mal</subfield>
+                <subfield code="a">per</subfield>
+                <subfield code="a">raj</subfield>
+                <subfield code="a">urd</subfield>
             </datafield>
-            
+                
+            <datafield ind1=" " ind2=" " tag="546">
+                <subfield code="a">Material is in Devanagari, English, Gujarati, Hindi, Malayalam, Persian, Rajasthani, Urdu etc.</subfield>
+            </datafield><datafield ind1=" " ind2=" " tag="546">
+                <subfield code="a">In the many different languages of the princely states.</subfield>
+            </datafield>
         </x:expect>
     </x:scenario>
 
 
+    <x:scenario label="if a 041 has empty a subfield and no 546 exists to populate language, remove empty 041s from output">
+    
+        <x:context>
+            <marc:datafield ind1="0" ind2=" " tag="041">
+                <marc:subfield code="a">   </marc:subfield>
+            </marc:datafield>
+        </x:context>
+    
+        <x:expect label="remove 041 that has no language">
+        
+        </x:expect>
+    </x:scenario>
 
     <x:scenario 
         label="add 'bulk' in front of 245 $g field; 'marc:datafield[@tag = '245']/marc:subfield[@code = 'g']">
@@ -311,12 +333,24 @@
                 <marc:subfield code="e">subject.</marc:subfield>
                 <marc:subfield code="0">http://id.loc.gov/authorities/names/n85298533</marc:subfield>
             </marc:datafield>
+            
+            <marc:datafield ind1="1" ind2=" " tag="700">
+                <marc:subfield code="a">Parshley, Frank E.,</marc:subfield>
+                <marc:subfield code="d">approximately 1853-,</marc:subfield>
+                <marc:subfield code="e">creator.</marc:subfield>
+            </marc:datafield>
+            
         </x:context>
         <x:expect label="remove commas from end of sub field d">
             <datafield ind1="1" ind2="0" tag="600">
                 <subfield code="a">Freud, Ernst L.,</subfield>
                 <subfield code="d">1892-1970</subfield>
                 <subfield code="0">http://id.loc.gov/authorities/names/n85298533</subfield>
+            </datafield>
+            
+            <datafield ind1="1" ind2=" " tag="700">
+                <subfield code="a">Parshley, Frank E.,</subfield>
+                <subfield code="d">approximately 1853-</subfield>
             </datafield>
         </x:expect>
     </x:scenario>
