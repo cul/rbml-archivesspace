@@ -20,9 +20,9 @@ print 'To parse output, use jq as follows:'
 print "This pulls out only the objects with empty related resources records"
 print "jq -c '.[]' rbmlaccessions.json | grep 'related_resources':\[]'"
 print "This pulls out the notes field for accessions without related resources"
-print "jq -c '.[]' rbmlaccessions.json | grep \"related_resources\":\[]' | jq '.[\"general_note\"]'"
+print "jq -c '.[]' rbmlaccessions.json | grep '"related_resources":\[]' | jq '.[{user_defined:integer_1}]'"
 print "This pulls out the bib ID  for accessions without related resources"
-print "jq -c '.[]' rbmlaccessions.json | grep 'related_resources':\[]' | jq '.[\"user_defined::integer_1\"]'"
+print "jq -c '.[]' rbmlaccessions.json | grep '"related_resources":\[]' | jq '.["user_defined"]' | jq '.["integer_1"]'"
 
 #define the API call to get a list of all agent IDs
 endpoint = '//repositories/2/accessions?all_ids=true'
