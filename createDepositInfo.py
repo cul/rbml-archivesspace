@@ -1,7 +1,7 @@
 import json
 import requests
 import secrets
-
+import codecs
 
 #call secrets for authentication
 baseURL = secrets.baseURL
@@ -24,29 +24,39 @@ endpoint = '/repositories/' + repo + '/accessions/' + accession
 #call the API
 output = requests.get(baseURL + endpoint, headers=headers).json()
 
-print "Collection Name: " + output['title']
-print "Date Received: " + output['accession_date']
-print "Bib ID of Collection: " + output['user_defined']['integer_1']
+f=codecs.open('deposit-info.txt', 'w', 'utf-8')
+f.write("Collection Name: " + output['title'] + '\n')
+f.write("Date Received: " + output['accession_date'] + '\n')
+f.write("Bib ID of Collection: " + output['user_defined']['integer_1'] + '\n')
 #test for fourth field in identifier
 if 'id_3' in output:
-	print "Accession Number: " + output['id_0'] + "-" +  output['id_1'] + "-" + output['id_2'] + "-" + output['id_3'] 
+	f.write("Accession Number: " + output['id_0'] + "-" +  output['id_1'] + "-" + output['id_2'] + "-" + output['id_3'] + '\n')
 else:
-	print "Accession Number: " + output['id_0'] + "-" +  output['id_1'] + "-" + output['id_2']
-print "Description: " + output['content_description']
-print "Size: " + output['extents'][0]['container_summary']
+	f.write("Accession Number: " + output['id_0'] + "-" +  output['id_1'] + "-" + output['id_2'] + '\n')
+if 'content_description' in output:
+	f.write("Description: " + output['content_description'] + '\n')
+else:
+	f.write("Description: NOT ENTERED" + '\n')
+f.write("Size: " + output['extents'][0]['container_summary'] + '\n')
 if "[NEW]" in output['title']: 
 	newadd = 'New'
 if "[ADD]" in output['title']:
 	newadd = 'Addition'
 else:
 	newadd = 'Check title for [NEW] or [ADD]'
-print "New Collection or Addition: " + newadd
+f.write("New Collection or Addition: " + newadd + '\n')
 if 'text_2' in output['user_defined']: 
-	print "Source of Acquisition: " + output['user_defined']['text_2']
+	f.write("Source of Acquisition: " + output['user_defined']['text_2'] + '\n')
 else:
-	print "Source of Acquisition: NOT ENTERED"
+	f.write("Source of Acquisition: NOT ENTERED" + '\n')
 if 'enum_4' in output['user_defined']:
-	print "Collecting Area: " + output['user_defined']['enum_4']
+	f.write("Collecting Area: " + output['user_defined']['enum_4'] + '\n')
 else:
-        print "Collecting Area: NOT ENTERED"
-print "Access statement: " + output['access_restrictions_note']
+	f.write("Collecting Area: NOT ENTERED" + '\n')
+if 'access_restrictions_note' in output:
+	f.write("Access statement: " + output['access_restrictions_note'] + '\n')
+else:
+	f.write("Access statement: NOT ENTERED" + '\n')
+
+f.close()
+
