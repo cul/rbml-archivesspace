@@ -17,8 +17,8 @@ print 'authenticated'
 
 print "This script will create a text suitable for a deposit-info.txt file."
 path = raw_input("Enter path to save file, e.g. /media/sf_Virtualshared/. Leave blank for default path: ")
-repo = raw_input("Enter repo ID; 2=RBML, 3=Avery, 4=Starr, 5= Burke:")
-accession = raw_input("Enter accession ID:")
+repo = raw_input("Enter repo ID; 2=RBML, 3=Avery, 4=Starr, 5= Burke: ")
+accession = raw_input("Enter accession ID: ")
 
 #define the API call to get the accession
 endpoint = '/repositories/' + repo + '/accessions/' + accession
@@ -44,7 +44,13 @@ if 'content_description' in output:
 	f.write("Description: " + output['content_description'] + '\n')
 else:
 	f.write("Description: NOT ENTERED" + '\n')
-f.write("Size: " + output['extents'][0]['container_summary'] + '\n')
+
+if 'container_summary' in output['extents'][0]:
+	f.write("Size: " + output['extents'][0]['container_summary'] + ' (' + output['extents'][0]['number'] + ' ' + output['extents'][0]['extent_type'] + ')'+ '\n')
+else:
+	f.write("Size: " + output['extents'][0]['number'] + ' ' + output['extents'][0]['extent_type'] + '\n')
+
+
 if "[NEW]" in output['title']: 
 	newadd = 'New'
 if "[ADD]" in output['title']:
