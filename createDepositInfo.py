@@ -16,27 +16,30 @@ headers = {'X-ArchivesSpace-Session':session, 'Content_Type':'application/json'}
 print 'authenticated'
 
 print "This script will create a text suitable for a deposit-info.txt file."
-path = raw_input("Enter path to save file, e.g. /media/sf_Virtualshared/:")
+path = raw_input("Enter path to save file, e.g. /media/sf_Virtualshared/. Leave blank for default path: ")
 repo = raw_input("Enter repo ID; 2=RBML, 3=Avery, 4=Starr, 5= Burke:")
 accession = raw_input("Enter accession ID:")
 
-#define the API call to get a list of all agent IDs
+#define the API call to get the accession
 endpoint = '/repositories/' + repo + '/accessions/' + accession
 
 #call the API
 output = requests.get(baseURL + endpoint, headers=headers).json()
 
-fileandpath = os.path.join(path + 'deposit-info.txt')
+#get accession number first, so we can write it to the filename
+#test for fourth field in identifier so we can parse old accession number
+if 'id_3' in output:
+	accessionNumber = output['id_0'] + "-" +  output['id_1'] + "-" + output['id_2'] + "-" + output['id_3']
+else:
+	accessionNumber = output['id_0'] + "-" +  output['id_1'] + "-" + output['id_2']
+
+fileandpath = os.path.join(path + 'deposit-info_' + accessionNumber + '.txt')
 
 f=codecs.open(fileandpath, 'w', 'utf-8')
 f.write("Collection Name: " + output['title'] + '\n')
 f.write("Date Received: " + output['accession_date'] + '\n')
 f.write("Bib ID of Collection: " + output['user_defined']['integer_1'] + '\n')
-#test for fourth field in identifier
-if 'id_3' in output:
-	f.write("Accession Number: " + output['id_0'] + "-" +  output['id_1'] + "-" + output['id_2'] + "-" + output['id_3'] + '\n')
-else:
-	f.write("Accession Number: " + output['id_0'] + "-" +  output['id_1'] + "-" + output['id_2'] + '\n')
+f.write("Accession Number: " + accessionNumber + '\n')
 if 'content_description' in output:
 	f.write("Description: " + output['content_description'] + '\n')
 else:
@@ -63,4 +66,5 @@ else:
 	f.write("Access statement: NOT ENTERED" + '\n')
 
 f.close()
+print "Completed. Output sent to " + fileandpath
 
