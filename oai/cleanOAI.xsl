@@ -193,7 +193,7 @@
     <xsl:template match="marc:datafield[@tag = '110' or @tag = '610']/marc:subfield[@code='a']">
         <subfield code="a">
             <xsl:choose>
-                <xsl:when test="normalize-space(../marc:subfield[@code='b'])">
+                <xsl:when test="../marc:subfield[@code='b']">
                     <!--  there is a $b following, keep punctuation   -->
                     <xsl:value-of select="."/>  
                 </xsl:when>
