@@ -22,10 +22,11 @@ path = raw_input("Enter path to save file, e.g. /media/sf_Virtualshared/. Leave 
 activeCheck = raw_input("Include completed assessments? Enter Y if yes (case-sensitive), leave blank if no: ")
 
 #this is a default search that returns everything since mold appears in the conservation issues list
-searchTerm = "mold"
+searchTerm = "Mold"
 
 #this is limited to the RBML repository
-search = requests.get(baseURL+'/repositories/2/search?q='+searchTerm+'&type[]=assessment&page=1',headers=headers).json()
+#note the page size = 200 in the URL
+search = requests.get(baseURL+'/repositories/2/search?q='+searchTerm+'&type[]=assessment&page=1&page_size=200',headers=headers).json()
 print "Sanity check: Number of assessments (should be equal to total of assessments number in AS) : " + str(search['total_hits'])
 fileandpath = os.path.join(path + 'moldInfo_'+ time.strftime("%Y%m%d-%H%M%S") +'.tsv')
 
