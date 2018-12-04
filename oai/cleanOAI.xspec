@@ -2,7 +2,8 @@
 <x:description 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xmlns:marc="http://www.loc.gov/MARC21/slim" 
-    xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="cleanOAI.xsl">
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" 
+    stylesheet="cleanOAI.xsl">
  
  
     <x:scenario pending="Not yet implemented" label="Scenario for testing template with match '/">
@@ -341,13 +342,22 @@
 
     <x:scenario pending="Not yet implemented"
         label="Scenario for testing template with match 'marc:record">
-        <x:context>
-            <marc:subfield code="v">: Diaries</marc:subfield>
-        </x:context>
+        <x:context/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
 
 
+    <x:scenario
+        label="remove colons from beginning of fields; 'marc:subfield[starts-with(., ':')]">
+        <x:context>
+            <marc:subfield code="v">: Diaries</marc:subfield>
+        </x:context>
+        
+        <x:expect label="remove colons from beginning of fields">
+            <subfield code="v">Diaries</subfield>
+        </x:expect>
+    </x:scenario>
+    
 
     <x:scenario 
         label="remove commas from end of sub field d;  'marc:subfield[@code = 'd'][ends-with(., ',')]">
