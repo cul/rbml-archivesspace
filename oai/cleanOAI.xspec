@@ -1,11 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="cleanOAI.xsl">
+<x:description 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:marc="http://www.loc.gov/MARC21/slim" 
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="cleanOAI.xsl">
  
  
     <x:scenario pending="Not yet implemented" label="Scenario for testing template with match '/">
         <x:context/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
+
+
+    <x:scenario
+        label="Record that is not resources type (e.g., archival_objects) should be ignored.">
+        <x:context>
+            <record>
+                <header>
+                    <identifier>oai:columbiadev//repositories/2/archival_objects/33772</identifier>
+                    <datestamp>2018-11-28T01:53:30Z</datestamp></header><metadata>
+                        <marc:collection xmlns="http://www.loc.gov/MARC21/slim" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd http://www.loc.gov/MARC21/slim">
+                            <marc:record>
+                                <marc:leader>00000npcaa2200000 u 4500</marc:leader>
+                                <marc:controlfield tag="008">181128i2003    xxu                 eng d</marc:controlfield>
+                                <marc:datafield ind1=" " ind2=" " tag="040">
+                                    <marc:subfield code="a">NNC-RB</marc:subfield>
+                                    <marc:subfield code="b">eng</marc:subfield>
+                                    <marc:subfield code="c">NNC-RB</marc:subfield>
+                                </marc:datafield>
+                                
+                            </marc:record>
+                        </marc:collection>
+                    </metadata>
+            </record>
+            
+        </x:context>
+        
+        <x:expect label="Ignore records that are not resources">
+        </x:expect>
+    </x:scenario>
+    
 
     <x:scenario pending="Not yet implemented" label="Scenario for testing template with match '*">
         <x:context/>
@@ -308,21 +341,13 @@
 
     <x:scenario pending="Not yet implemented"
         label="Scenario for testing template with match 'marc:record">
-        <x:context/>
+        <x:context>
+            <marc:subfield code="v">: Diaries</marc:subfield>
+        </x:context>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
 
 
-    <x:scenario
-        label="remove colons from beginning of fields; 'marc:subfield[starts-with(., ':')]">
-        <x:context>
-                    <marc:subfield code="v">: Diaries</marc:subfield>
-        </x:context>
-      
-        <x:expect label="remove colons from beginning of fields">
-            <subfield code="v">Diaries</subfield>
-        </x:expect>
-    </x:scenario>
 
     <x:scenario 
         label="remove commas from end of sub field d;  'marc:subfield[@code = 'd'][ends-with(., ',')]">

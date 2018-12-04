@@ -3,17 +3,26 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:marc="http://www.loc.gov/MARC21/slim"
     exclude-result-prefixes="xs marc" version="2.0">
     <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.4 KS 2018-08-07  -->
-    <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
+    
  <xsl:output indent="yes"/>
  
+    <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
+    
     <xsl:template match="/">
         <collection>
-            <xsl:for-each select="repository/record/metadata/marc:collection/marc:record">
+            <xsl:for-each select="repository/record">
                 <xsl:apply-templates select="."/>
             </xsl:for-each>
         </collection>
     </xsl:template>
-
+    
+    <!--  Only records that have /resources/ in identifier are passed to template (to exclude archival_objects, etc.) -->
+    <xsl:template match="record">
+        <xsl:if test="contains(header/identifier, '/resources/')">
+            <xsl:apply-templates select="metadata/marc:collection/marc:record"/>
+        </xsl:if>
+    </xsl:template>
+    
     <!--    three templates copy everything sans namespace -->
     <xsl:template match="*">
         <xsl:element name="{local-name()}">
@@ -223,7 +232,7 @@
 
     <!--    reorder elements -->
     <!-- Grab the record, copy the leader and sort the control and data fields. -->
-    <xsl:template match="marc:record">
+    <xsl:template match="marc:record">        
         <record>
             <xsl:element name="leader">
                 <xsl:value-of select="marc:leader"/>
@@ -247,6 +256,7 @@
                 <xsl:apply-templates select="."/>
             </xsl:for-each>
         </record>
+            
     </xsl:template>
 
     <!--    remove colons from beginning of fields -->
