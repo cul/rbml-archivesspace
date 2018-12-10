@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:marc="http://www.loc.gov/MARC21/slim"
     exclude-result-prefixes="xs marc" version="2.0">
+    <!-- Run this against a full OAI harvest to generate a lookup table (repo,asid,bibid)-->
 
     <xsl:output indent="no" method="text"/>
 

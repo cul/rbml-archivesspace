@@ -22,24 +22,33 @@ password = secrets.password
 def main():
     # Execute the file itself to test functions.
  
-    print "\nGetting a resource..."
-    print GetResource(2,4277)
-    print "\nGetting an agent..."
-    print GetAgent(2435)
-    print "\nGetting accession..."
-    print GetAccession(2,3876)
-    print "\nGetting schema..."
-    print GetSchema()
+    print("\nGetting resource by BibID...")
+    print(getResourceByBibID(4492484,'id_lookup.csv'))
 
-    #print GetArchivalObject(2,33773)
-    #print GetResourceIDs(4)
-    
-    #print UseEndpoint('/repositories/2/resources/4278/models_in_graph')
+    print("\nGetting a resource...")
+    print(getResource(2,4277))
+    print("\nGetting an agent...")
+    print(getAgent(2435))
+    print("\nGetting accession...")
+    print(getAccession(2,3876))
+    print("\nGetting schema...")
+    print(getSchema())
+
+    #print(getArchivalObject(2,33773))
+    #print(getResourceIDs(4))
+     
+    #print(getResponse('/repositories/2/resources/4278/models_in_graph'))
+
+    print('All good!')
 
 
+###
+### Functions
+###
 
-# General function to use a provided endpoint string (must start with slash)
-def UseEndpoint(endpoint):
+
+# General function to get response from a provided endpoint string (must start with slash).
+def getResponse(endpoint):
     headers = ASAuthenticate(user,baseURL,password)
     output = requests.get(baseURL + endpoint, headers=headers).json()
     output = json.dumps(output)
@@ -48,7 +57,7 @@ def UseEndpoint(endpoint):
 
 ## Functions to get single objects
 
-def GetArchObjectByRef(repo,ref):
+def getArchObjectByRef(repo,ref):
     # supply arch obj ref_id, e.g., bed5f26c0673086345e624f9bbf1d1c5
     headers = ASAuthenticate(user,baseURL,password)
     params = {"ref_id[]":ref}
@@ -56,12 +65,12 @@ def GetArchObjectByRef(repo,ref):
     lookup = requests.get(baseURL + endpoint, headers=headers, params=params).json()
     archival_object_uri = lookup['archival_objects'][0]['ref']
     asid = archival_object_uri.split('/')[-1]
-    output = GetArchivalObject(repo,asid)
+    output = getArchivalObject(repo,asid)
     return output
 
 
 # This doesn't work yet :(
-def GetResourceByID(repo,ref):
+def getResourceByID(repo,ref):
     # supply resource ID
     headers = ASAuthenticate(user,baseURL,password)
     params = {"identifier[]":ref}
@@ -71,8 +80,7 @@ def GetResourceByID(repo,ref):
     return output
 
 
-
-def GetArchivalObject(repo,asid):
+def getArchivalObject(repo,asid):
     # supply repo and id
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '/repositories/' + str(repo) + '/archival_objects/' + str(asid)
@@ -80,7 +88,7 @@ def GetArchivalObject(repo,asid):
     output = json.dumps(output)
     return output
 
-def GetResource(repo,asid):
+def getResource(repo,asid):
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '/repositories/' + str(repo) + '/resources/' + str(asid)
     output = requests.get(baseURL + endpoint, headers=headers).json()
@@ -88,7 +96,7 @@ def GetResource(repo,asid):
     return output
 
 
-def GetBibID(repo,asid):
+def getBibID(repo,asid):
     # return BibID from resource
     headers = ASAuthenticate(user,baseURL,password)    
     endpoint = '/repositories/' + str(repo) + '/resources/' + str(asid) 
@@ -100,30 +108,28 @@ def GetBibID(repo,asid):
         bibID = ''
     return bibID
 
-
-
-def GetAgent(asid):
+def getAgent(asid):
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '//agents/people/'+str(asid)
     output = requests.get(baseURL + endpoint, headers=headers).json()
     output = json.dumps(output)
     return output
 
-def GetAccession(repo,asid):
+def getAccession(repo,asid):
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '/repositories/' + str(repo) + '/accessions/' + str(asid)
     output = requests.get(baseURL + endpoint, headers=headers).json()
     output = json.dumps(output)
     return output
 
-def GetSchema():
+def getSchema():
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '//schemas'
     output = requests.get(baseURL + endpoint, headers=headers).json()
     output = json.dumps(output)
     return output
 
-def GetEAD(repo,asid):
+def getEAD(repo,asid):
     # Returns EAD XML (not JSON)
     # https://archivesspace.github.io/archivesspace/api/#get-repositories-repo_id-resource_descriptions-id-xml
     headers = ASAuthenticate(user,baseURL,password)
@@ -133,10 +139,24 @@ def GetEAD(repo,asid):
     return output
 
 
+def lookupByBibID(aBibID,aCSV):
+    # Lookup repo and ASID against lookup table csv.
+    # Format of csv should be REPO,ASID,BIBID.
+    lookupTable = open(aCSV)
+    for row in csv.reader(lookupTable):
+        if str(aBibID) in row[2]:
+            return([row[0],row[1]])
+    lookupTable.close()
+
+def getResourceByBibID(aBibID,aCSV):
+    myInfo = lookupByBibID(aBibID,aCSV)
+    output = getResource(myInfo[0],myInfo[1])
+    return output
+
 
 ## Functions to get multiple objects
 
-def GetUsers():
+def getUsers():
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '//users?all_ids=true'
     ids = requests.get(baseURL + endpoint, headers=headers).json()
@@ -149,7 +169,7 @@ def GetUsers():
         return output
 
 
-def GetAccessions(repo):
+def getAccessions(repo):
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '//repositories/' + str(repo) + '/accessions?all_ids=true'
     ids = requests.get(baseURL + endpoint, headers=headers).json()
@@ -159,11 +179,11 @@ def GetAccessions(repo):
         endpoint = '//repositories/'  + str(repo) + '/accessions/'+str(id)
         output = requests.get(baseURL + endpoint, headers=headers).json()
         records.append(output)
-        # print output
+        # print(output)
     output = json.dumps(records)
     return output
 
-def GetResources(repo):
+def getResources(repo):
     # https://archivesspace.github.io/archivesspace/api/#get-repositories-repo_id-resources-id
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '//repositories/' + str(repo) + '/resources?all_ids=true'
@@ -174,12 +194,12 @@ def GetResources(repo):
         endpoint = '//repositories/' + str(repo) + '/resources/'+str(id)
         output = requests.get(baseURL + endpoint, headers=headers).json()
         records.append(output)
-        # print output
+        # print(output)
     output = json.dumps(records)
     return output
 
 
-def GetResourceIDs(repo):
+def getResourceIDs(repo):
     # Return only the list of IDs, not the resources themselves
     # https://archivesspace.github.io/archivesspace/api/#get-repositories-repo_id-resources
     headers = ASAuthenticate(user,baseURL,password)
@@ -189,7 +209,7 @@ def GetResourceIDs(repo):
 
   
 
-def GetAgents():
+def getAgents():
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '//agents/people?all_ids=true'
     ids = requests.get(baseURL + endpoint, headers=headers).json()
@@ -199,13 +219,10 @@ def GetAgents():
         endpoint = '//agents/people/'+str(id)
         output = requests.get(baseURL + endpoint, headers=headers).json()
         records.append(output)
-        #print output
+        #print(output)
     #output = json.dump(records)
     return records
    
-
-
-
 
 
 # Authentication function; run first, returns session headers for next API call.
@@ -213,8 +230,10 @@ def ASAuthenticate(user,baseURL,password):
     auth = requests.post(baseURL + '/users/'+user+'/login?password='+password).json()
     session = auth["session"]
     headers = {'X-ArchivesSpace-Session':session, 'Content_Type':'application/json'}
-    #print 'authenticated'
+    #print('authenticated')
     return headers
+
+
 
 
 if __name__ == '__main__':
