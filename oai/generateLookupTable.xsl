@@ -7,8 +7,7 @@
     <xsl:output indent="no" method="text"/>
 
     <!--  This is where the column heads are drawn from. Should match process below.   -->
-    <xsl:variable name="myHead">REPO,ASID,BIBID</xsl:variable>
-
+    <xsl:variable name="myHead">BIBID,REPO,ASID,URI,,Insert Bib IDs,"=VLOOKUP(F1,A2:D4260,4,FALSE)"</xsl:variable>
     <xsl:variable name="lf">
         <xsl:text>
 </xsl:text>
@@ -27,6 +26,9 @@
 
 
     <xsl:template match="record">
+        <xsl:value-of
+            select="metadata/marc:collection/marc:record/marc:datafield[@tag='099']/marc:subfield[@code='a']"/>
+        <xsl:value-of select="$delim1"/>
         <xsl:analyze-string select="header/identifier" regex="^.*repositories/(.*)/resources/(.*)$">
             <xsl:matching-substring>
                 <xsl:value-of select="regex-group(1)"/>
@@ -35,8 +37,7 @@
              </xsl:matching-substring>
         </xsl:analyze-string>
         <xsl:value-of select="$delim1"/>
-        <xsl:value-of
-            select="metadata/marc:collection/marc:record/marc:datafield[@tag='099']/marc:subfield[@code='a']"/>
+        <xsl:value-of select="substring-after(header/identifier, 'oai:columbiadev/')"></xsl:value-of>
         <xsl:value-of select="$lf"/>
 
 
