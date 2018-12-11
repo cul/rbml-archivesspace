@@ -7,7 +7,7 @@
     <xsl:output indent="no" method="text"/>
 
     <!--  This is where the column heads are drawn from. Should match process below.   -->
-    <xsl:variable name="myHead">BIBID,REPO,ASID,URI,,Insert Bib IDs,"=VLOOKUP(F1,A2:D4260,4,FALSE)"</xsl:variable>
+    <xsl:variable name="myHead">BIBID,REPO,ASID,URI,,Insert Bib IDs,"=VLOOKUP(F1,$A$2:$D$4260,4,FALSE)"</xsl:variable>
     <xsl:variable name="lf">
         <xsl:text>
 </xsl:text>
