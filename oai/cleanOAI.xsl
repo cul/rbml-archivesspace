@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:marc="http://www.loc.gov/MARC21/slim"
     exclude-result-prefixes="xs marc" version="2.0">
-    <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import. v2.4 KS 2018-08-07  -->
+    <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import.  -->
     
  <xsl:output indent="yes"/>
  
@@ -182,7 +182,15 @@
     <xsl:template match="marc:datafield[@tag[starts-with(., '7')]]/marc:subfield[@code = 'e']">
         <!--     do nothing   -->
     </xsl:template>
+
+
+    <!--  remove subfield 0 from 6XX when there are subject subdivisions ($v, $x, $y, $z)  -->
     
+    <xsl:template match="marc:datafield[@tag[starts-with(., '6')]]/marc:subfield[@code = '0'][../marc:subfield/@code[contains('vxyz',.)]]">
+             <!--     do nothing   -->
+    </xsl:template>
+    
+
 <!--  add $3 "Finding aid" to 856 fields -->
     <xsl:template match="marc:datafield[@tag = '856']">
         <datafield ind1="4" ind2="2" tag="856">

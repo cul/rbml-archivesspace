@@ -282,6 +282,66 @@
         </x:expect>
     </x:scenario>
 
+
+    <x:scenario
+        label="remove subfield 0 from 6XX when there are subject subdivisions ($v, $x, $y, $z)">
+        <x:context>
+            <marc:datafield ind1="1" ind2="0" tag="600">
+                <marc:subfield code="a">Taylor, Nathaniel W</marc:subfield>
+                <marc:subfield code="q">(Nathaniel William),</marc:subfield>
+                <marc:subfield code="d">1786-1858,.</marc:subfield>
+                <marc:subfield code="0">http://id.loc.gov/authorities/names/n86115507</marc:subfield>
+                <marc:subfield code="v">: Archives</marc:subfield>
+            </marc:datafield>
+            <marc:datafield ind1="1" ind2="0" tag="600">
+                <marc:subfield code="a">Bonhoeffer, Dietrich,</marc:subfield>
+                <marc:subfield code="d">1906-1945.</marc:subfield>
+                <marc:subfield code="0">http://id.loc.gov/authorities/names/n78092900</marc:subfield>
+                <marc:subfield code="x">: Criticism and interpretation</marc:subfield>
+            </marc:datafield>
+            <marc:datafield ind1="1" ind2="0" tag="600">
+                <marc:subfield code="a">Neutra, Richard Joseph,</marc:subfield>
+                <marc:subfield code="d">1892-1970.</marc:subfield>
+                <marc:subfield code="0">http://id.loc.gov/authorities/names/n50004597</marc:subfield>
+                <marc:subfield code="x">: Homes and haunts</marc:subfield>
+                <marc:subfield code="z">: California</marc:subfield>
+                <marc:subfield code="z">: Los Angeles</marc:subfield>
+            </marc:datafield>
+            <marc:datafield ind1="1" ind2="0" tag="600">
+                <marc:subfield code="a">Trippe, Sarah Louise,</marc:subfield>
+                <marc:subfield code="d">1850-1931.</marc:subfield>
+                <marc:subfield code="v">: Archives</marc:subfield>
+            </marc:datafield>
+        </x:context>
+        
+        <x:expect label="remove subfield 0 from 6XX" >
+            <datafield ind1="1" ind2="0" tag="600">
+                <subfield code="a">Taylor, Nathaniel W</subfield>
+                <subfield code="q">(Nathaniel William),</subfield>
+                <subfield code="d">1786-1858,.</subfield>
+                <subfield code="v">Archives</subfield>
+            </datafield>
+            <datafield ind1="1" ind2="0" tag="600">
+                <subfield code="a">Bonhoeffer, Dietrich,</subfield>
+                <subfield code="d">1906-1945.</subfield>
+                <subfield code="x">Criticism and interpretation</subfield>
+            </datafield>
+            <datafield ind1="1" ind2="0" tag="600">
+                <subfield code="a">Neutra, Richard Joseph,</subfield>
+                <subfield code="d">1892-1970.</subfield>
+                <subfield code="x">Homes and haunts</subfield>
+                <subfield code="z">California</subfield>
+                <subfield code="z">Los Angeles</subfield>
+            </datafield>
+            <datafield ind1="1" ind2="0" tag="600">
+                <subfield code="a">Trippe, Sarah Louise,</subfield>
+                <subfield code="d">1850-1931.</subfield>
+                <subfield code="v">Archives</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+    
+
     <x:scenario 
         label="add $3 'Finding aid' to 856 fields; 'marc:datafield[@tag = '856']">
         <x:context>
