@@ -76,44 +76,42 @@
 
 
     <!--  add repo to 040 field; test for UA in 852$j  -->
-    <xsl:template match="marc:datafield[@tag = '040'][marc:subfield]" exclude-result-prefixes="#all">
-        <xsl:choose exclude-result-prefixes="#all">
-            <xsl:when
-                test="../marc:datafield[@tag = '852']/marc:subfield[@code = 'j'][contains(., 'UA')]">
-                <datafield ind1=" " ind2=" " tag="040">
-                    <subfield code="a">
-                        <xsl:text>NNC-UA</xsl:text>
-                    </subfield>
-                    <subfield code="b">
-                        <xsl:value-of select="marc:subfield[@code = 'b']"/>
-                    </subfield>
-                    <subfield code="c">
-                        <xsl:text>NNC-UA</xsl:text>
-                    </subfield>
-                    <subfield code="e">
-                        <xsl:value-of select="marc:subfield[@code = 'e']"/>
-                    </subfield>
-                </datafield>
-            </xsl:when>
-            <xsl:otherwise>
-                <!-- just copy the 040 -->
-                <datafield ind1=" " ind2=" " tag="040">
-                    <subfield code="a">
-                        <xsl:value-of select="marc:subfield[@code = 'a']"/>
-                    </subfield>
-                    <subfield code="b">
-                        <xsl:value-of select="marc:subfield[@code = 'b']"/>
-                    </subfield>
-                    <subfield code="c">
-                        <xsl:value-of select="marc:subfield[@code = 'c']"/>
-                    </subfield>
-                    <subfield code="e">
-                        <xsl:value-of select="marc:subfield[@code = 'e']"/>
-                    </subfield>
-                </datafield>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+    <xsl:template match="marc:datafield[@tag = '040'][marc:subfield]">
+
+    <xsl:variable name="isUA">
+        <xsl:if test="../marc:datafield[@tag = '852']/marc:subfield[@code = 'j'][contains(., 'UA')]">Y</xsl:if>
+    </xsl:variable>
+        <datafield ind1=" " ind2=" " tag="040">
+            <subfield code="a">
+                <xsl:choose>
+                    <xsl:when test="$isUA='Y'">
+<xsl:text>NNC-UA</xsl:text>      
+                    </xsl:when>
+                    <xsl:otherwise> 
+                        <xsl:value-of select="marc:subfield[@code='a']"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </subfield>
+            <subfield code="b">
+                <!-- <xsl:value-of select="marc:subfield[@code = 'b']"/> -->
+                <xsl:text>eng</xsl:text>
+                <!-- NOTE: this is a workaround for a bug that populates 040$b with the wrong data; see https://archivesspace.atlassian.net/browse/ANW-827 -->
+            </subfield>
+            <subfield code="c">
+                <xsl:choose>
+                    <xsl:when test="$isUA='Y'">
+<xsl:text>NNC-UA</xsl:text>                                            </xsl:when>
+                    <xsl:otherwise> 
+                        <xsl:value-of select="marc:subfield[@code='c']"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </subfield>
+            <subfield code="e">
+                <xsl:value-of select="marc:subfield[@code = 'e']"/>
+            </subfield>
+        </datafield>
+        
+     </xsl:template>
 
     <!--    If there are 041 with empty subfields AND there are no 546 languages to parse, delete -->
     <xsl:template

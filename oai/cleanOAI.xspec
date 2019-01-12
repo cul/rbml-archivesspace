@@ -96,7 +96,7 @@
     </x:scenario>
 
     <x:scenario 
-        label="Add repo to 040 field; test for UA in 852$j; 'marc:datafield[@tag = '040'][marc:subfield]">
+        label="Add repo to 040 field when UA in 852$j">
         <x:context>
             <marc:datafield ind1=" " ind2=" " tag="040">
                 <marc:subfield code="a">NNC-RB</marc:subfield>
@@ -111,7 +111,6 @@
                 <marc:subfield code="c">11035855</marc:subfield>
                 <marc:subfield code="j">UA#0207</marc:subfield>
             </marc:datafield>
-            
         </x:context>
         <x:expect label="fix UA repo">
             <datafield ind1=" " ind2=" " tag="040">
@@ -130,6 +129,41 @@
             
         </x:expect>
     </x:scenario>
+
+
+    <x:scenario 
+        label="Don't add repo to 040 field when not UA; fix non-english 040$b langs">
+        <x:context>
+            <marc:datafield ind1=" " ind2=" " tag="040">
+                <marc:subfield code="a">NNC-RB</marc:subfield>
+                <marc:subfield code="b">rus</marc:subfield>
+                <marc:subfield code="c">NNC-RB</marc:subfield>
+                <marc:subfield code="e">aapm</marc:subfield>
+            </marc:datafield>
+            
+            <marc:datafield ind1=" " ind2=" " tag="852">
+                <marc:subfield code="a">Columbia University Libraries</marc:subfield>
+                <marc:subfield code="b">Rare Book and Manuscript Library</marc:subfield>
+                <marc:subfield code="c">4077517</marc:subfield>
+            </marc:datafield>
+        </x:context>
+        <x:expect label="fix UA repo">
+            <datafield ind1=" " ind2=" " tag="040">
+                <subfield code="a">NNC-RB</subfield>
+                <subfield code="b">eng</subfield>
+                <subfield code="c">NNC-RB</subfield>
+                <subfield code="e">aapm</subfield>
+            </datafield>
+            
+            <datafield ind1=" " ind2=" " tag="852">
+                <subfield code="a">Columbia University Libraries</subfield>
+                <subfield code="b">Rare Book and Manuscript Library</subfield>
+                <subfield code="c">4077517</subfield>
+            </datafield>
+            
+        </x:expect>
+    </x:scenario>
+    
 
 
 <!-- Parse multiple langauges in 546 and add to 041|a subfields in correct ISO lang codes. -->
