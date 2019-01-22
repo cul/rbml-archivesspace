@@ -20,12 +20,12 @@ dev = False
 
 # Load credentials and such.
 if dev == True:
-    baseURL = secretsDev.baseAPIURL
+    baseURL = secretsDev.baseURL
     user = secretsDev.user
     password = secretsDev.password
 
 else:
-    baseURL = secrets.baseAPIURL
+    baseURL = secrets.baseURL
     user = secrets.user
     password = secrets.password
 
