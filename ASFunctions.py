@@ -1,6 +1,7 @@
 import json
 import requests
 import secrets
+import secretsDev
 import time
 import csv
 
@@ -13,10 +14,23 @@ import csv
 #   AsFunctions.GetResource(2,4277)
 #
 
-# call secrets for authentication
-baseURL = secrets.baseURL
-user = secrets.user
-password = secrets.password
+
+# Set to true to test on dev.
+dev = False
+
+# Load credentials and such.
+if dev == True:
+    baseURL = secretsDev.baseAPIURL
+    user = secretsDev.user
+    password = secretsDev.password
+
+else:
+    baseURL = secrets.baseAPIURL
+    user = secrets.user
+    password = secrets.password
+
+
+
 
 
 def main():
