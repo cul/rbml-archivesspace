@@ -20,17 +20,18 @@ def main():
     ns = {"ead": "urn:isbn:1-931666-22-9"}
 
 
-    data_folder1 = 'path/to/files1'
-    data_folder2 = 'path/to/files2'
+    data_folder1 = '/Users/dwh2128/Documents/ACFA/exist-local/backups/for_migration/ead-export-20190123'
+    data_folder2 = 'ead_process/xml'
 
-    file_list1 = 'file_paths.txt'
-    file_list2 = 'as_filepaths.txt'
-    # file_list1 = 'file_path_TEST.txt'
-    # file_list2 = 'as_file_path_TEST.txt'
+    file_list1 = 'ead_process/file_paths.txt'
+    file_list2 = 'ead_process/as_filepaths.txt'
+    # file_list1 = 'ead_process/file_path_TEST.txt'
+    # file_list2 = 'ead_process/as_file_path_TEST.txt'
 
 
 
     the_sheet = secrets.default_sheet # Google sheet id in "secrets"
+#    the_sheet = '1Daww5TrXK8pCzEneFwx4UzaGqJr_buODztE61BPRxHA'
 
     range1 = 'ead-legacy!A:Z' # tab for legacy EAD data
     range2 = 'ead-as!A:Z' # tab for AS exported EAD data
@@ -192,6 +193,12 @@ def text_clean(the_str):
     the_str = " ".join(re.split("\s+", the_str, flags=re.UNICODE))
     the_str = re.sub('\s?xmlns=".*?"', '', the_str)
     the_str = re.sub('\s?xmlns:\w+=".*?"', '', the_str)
+    the_str = re.sub(r'(<subject)', r'\n\1', the_str)
+    the_str = re.sub(r'(<persname)',  r'\n\1', the_str)
+    the_str = re.sub(r'(<corpname)',  r'\n\1', the_str)
+    the_str = re.sub(r'(<p)', r'\n\1', the_str)
+    the_str = re.sub(r'<head>.*?</head>', r'', the_str)
+    the_str = re.sub(r'\n\n',  r'\n', the_str)
     the_str = re.sub('<BR/>', '\n\n', the_str)
     return the_str
 
