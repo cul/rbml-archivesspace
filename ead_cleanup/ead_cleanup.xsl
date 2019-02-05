@@ -23,17 +23,17 @@
     </xsl:template>
 
 
-<xsl:template match="/">
-    <!-- Some info about merge added at runtime.    -->
-    <xsl:comment> 
+    <xsl:template match="/">
+        <!-- Some info about merge added at runtime.    -->
+        <xsl:comment> 
     <xsl:text>File cleaned on  </xsl:text>
     <xsl:value-of select="current-dateTime()"/>
         </xsl:comment>
-    <xsl:text>&#xa;</xsl:text>
- 
- <xsl:apply-templates/>
-    
-</xsl:template>
+        <xsl:text>&#xa;</xsl:text>
+
+        <xsl:apply-templates/>
+
+    </xsl:template>
 
 
 
@@ -101,13 +101,26 @@
 
 
 
-<!-- Convert all container/@type to lowercase -->
+    <!-- Convert all container/@type to lowercase -->
     <xsl:template match="container/@type">
-    <xsl:attribute name="type">
-        <xsl:value-of select="lower-case(.)"/>
-    </xsl:attribute>
-        
+        <xsl:attribute name="type">
+            <xsl:value-of select="lower-case(.)"/>
+        </xsl:attribute>
+
     </xsl:template>
+
+
+
+    <!-- Delete empty elements that won't import well -->
+
+    <xsl:template match="scopecontent[not(normalize-space(.))][not(normalize-space(p))]"/>
+
+    <!--     <xsl:template match="unitdate[not(normalize-space(.))]"/>  -->
+
+    <xsl:template
+        match="lb[not(normalize-space(.))] | genreform[not(normalize-space(.))] | physdesc[not(normalize-space(.))]"/>
+
+
 
 
     <!-- Strip trailing punctuation from specified text nodes  -->
@@ -125,13 +138,5 @@
 
 
 
-<!-- Delete empty elements that won't import well -->
-    <xsl:template match="scopecontent[not(normalize-space(.))][not(normalize-space(p))]"/>
- <!--  
-    <xsl:template match="unitdate[not(normalize-space(.))]"/>
--->    
-
-    <xsl:template match="lb[not(normalize-space(.))] | genreform[not(normalize-space(.))] | physdesc[not(normalize-space(.))]"/>
-    
 
 </xsl:stylesheet>
