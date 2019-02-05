@@ -21,8 +21,14 @@
     <!-- Params for migration of archdesc elements   -->
     <xsl:param name="m_bioghist">N</xsl:param>
     <xsl:param name="m_scopecontent">N</xsl:param>
-    <xsl:param name="m_otherfindaid">N</xsl:param>
     <xsl:param name="m_relatedmaterial">N</xsl:param>
+    <xsl:param name="m_prefercite">N</xsl:param>
+    <xsl:param name="m_acqinfo">N</xsl:param>
+    <xsl:param name="m_processinfo">N</xsl:param>
+    <xsl:param name="m_accessrestrict">N</xsl:param>
+    <xsl:param name="m_userestrict">N</xsl:param>
+    <xsl:param name="m_custodhist">N</xsl:param>
+
 
     <!-- Params for migration of archdesc/did elements   -->
     <xsl:param name="m_abstract">N</xsl:param>
@@ -39,7 +45,7 @@
     <xsl:variable name="add_ins">
 
         <xsl:if test="$m_revisiondesc = 'Y'">
-            <xsl:copy-of select="//revisiondesc"/>
+            <xsl:copy-of select="//eadheader/revisiondesc"/>
         </xsl:if>
         <xsl:if test="$m_bioghist = 'Y'">
             <xsl:copy-of select="//archdesc/bioghist"/>
@@ -47,16 +53,42 @@
         <xsl:if test="$m_scopecontent = 'Y'">
             <xsl:copy-of select="//archdesc/scopecontent"/>
         </xsl:if>
-        <xsl:if test="$m_otherfindaid = 'Y'">
-            <xsl:copy-of select="//archdesc/otherfindaid"/>
-        </xsl:if>
+
         <xsl:if test="$m_relatedmaterial = 'Y'">
             <xsl:copy-of select="//archdesc/relatedmaterial"/>
         </xsl:if>
+        
+        <xsl:if test="$m_prefercite = 'Y'">
+            <xsl:copy-of select="//archdesc/prefercite"/>
+        </xsl:if>
+
+        <xsl:if test="$m_acqinfo = 'Y'">
+            <xsl:copy-of select="//archdesc/acqinfo"/>
+        </xsl:if>
+        
         <xsl:if test="$m_abstract = 'Y'">
             <xsl:copy-of select="//archdesc/did/abstract"/>
         </xsl:if>
-
+        
+        <xsl:if test="$m_processinfo = 'Y'">
+            <xsl:copy-of select="//archdesc/processinfo"/>
+        </xsl:if>
+        
+        <xsl:if test="$m_accessrestrict = 'Y'">
+            <xsl:copy-of select="//archdesc/accessrestrict"/>
+        </xsl:if>
+ 
+ 
+        <xsl:if test="$m_userestrict = 'Y'">
+            <xsl:copy-of select="//archdesc/userestrict"/>
+        </xsl:if>
+        
+        
+        <xsl:if test="$m_custodhist = 'Y'">
+            <xsl:copy-of select="//archdesc/custodhist"/>
+        </xsl:if>
+        
+ 
     </xsl:variable>
 
 
@@ -80,7 +112,7 @@
     <xsl:text>Merged EAD created on  </xsl:text>
     <xsl:value-of select="current-dateTime()"/>
         </xsl:comment>
-        <xsl:text>.&#xa;</xsl:text>
+        <xsl:text>&#xa;</xsl:text>
         <xsl:comment> 
     <xsl:text>Legacy sections migrated: dsc </xsl:text>
 <xsl:apply-templates select="$add_ins" mode="list"/>
@@ -116,9 +148,10 @@
         <xsl:copy>
             <xsl:apply-templates mode="asead"/>
 
-            <xsl:if test="not(revisiondesc)">
-                <!--  If there is something captured, then insert it. Otherwise you are inserting nothing, which is OK. -->
-                <xsl:apply-templates select="$add_ins/revisiondesc" mode="legacy"/>
+            <xsl:if test="not(revisiondesc) and $add_ins/revisiondesc">
+                <xsl:call-template name="insertElement">
+                    <xsl:with-param name="theElement">revisiondesc</xsl:with-param>
+                </xsl:call-template>
             </xsl:if>
         </xsl:copy>
     </xsl:template>
@@ -165,12 +198,6 @@
             </xsl:if>
 
 
-            <xsl:if test="not(otherfindaid) and $add_ins/otherfindaid">
-                <xsl:call-template name="insertElement">
-                    <xsl:with-param name="theElement">otherfindaid</xsl:with-param>
-                </xsl:call-template>
-            </xsl:if>
-
             <xsl:if test="not(relatedmaterial) and $add_ins/relatedmaterial">
                 <xsl:call-template name="insertElement">
                     <xsl:with-param name="theElement">relatedmaterial</xsl:with-param>
@@ -178,6 +205,42 @@
             </xsl:if>
 
 
+            <xsl:if test="not(prefercite) and $add_ins/prefercite">
+                <xsl:call-template name="insertElement">
+                    <xsl:with-param name="theElement">prefercite</xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
+            
+            <xsl:if test="not(acqinfo) and $add_ins/acqinfo">
+                <xsl:call-template name="insertElement">
+                    <xsl:with-param name="theElement">acqinfo</xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
+
+            <xsl:if test="not(processinfo) and $add_ins/processinfo">
+                <xsl:call-template name="insertElement">
+                    <xsl:with-param name="theElement">processinfo</xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
+            
+            <xsl:if test="not(accessrestrict) and $add_ins/accessrestrict">
+                <xsl:call-template name="insertElement">
+                    <xsl:with-param name="theElement">accessrestrict</xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
+            
+            <xsl:if test="not(userestrict) and $add_ins/userestrict">
+                <xsl:call-template name="insertElement">
+                    <xsl:with-param name="theElement">userestrict</xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
+            
+            <xsl:if test="not(custodhist) and $add_ins/custodhist">
+                <xsl:call-template name="insertElement">
+                    <xsl:with-param name="theElement">custodhist</xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
+            
             <!-- Now bring in the dsc. -->
             <xsl:apply-templates select="$the_dsc" mode="legacy"/>
 
@@ -213,7 +276,13 @@
         match="revisiondesc[not(ancestor::dsc)] |
         bioghist[not(ancestor::dsc)] | 
         scopecontent[not(ancestor::dsc)] | 
-        otherfindaid[not(ancestor::dsc)] |
+        relatedmaterial[not(ancestor::dsc)] | 
+        prefercite[not(ancestor::dsc)] |
+        custodhist[not(ancestor::dsc)] |
+        acqinfo[not(ancestor::dsc)] |
+        processinfo[not(ancestor::dsc)] |
+        accessrestrict[not(ancestor::dsc)] |
+        userestrict[not(ancestor::dsc)] |
         abstract[not(ancestor::dsc)]
         "
         mode="asead">
@@ -271,37 +340,6 @@
 
 
     <!-- Further changes to AS data (mode="asead") -->
-
-    <xsl:template match="ead:eadid/@url" mode="asead">
-        <xsl:attribute name="url">
-            <xsl:analyze-string select="." regex="/ead//">
-<xsl:matching-substring>/ead/</xsl:matching-substring>
-                <xsl:non-matching-substring>
-                    <xsl:value-of select="."/>
-                </xsl:non-matching-substring>
-            </xsl:analyze-string>
-        </xsl:attribute>
-    </xsl:template>
-
-
-    <!-- Processing of migrated collection-level data, using mode="legacy" -->
-
-
-    <xsl:template match="revisiondesc" mode="legacy">
-        <xsl:copy>
-            <xsl:apply-templates mode="legacy"/>
-            <change>
-                <date normal="2019-03-01">2019-03-01</date>
-                <item>EAD was imported spring 2019 as part of the ArchivesSpace Phase II
-                    migration.</item>
-            </change>
-        </xsl:copy>
-    </xsl:template>
-
-
-    <xsl:template match="titleproper[ancestor::eadheader]/num" mode="asead">
-        <!-- omit -->
-    </xsl:template>
 
 
     <!--  *********  -->
