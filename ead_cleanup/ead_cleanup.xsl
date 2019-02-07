@@ -84,22 +84,36 @@
     </xsl:template>
 
 
-    <!-- strip trailing commas   -->
+    <!-- Fix error where scopecontent note is duplicated in archdesc/odd and archdesc/scopecontent. -->
+    <xsl:template match="odd[parent::archdesc][contains(head,'Scope and content')]">
+        <xsl:choose>
+            <xsl:when test="//archdesc/scopecontent">
+                <!-- omit -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+
+    <!-- strip trailing commas from unittitle  -->
+    <!-- TODO: refine this to retain child elements while stripping comma at end. See ASI-94. -->
+    <!-- 
     <xsl:template match="unittitle[ancestor::dsc]">
         <xsl:copy>
             <xsl:call-template name="stripComma"/>
         </xsl:copy>
     </xsl:template>
+-->
+
+
+    <!-- delete @audience=internal attributes -->
+    <xsl:template match="//c/@audience[.='internal']"/>
 
 
     <!--  Omit ids from containers-->
     <xsl:template match="c/@id"/>
-
-
-    <!-- Delete all @audience="internal" attributes when the data is at rest.-->
-    <!--    TODO: Can't find this in data, check with KWS. -->
-
-
 
     <!-- Convert all container/@type to lowercase -->
     <xsl:template match="container/@type">
@@ -113,17 +127,22 @@
 
     <!-- Delete empty elements that won't import well -->
 
-    <xsl:template match="scopecontent[not(normalize-space(.))][not(normalize-space(p))]"/>
+    <xsl:template match="scopecontent[not(normalize-space(.))][not(normalize-space(p))][not(@*)]"/>
 
-    <!--     <xsl:template match="unitdate[not(normalize-space(.))]"/>  -->
+    <xsl:template match="physdesc[not(normalize-space(.))][not(normalize-space(extent))][not(@*)]"/>
+
+    <xsl:template match="unitdate[not(normalize-space(.))][not(@*)]"/>
 
     <xsl:template
         match="lb[not(normalize-space(.))] | genreform[not(normalize-space(.))] | physdesc[not(normalize-space(.))]"/>
 
 
+    <!-- empty p tags  -->
+    <xsl:template match="p[not(normalize-space(.))][not(@*)][not(ancestor::dsc)]"/>
 
 
     <!-- Strip trailing punctuation from specified text nodes  -->
+    <!--    TODO: fix this! -->
     <xsl:template name="stripComma">
         <xsl:analyze-string select="normalize-space(.)" regex="^(.*)(,)$">
             <xsl:matching-substring>
