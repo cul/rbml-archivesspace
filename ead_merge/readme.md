@@ -11,7 +11,9 @@ Prerequisites:
 
 In addition to copying the dsc from legacy into the new document, the XSLT can optionally migrate specific elements per the spreadsheet (e.g., revisiondesc, abstract, bioghist, etc.), replacing the corresponding elements from the AS export. Additional templates can be added to make corrections or manipulations as needed, with mode="legacy" targeting elements from the legacy source tree, and mode="asead" targeting elements from the AS source tree. 
 
+The script calls two XSLT stylesheets in sequence, ead_merge.xsl and ead_cleanup.xsl. The latter applies fixes to the result tree from the former, with the final result written to disk.
+
 TODO: 
- * complete list of parameters allowed to pass to stylesheet.
  * document parameter usage.
+ * refine cleanup.
  * add Xspec unit testing.
