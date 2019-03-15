@@ -1,3 +1,5 @@
+# rbml-archivesspace/ead_process
+
 ead_process.py is a script to select data from two different XML sources, and populate a Google Sheet to review individual elements from both side by side. This was developed as a pre-migration QC process for CUL migration of legacy finding aids into ArchivesSpace.
 
 Dependencies:

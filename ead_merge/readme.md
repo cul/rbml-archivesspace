@@ -1,3 +1,5 @@
+# rbml-archivesspace/ead_merge
+
 ead_merge.py is a script to merge legacy EAD XML with ArchivesSpace-exported EAD XML. The use case is when collection-level data is managed in AS but archival description is managed elsewhere, and the objective is to create EADs ready to import into AS. 
 
 Prerequisites: 

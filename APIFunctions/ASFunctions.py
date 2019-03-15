@@ -36,24 +36,16 @@ else:
 def main():
     # Execute the file itself to test functions.
  
-    print("\nGetting resource by BibID...")
-    print(getResourceByBibID(4492484,'id_lookup.csv'))
-
     print("\nGetting a resource...")
     print(getResource(2,4277))
     print("\nGetting an agent...")
     print(getAgent(2435))
     print("\nGetting accession...")
     print(getAccession(2,3876))
-    print("\nGetting schema...")
-    print(getSchema())
 
-    #print(getArchivalObject(2,33773))
-    #print(getResourceIDs(4))
-     
-    #print(getResponse('/repositories/2/resources/4278/models_in_graph'))
 
     print('All good!')
+    quit()
 
 
 ###
@@ -162,9 +154,26 @@ def lookupByBibID(aBibID,aCSV):
             return([row[0],row[1]])
     lookupTable.close()
 
+def lookupBibID(repo, asid ,aCSV):
+    # Lookup repo and ASID against lookup table csv.
+    # Format of csv should be REPO,ASID,BIBID.
+    lookupTable = open(aCSV)
+    for row in csv.reader(lookupTable):
+        if str(repo) in row[0] and str(asid) in row[1] :
+            return(row[2])
+    lookupTable.close()
+
+
 def getResourceByBibID(aBibID,aCSV):
     myInfo = lookupByBibID(aBibID,aCSV)
     output = getResource(myInfo[0],myInfo[1])
+    return output
+
+def getAssessment(repo,asid):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/assessments/' + str(asid)
+    output = requests.get(baseURL + endpoint, headers=headers).json()
+    # output = json.dumps(output)
     return output
 
 
@@ -237,6 +246,20 @@ def getAgents():
     #output = json.dump(records)
     return records
    
+
+def getAssessments(repo):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '//repositories/' + str(repo) + '/assessments?all_ids=true'
+    ids = requests.get(baseURL + endpoint, headers=headers).json()
+    #iterate over each returned assessment, grabbing the json object
+    records = []
+    for id in ids:
+        endpoint = '//repositories/' + str(repo) + '/assessments/'+str(id)
+        output = requests.get(baseURL + endpoint, headers=headers).json()
+        records.append(output)
+        # print(output)
+    output = json.dumps(records)
+    return output
 
 
 # Authentication function; run first, returns session headers for next API call.
