@@ -8,17 +8,18 @@ def main():
 
     saxon_path = 'saxon-9.8.0.12-he.jar'
     xslt1_path = 'ead_merge.xsl'
-    xslt2_path = 'ead_cleanup.xsl'
+    xslt2_path = 'ead_cleanup_1.xsl'
+    xslt3_path = 'ead_cleanup_2.xsl'
 
 
     data_folder1 = '/path/to/exported/legacy/ead/files'
     data_folder2 = '/path/to/as/exported/ead'
     output_folder = '/path/to/output/folder'
 
-    the_sheet='1js0KawsDP1CIwTcYKdqM0XftPCTPgPrB2H80xdgaKlc'
+    the_sheet='[google-sheet-id]' 
 
     the_tab='migrate-grid'
-    default_range = str(the_tab + '!A1:Z1390')
+    default_range = str(the_tab + '!A1:Z1400')
 
 
     try:
@@ -58,10 +59,11 @@ def main():
         
         print('Processing file: ' + the_rel_path + " to: " + out_file + ' with params: ' + the_params)
 
-        saxon_process_pipe(saxon_path, the_path1, xslt1_path, xslt2_path, out_file, the_params, ' ')
+        saxon_process_pipe(saxon_path, the_path1, out_file, [[xslt1_path, the_params], [xslt2_path, ' '], [xslt3_path, ' ']])
 
 
     quit()
+
 
 
 def get_migration_grid(theSheet,theRange):
@@ -95,16 +97,25 @@ def saxon_process(saxonPath, inFile, transformFile, outFile, theParams):
     return result[0]
 
 
-def saxon_process_pipe(saxonPath, inFile, transformFile1, transformFile2, outFile, theParams1, theParams2):
-    # This is a 2-step transform; stdout from first is input to second.
-    # TODO: redo this in Xproc?
-    cmd = 'java -jar ' + saxonPath + ' ' + inFile  + ' ' + transformFile1 + ' ' + theParams1 + ' ' + '--suppressXsltNamespaceCheck:on' + ' | java -jar ' + saxonPath + ' - ' + ' ' + transformFile2 + ' ' + theParams2 + ' ' + '--suppressXsltNamespaceCheck:on' + ' > ' + outFile
 
-    print('Executing command: ' + cmd)
-    p = subprocess.Popen([cmd], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+def saxon_process_pipe(saxonPath, in_file, out_file, the_pipes):
+    # This is a multi-step transform; stdout from first is input to next.
+    the_cmds = []
+    for i in range(len(the_pipes)):
+        if i == 0:
+            the_cmds.append('java -jar ' + saxonPath + ' ' + in_file  + ' ' + the_pipes[i][0] + ' ' + the_pipes[i][1] + ' ' + '--suppressXsltNamespaceCheck:on' + ' ')
+        else:
+            the_cmds.append('java -jar ' + saxonPath + ' - ' + ' ' + the_pipes[i][0] + ' ' + the_pipes[i][1] + '--suppressXsltNamespaceCheck:on' + ' ')
+
+    the_cmd = ' | '.join(the_cmds)
+    the_cmd += ' > ' + out_file
+    # print('Executing command: ' + the_cmd)
+    p = subprocess.Popen([the_cmd], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     result = p.communicate()
     return result[0]
 
 
+
 if __name__ == '__main__':
     main()
+
