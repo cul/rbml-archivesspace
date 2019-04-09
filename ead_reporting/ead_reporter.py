@@ -3,7 +3,6 @@ import subprocess
 import re
 import os
 from lxml import etree as et
-import secrets
 
 # Script to read EAD XML and report specified element data to a Google sheet.
 
