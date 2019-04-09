@@ -70,9 +70,8 @@ def get_migration_grid(theSheet,theRange):
 
     the_data = []
 
-    x = gs.getSheetData(theSheet, theRange)
-
-    the_values = x["values"]
+    the_values = gs.getSheetData(theSheet, theRange)
+    # the_values = x["values"]
     the_heads = the_values[0]
 
     for a_row in the_values:
