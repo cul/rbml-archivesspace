@@ -2,7 +2,7 @@ import json
 import requests
 import secrets
 import secretsDev
-import time
+import secretsTest
 import csv
 
 #
@@ -15,20 +15,26 @@ import csv
 #
 
 
-# Set to true to test on dev.
-dev = False
+# Set server to Prod | Dev | Test.
+# Can override by setting ASFunctions.server in parent script.
+server = 'Test'
 
 # Load credentials and such.
-if dev == True:
+
+if server == 'Dev':
     baseURL = secretsDev.baseURL
     user = secretsDev.user
     password = secretsDev.password
-
 else:
-    baseURL = secrets.baseURL
-    user = secrets.user
-    password = secrets.password
+    if server == 'Test':
+        baseURL = secretsTest.baseURL
+        user = secretsTest.user
+        password = secretsTest.password
 
+    else:
+        baseURL = secrets.baseURL
+        user = secrets.user
+        password = secrets.password
 
 
 
