@@ -15,27 +15,16 @@ import csv
 #
 
 
-# Set server to Prod | Dev | Test.
-# Can override by setting ASFunctions.server in parent script.
-server = 'Test'
+# Set server to Prod as default. Override in parent script with
+# ASFunctions.setServer('Test') or ASFunctions.setServer('Dev').
 
-# Load credentials and such.
+global baseURL
+global user
+global password
 
-if server == 'Dev':
-    baseURL = secretsDev.baseURL
-    user = secretsDev.user
-    password = secretsDev.password
-else:
-    if server == 'Test':
-        baseURL = secretsTest.baseURL
-        user = secretsTest.user
-        password = secretsTest.password
-
-    else:
-        baseURL = secrets.baseURL
-        user = secrets.user
-        password = secrets.password
-
+baseURL = secrets.baseURL
+user = secrets.user
+password = secrets.password
 
 
 
@@ -49,14 +38,33 @@ def main():
     print("\nGetting accession...")
     print(getAccession(2,3876))
 
-
     print('All good!')
     quit()
+
+
 
 
 ###
 ### Functions
 ###
+
+def setServer(server):
+    global baseURL
+    global user
+    global password
+    if server == 'Dev':
+        baseURL = secretsDev.baseURL
+        user = secretsDev.user
+        password = secretsDev.password
+    else:
+        if server == 'Test':
+            baseURL = secretsTest.baseURL
+            user = secretsTest.user
+            password = secretsTest.password
+        else:
+            baseURL = secrets.baseURL
+            user = secrets.user
+            password = secrets.password
 
 
 # General function to get response from a provided endpoint string (must start with slash).
