@@ -220,7 +220,16 @@
         </subfield>
     </xsl:template>
       
+
+    <!-- For 110$b and 610$b, remove trailing comma. -->
+    <xsl:template match="marc:datafield[@tag = '110' or @tag = '610']/marc:subfield[@code='b']">
+        <subfield code="b">
+                    <xsl:call-template name="stripComma"/>
+        </subfield>
+    </xsl:template>
     
+    
+
     <!-- Strip trailing punctuation from specified text nodes  -->
     <xsl:template name="stripComma">
         <xsl:analyze-string select="normalize-space(.)" regex="^(.*)(,)$">

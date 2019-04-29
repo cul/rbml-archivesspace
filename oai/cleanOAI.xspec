@@ -263,7 +263,7 @@
         <x:context>
             <marc:datafield ind1="2" ind2=" " tag="110">
                 <marc:subfield code="a">Columbia University,</marc:subfield>
-                <marc:subfield code="b">Bureau of Applied Social Research </marc:subfield>
+                <marc:subfield code="b">Bureau of Applied Social Research</marc:subfield>
                 <marc:subfield code="e">creator.</marc:subfield>
             </marc:datafield>
         </x:context>
@@ -271,7 +271,7 @@
         <x:expect label="remove subfield e from 1XX" >
             <datafield ind1="2" ind2=" " tag="110">
                 <subfield code="a">Columbia University,</subfield>
-                <subfield code="b">Bureau of Applied Social Research </subfield>
+                <subfield code="b">Bureau of Applied Social Research</subfield>
             </datafield>
         </x:expect>
     </x:scenario>
@@ -413,18 +413,36 @@
         <x:context>
             <marc:datafield ind1="2" ind2=" " tag="110">
                 <marc:subfield code="a">Columbia University,</marc:subfield>
-                <marc:subfield code="b">Bureau of Applied Social Research </marc:subfield>
+                <marc:subfield code="b">Bureau of Applied Social Research, </marc:subfield>
                 <marc:subfield code="e">creator.</marc:subfield>
             </marc:datafield>
         </x:context>
         <x:expect label="110$a and 610$b left alone">
             <datafield ind1="2" ind2=" " tag="110">
                 <subfield code="a">Columbia University,</subfield>
-                <subfield code="b">Bureau of Applied Social Research </subfield>
+                <subfield code="b">Bureau of Applied Social Research</subfield>
             </datafield>
         </x:expect>
     </x:scenario>
     
+
+    <x:scenario 
+        label="For 110$b and 610$b, remove trailing comma.">
+        <x:context>
+            <marc:datafield ind1="2" ind2=" " tag="110">
+                <marc:subfield code="a">Columbia University.</marc:subfield>
+                <marc:subfield code="b">Archives,</marc:subfield>
+                <marc:subfield code="e">creator.</marc:subfield>
+            </marc:datafield>
+            
+        </x:context>
+        <x:expect label="110$b or 610$b has ending comma removed">
+            <datafield ind1="2" ind2=" " tag="110">
+                <subfield code="a">Columbia University.</subfield>
+                <subfield code="b">Archives</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
     
     
     <x:scenario  pending="Not yet implemented" label="Scenario for testing function stripComma">
