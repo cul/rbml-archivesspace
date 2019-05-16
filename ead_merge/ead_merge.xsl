@@ -24,6 +24,9 @@
     <xsl:param name="m_relatedmaterial">N</xsl:param>
     <xsl:param name="m_prefercite">N</xsl:param>
     <xsl:param name="m_acqinfo">N</xsl:param>
+    
+    <xsl:param name="m_arrangement">N</xsl:param>
+    
     <xsl:param name="m_processinfo">N</xsl:param>
     <xsl:param name="m_accessrestrict">N</xsl:param>
     <xsl:param name="m_userestrict">N</xsl:param>
@@ -64,6 +67,10 @@
 
         <xsl:if test="$m_acqinfo = 'Y'">
             <xsl:copy-of select="//archdesc/acqinfo"/>
+        </xsl:if>
+
+        <xsl:if test="$m_arrangement = 'Y'">
+            <xsl:copy-of select="//archdesc/arrangement"/>
         </xsl:if>
         
         <xsl:if test="$m_abstract = 'Y'">
@@ -217,6 +224,13 @@
                 </xsl:call-template>
             </xsl:if>
 
+            <xsl:if test="not(arrangement) and $add_ins/arrangement">
+                <xsl:call-template name="insertElement">
+                    <xsl:with-param name="theElement">arrangement</xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
+            
+
             <xsl:if test="not(processinfo) and $add_ins/processinfo">
                 <xsl:call-template name="insertElement">
                     <xsl:with-param name="theElement">processinfo</xsl:with-param>
@@ -280,6 +294,7 @@
         prefercite[not(ancestor::dsc)] |
         custodhist[not(ancestor::dsc)] |
         acqinfo[not(ancestor::dsc)] |
+        arrangement[not(ancestor::dsc)] |
         processinfo[not(ancestor::dsc)] |
         accessrestrict[not(ancestor::dsc)] |
         userestrict[not(ancestor::dsc)] |

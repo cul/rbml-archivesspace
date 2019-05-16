@@ -263,10 +263,35 @@ local-name()  = ('bioghist',  'scopecontent',  'accessrestrict',  'accruals',  '
         <xsl:attribute name="type">
             <xsl:value-of select="lower-case(.)"/>
         </xsl:attribute>
-
     </xsl:template>
 
 
+    <!-- Top containers: if there is no @label, copy @type to @label -->
+    <xsl:template match="container[1][@type][not(@label)]">
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+            <xsl:attribute name="label"><xsl:value-of select="lower-case(@type)"/></xsl:attribute>
+            <xsl:apply-templates/>
+        </xsl:copy>
+    </xsl:template>
+
+
+    <!-- Flatten arrangement notes -->
+    <xsl:template match="list[ancestor::arrangement]">
+        <xsl:text> </xsl:text>
+        <xsl:for-each select="item">
+            <xsl:if test="position() > 1">; </xsl:if>
+            <xsl:apply-templates/>
+        </xsl:for-each>
+    </xsl:template>
+    
+    <!-- Added for arrangement notes, but could be expanded to all text nodes(?)   -->
+    <xsl:template match="p/text() | item/text()">
+        <xsl:value-of select="normalize-space(.)"/>
+    </xsl:template>
+
+    
+    
 
     <!-- Delete empty elements that won't import well -->
 
@@ -278,6 +303,7 @@ local-name()  = ('bioghist',  'scopecontent',  'accessrestrict',  'accruals',  '
 
     <xsl:template
         match="lb[not(normalize-space(.))] | genreform[not(normalize-space(.))] | physdesc[not(normalize-space(.))]"/>
+
 
 
 
