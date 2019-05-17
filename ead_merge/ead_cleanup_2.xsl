@@ -112,11 +112,12 @@
 local-name()  = ('bioghist',  'scopecontent',  'accessrestrict',  'accruals',  'acqinfo',  'appraisal',  'altformavail',  'arrangement',  'bibliography',  'custodhist',  'langmaterial',  'note',  'odd',  'otherfindaid',  'prefercite',  'processinfo',  'relatedmaterial',  'separatedmaterial',  'userestrict') -->
 
     <xsl:template match="*[count(p) > 1]">
-        <xsl:comment><xsl:value-of select="$theDate"/> - Split multi-paragraph note into separate notes.</xsl:comment>
 
         <xsl:variable name="the_element" select="local-name(.)"/>
         <xsl:variable name="the_head" select="normalize-space(head)"/>
 
+        <xsl:comment><xsl:value-of select="$theDate"/> - Split multi-paragraph <xsl:value-of select="$the_element"/> note into separate notes.</xsl:comment>
+        
         <xsl:for-each-group select="*[not(self::head)]" group-starting-with="p">
 
 
@@ -277,6 +278,22 @@ local-name()  = ('bioghist',  'scopecontent',  'accessrestrict',  'accruals',  '
 
 
     <!-- Flatten arrangement notes -->
+
+    <xsl:template match="arrangement" priority="2">
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+            <xsl:if test="head">
+                <xsl:copy-of select="head"/>
+            </xsl:if>
+            <p xmlns="urn:isbn:1-931666-22-9">
+                <xsl:for-each select="p | list">
+                    <xsl:apply-templates select="."/>
+                    <xsl:text> </xsl:text>
+                </xsl:for-each>
+            </p>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="list[ancestor::arrangement]">
         <xsl:text> </xsl:text>
         <xsl:for-each select="item">
@@ -284,7 +301,12 @@ local-name()  = ('bioghist',  'scopecontent',  'accessrestrict',  'accruals',  '
             <xsl:apply-templates/>
         </xsl:for-each>
     </xsl:template>
+
+    <xsl:template match="p[ancestor::arrangement]">
+        <xsl:apply-templates/>
+    </xsl:template>
     
+
     <!-- Added for arrangement notes, but could be expanded to all text nodes(?)   -->
     <xsl:template match="p/text() | item/text()">
         <xsl:value-of select="normalize-space(.)"/>
