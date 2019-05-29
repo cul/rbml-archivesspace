@@ -26,10 +26,10 @@ with open('inputSubjectsMerge.csv', 'rb') as csvfile:
         for row in reader:
         	#take target AS ID from row 1
         	t = {}
-        	t['ref'] = row[1]
+        	t['ref'] = row[1].strip()
         	#take victim 1 AS ID from row 2
         	v = {}
-        	v ['ref'] = row[2]
+        	v ['ref'] = row[2].strip()
         	#create record	
         	record = {}
         	record['target'] = t
