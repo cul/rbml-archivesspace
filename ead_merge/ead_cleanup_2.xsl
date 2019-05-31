@@ -101,7 +101,10 @@
                 <!-- omit -->
             </xsl:when>
             <xsl:otherwise>
-                <xsl:apply-templates/>
+                <xsl:copy>
+                  <xsl:apply-templates select="@*"/>
+                  <xsl:apply-templates/>
+                </xsl:copy>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
