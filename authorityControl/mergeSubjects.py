@@ -21,19 +21,62 @@ print 'authenticated'
 # loops through csv listing target and victims by AS ID, (e.g. 73, 244 | 72,78 | 523,859 ), creating a json object for submission for each
 #filename = input('Enter filename listing targets and victims:')
 endpoint = '//merge_requests/subject'
-with open('inputSubjectsMerge.csv', 'rb') as csvfile:
+with open('input_merge_subjects.csv', 'rb') as csvfile:
         reader = csv.reader(csvfile, delimiter='|', quotechar='"')
         for row in reader:
         	#take target AS ID from row 1
         	t = {}
         	t['ref'] = row[1].strip()
         	#take victim 1 AS ID from row 2
-        	v = {}
+        	victimList = []
+		v = {}
         	v ['ref'] = row[2].strip()
+		victimList.append(v)
+        	#test for additional victim AS IDs in additional rows; if exists, update list
+        	if row[3] != "":
+        		v2 = {}
+        		v2['ref'] = row[3].strip()
+        		victimList.append(v2)
+		
+		if row[4] != "":
+			v3 = {}
+			v3['ref'] = row[4].strip()
+			victimList.append(v3)
+
+		if row[5] != "":
+			v4 = {}
+			v4['ref'] = row[5].strip()
+			victimList.append(v4)
+
+		if row[6] != "":
+			v5 = {}
+			v5['ref'] = row[6].strip()
+			victimList.append(v5)
+
+		if row[7] != "":
+			v6 = {}
+			v6['ref'] = row[7].strip()
+			victimList.append(v6)
+
+		if row[8] != "":
+			v7 = {}
+			v7['ref'] = row[8].strip()
+			victimList.append(v7)
+
+		if row[9] != "":
+			v8 = {}
+			v8['ref'] = row[9].strip()
+			victimList.append(v8)
+
+		if row[10] != "":
+			v9 = {}
+			v9['ref'] = row[10].strip()
+			victimList.append(v9)
+
         	#create record	
         	record = {}
         	record['target'] = t
-        	record['victims'] = [v]
+        	record['victims'] = victimList
         	record = json.dumps(record)
         	#print record
         	#syntax: record = '{"target" : {"ref": "/subjects/3"}, "victims": [{ "ref": "/subjects/123" }]}'
