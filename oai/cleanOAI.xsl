@@ -78,14 +78,24 @@
     <!--  add repo to 040 field; test for UA in 852$j  -->
     <xsl:template match="marc:datafield[@tag = '040'][marc:subfield]">
 
+    <!-- check if is UA -->
     <xsl:variable name="isUA">
         <xsl:if test="../marc:datafield[@tag = '852']/marc:subfield[@code = 'j'][contains(., 'UA')]">Y</xsl:if>
     </xsl:variable>
+        <!-- check if is OH -->
+    <xsl:variable name="isOH">
+            <xsl:if test="../marc:datafield[@tag = '852']/marc:subfield[@code = 'j'][contains(., 'OHAC')]">Y</xsl:if>
+    </xsl:variable>
+        
+
         <datafield ind1=" " ind2=" " tag="040">
             <subfield code="a">
                 <xsl:choose>
                     <xsl:when test="$isUA='Y'">
 <xsl:text>NNC-UA</xsl:text>      
+                    </xsl:when>
+                    <xsl:when test="$isOH='Y'">
+                        <xsl:text>NNC-OH</xsl:text>      
                     </xsl:when>
                     <xsl:otherwise> 
                         <xsl:value-of select="marc:subfield[@code='a']"/>
@@ -100,7 +110,11 @@
             <subfield code="c">
                 <xsl:choose>
                     <xsl:when test="$isUA='Y'">
-<xsl:text>NNC-UA</xsl:text>                                            </xsl:when>
+                        <xsl:text>NNC-UA</xsl:text>                                            
+                    </xsl:when>
+                    <xsl:when test="$isOH='Y'">
+                        <xsl:text>NNC-OH</xsl:text>                                            
+                    </xsl:when>
                     <xsl:otherwise> 
                         <xsl:value-of select="marc:subfield[@code='c']"/>
                     </xsl:otherwise>
