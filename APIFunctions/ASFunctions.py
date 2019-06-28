@@ -4,14 +4,15 @@ import secrets
 import secretsDev
 import secretsTest
 import csv
+from pprint import pprint
 
 #
 # Compilation of ArchivesSpace API functions. 
 # Usage: from another python script, add
-#   import ASFunctions
+#   import ASFunctions as asf
 #
 # Then call functions like 
-#   AsFunctions.GetResource(2,4277)
+#   asf.getResource(2,4277)
 #
 
 
@@ -28,26 +29,22 @@ password = secrets.password
 
 
 
+
 def main():
-    # Execute the file itself to test functions.
- 
-    print("\nGetting a resource...")
-    print(getResource(2,4277))
-    print("\nGetting an agent...")
-    print(getAgent(2435))
-    print("\nGetting accession...")
-    print(getAccession(2,3876))
 
-    print('All good!')
-    quit()
+    setServer('Test')
+
+    # Test functions here.
+    # x = getArchivalObject(2,456421)
 
 
 
+#################
+### FUNCTIONS ###
+#################
 
-###
-### Functions
-###
 
+# Set server to 'Prod' (default) | 'Test' | 'Dev'
 def setServer(server):
     global baseURL
     global user
@@ -67,6 +64,8 @@ def setServer(server):
             password = secrets.password
 
 
+
+
 # General function to get response from a provided endpoint string (must start with slash).
 def getResponse(endpoint):
     headers = ASAuthenticate(user,baseURL,password)
@@ -75,7 +74,9 @@ def getResponse(endpoint):
     return output
 
 
-## Functions to get single objects
+#####################################
+# Functions to get single objects   #
+#####################################
 
 def getArchObjectByRef(repo,ref):
     # supply arch obj ref_id, e.g., bed5f26c0673086345e624f9bbf1d1c5
@@ -153,7 +154,7 @@ def getEAD(repo,asid):
     # Returns EAD XML (not JSON)
     # https://archivesspace.github.io/archivesspace/api/#get-repositories-repo_id-resource_descriptions-id-xml
     headers = ASAuthenticate(user,baseURL,password)
-    endpoint = '/repositories/' + str(repo) + '/resource_descriptions/' + str(asid) + '.xml'
+    endpoint = '/repositories/' + str(repo) + '/resource_descriptions/' + str(asid) + '.xml' + '?include_unpublished=true&include_daos=true'
     #optional parameters can be appended to the end of the above url - e.g. ?include_unpublished=true&include_daos=true&numbered_cs=true&print_pdf=true&ead3=true
     output = requests.get(baseURL + endpoint, headers=headers).text
     return output
@@ -191,7 +192,18 @@ def getAssessment(repo,asid):
     return output
 
 
-## Functions to get multiple objects
+def getSubject(id):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '//subjects/' + str(id)
+    output = requests.get(baseURL + endpoint, headers=headers).json()
+    # output = json.dumps(output)
+    return output
+
+
+
+#####################################
+# Functions to get multiple objects #
+#####################################
 
 def getUsers():
     headers = ASAuthenticate(user,baseURL,password)
@@ -276,7 +288,45 @@ def getAssessments(repo):
     return output
 
 
-# Authentication function; run first, returns session headers for next API call.
+def getSubjects():
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '//subjects?all_ids=true'
+    ids = requests.get(baseURL + endpoint, headers=headers).json()
+    records = []
+    for id in ids:
+        endpoint = '//subjects/' + str(id)
+        output = requests.get(baseURL + endpoint, headers=headers).json()
+        records.append(output)
+    return records
+
+
+###################################
+# Functions to post data          #
+###################################
+
+def postArchivalObject(repo,asid,record):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/archival_objects/' + str(asid)
+    post = requests.post(baseURL + endpoint, headers=headers, data=record).json()
+    post = json.dumps(post)
+    return post
+
+
+def postResource(repo,asid,record):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/resources/' + str(asid)
+    post = requests.post(baseURL + endpoint, headers=headers, data=record).json()
+    post = json.dumps(post)
+    return post
+
+
+
+
+#####################################
+# Authentication function           #
+#####################################
+
+# Run first, returns session headers for next API call.
 def ASAuthenticate(user,baseURL,password):
     auth = requests.post(baseURL + '/users/'+user+'/login?password='+password).json()
     session = auth["session"]
