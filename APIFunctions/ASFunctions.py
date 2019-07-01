@@ -4,7 +4,6 @@ import secrets
 import secretsDev
 import secretsTest
 import csv
-from pprint import pprint
 
 #
 # Compilation of ArchivesSpace API functions. 
@@ -78,7 +77,15 @@ def getResponse(endpoint):
 # Functions to get single objects   #
 #####################################
 
-def getArchObjectByRef(repo,ref):
+def getArchivalObject(repo,asid):
+    # supply repo and id
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/archival_objects/' + str(asid)
+    output = requests.get(baseURL + endpoint, headers=headers).json()
+    output = json.dumps(output)
+    return output
+
+def getArchivalObjectByRef(repo,ref):
     # supply arch obj ref_id, e.g., bed5f26c0673086345e624f9bbf1d1c5
     headers = ASAuthenticate(user,baseURL,password)
     params = {"ref_id[]":ref}
@@ -101,18 +108,26 @@ def getResourceByID(repo,ref):
     return output
 
 
-def getArchivalObject(repo,asid):
-    # supply repo and id
-    headers = ASAuthenticate(user,baseURL,password)
-    endpoint = '/repositories/' + str(repo) + '/archival_objects/' + str(asid)
-    output = requests.get(baseURL + endpoint, headers=headers).json()
-    output = json.dumps(output)
-    return output
-
 def getResource(repo,asid):
     headers = ASAuthenticate(user,baseURL,password)
     endpoint = '/repositories/' + str(repo) + '/resources/' + str(asid)
     output = requests.get(baseURL + endpoint, headers=headers).json()
+    output = json.dumps(output)
+    return output
+
+
+def getDigitalObject(repo,asid):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/digital_objects/' + str(asid)
+    output = requests.get(baseURL + endpoint, headers=headers).json()
+    output = json.dumps(output)
+    return output
+
+def getDigitalObjectByRef(repo,ref):
+    headers = ASAuthenticate(user,baseURL,password)
+    params = {"resolve[]":'digital_objects', "digital_object_id[]":ref}
+    endpoint = '/repositories/' + str(repo) + '/find_by_id/digital_objects'
+    output = requests.get(baseURL + endpoint, headers=headers, params=params).json()
     output = json.dumps(output)
     return output
 
