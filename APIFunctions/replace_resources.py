@@ -9,7 +9,7 @@ import json
 from pprint import pprint
 import re
 import csv
-import GoogleSheetAPITools as gs
+from GoogleSheetAPITools import dataSheet
 
 
 def main():
@@ -17,8 +17,8 @@ def main():
     asf.setServer('Test')
 
     # Google sheet used for reporting changes.
-    the_sheet = '1wNO0t2j5G9U0hUmb7E-jLd4T5skTs1aRxN7HrlyZwEI'
-    the_range = 'resources!A:Z'
+
+    the_report_sheet=dataSheet('1wNO0t2j5G9U0hUmb7E-jLd4T5skTs1aRxN7HrlyZwEI','resources!A:Z')
 
 
     id_file = 'resource_replacements.csv'
@@ -83,14 +83,13 @@ def main():
         print(post)
 
 
-        
 
     # Report changes to Google Sheet
     
 
     print('Writing before/after info to sheet...')
-    gs.sheetClear(the_sheet,the_range)
-    gs.sheetAppend(the_sheet,the_range,the_before_afters)
+    the_report_sheet.clear()
+    the_report_sheet.appendData(the_before_afters)
 
 
 

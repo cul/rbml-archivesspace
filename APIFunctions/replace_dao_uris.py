@@ -3,7 +3,6 @@ import json
 from pprint import pprint
 import re
 import csv
-# import GoogleSheetAPITools as gs
 from GoogleSheetAPITools import dataSheet
 
 # Script to take a list of uids for archival objects with daos in them (scraped from EAD), and do a bulk search/replace on the URIs of the digital_objects. 
