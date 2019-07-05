@@ -131,6 +131,21 @@ def getDigitalObjectByRef(repo,ref):
     output = json.dumps(output)
     return output
 
+def getDigitalObjectFromParent(repo,ref):
+    # use an aspace id string like '59ad1b96a7786e6ab3e2a9aa2223dfcf', as found in EAD export of a parent archival object, to identify the digital object within and extract it.
+    x = getArchivalObjectByRef(repo,ref)
+    the_parent = json.loads(x)
+    the_dao_refs = [ inst['digital_object'] for inst in the_parent['instances'] if 'digital_object' in inst ]
+
+    results = []
+    for dao_ref in the_dao_refs:
+        uri = dao_ref['ref']
+        asid = str(uri.split('/')[-1])
+        the_dao = getDigitalObject(repo,asid)
+        results.append(the_dao)
+    return results[0]  # is there ever more than one dao?
+
+
 
 def getBibID(repo,asid):
     # return BibID from resource
@@ -334,6 +349,12 @@ def postResource(repo,asid,record):
     post = json.dumps(post)
     return post
 
+def postDigitalObject(repo,asid,record):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/digital_objects/' + str(asid)
+    post = requests.post(baseURL + endpoint, headers=headers, data=record).json()
+    post = json.dumps(post)
+    return post
 
 
 
