@@ -31,7 +31,7 @@ password = secrets.password
 
 def main():
 
-    setServer('Test')
+    setServer('Prod')
 
     # Test functions here.
     # x = getArchivalObject(2,456421)
@@ -72,6 +72,11 @@ def getResponse(endpoint):
     output = json.dumps(output)
     return output
 
+
+#### TEST ####
+
+
+##############
 
 #####################################
 # Functions to get single objects   #
@@ -330,6 +335,48 @@ def getSubjects():
     return records
 
 
+def getArchivalObjectChildren(repo,asid):
+    # Get a list of asids of children of an archival object.
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/archival_objects/' + str(asid) + '/children'
+    response = requests.get(baseURL + endpoint, headers=headers).json()
+    my_ids = [x['uri'].split('/')[-1] for x in response]
+    return my_ids
+
+
+def daosRecurse(repo,asid):
+    # Recursive function; only use in call from find_daos()!
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/archival_objects/' + str(asid) + '/children'
+    x = requests.get(baseURL + endpoint, headers=headers).json()
+
+    # Look for daos as children of archival object
+    for a_child in x:
+        # Debug: print(a_child['uri'])
+        the_dao_refs = [ inst['digital_object']['ref'] for inst in a_child['instances'] if 'digital_object' in inst ]
+        if len(the_dao_refs) > 0:
+            the_id = the_dao_refs[0].split('/')[-1]
+            # Debug: print('Found a dao: ' + str(the_id))
+            the_daos.append(the_id)
+    # Only process children recursively if there are no daos (i.e. we are not at the file level yet).
+    if len(the_daos) == 0:
+        # Debug: print('going down one level...')
+        next_gen = [a_child['uri'].split('/')[-1] for a_child in x]
+        for an_id in next_gen:
+            daosRecurse(repo,an_id)
+
+
+def findDigitalObjectDescendants(repo,asid):
+    # For any archival object, return a list of DAOs that are associated with children or descendants.
+    # Note: calls a recursive function, can take some time for large trees. 
+    global the_daos
+    the_daos = []
+    daosRecurse(repo,asid)
+    return the_daos
+
+
+
+
 ###################################
 # Functions to post data          #
 ###################################
@@ -375,5 +422,4 @@ def ASAuthenticate(user,baseURL,password):
 
 if __name__ == '__main__':
     main()
-
 
