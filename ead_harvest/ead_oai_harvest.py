@@ -82,13 +82,13 @@ def getSingleEAD(asRepo,asID):
     myResponse = requests.get(myURL)
     myEAD = myResponse.text
     # discard everything up to open record tag (lookahead)
-    myEAD = re.sub('.*?(?=<record>)', '\n', myEAD, re.MULTILINE)
+    myEAD = re.sub('.*?(?=<record>)', '\n', myEAD, flags=re.MULTILINE)
     # discard anything following the closing record tag (lookbehind)
-    myEAD = re.sub('(?<=</record>).*', '\n', myEAD, re.MULTILINE) 
+    myEAD = re.sub('(?<=</record>).*', '\n', myEAD, flags=re.MULTILINE) 
 
     #TODO: fix this regex mess!
-    myEAD = re.sub('<record>.*<metadata>', '', myEAD, re.MULTILINE) 
-    myEAD = re.sub('</metadata>\s*</record>', '', myEAD, re.MULTILINE) 
+    myEAD = re.sub('<record>.*<metadata>', '', myEAD, flags=re.MULTILINE) 
+    myEAD = re.sub('</metadata>\s*</record>', '', myEAD, flags=re.MULTILINE) 
     myEAD = xmlHead + myEAD
 
     # fix malformed output

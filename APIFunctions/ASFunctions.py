@@ -4,6 +4,8 @@ import secrets
 import secretsDev
 import secretsTest
 import csv
+import sys
+
 
 #
 # Compilation of ArchivesSpace API functions. 
@@ -30,11 +32,28 @@ password = secrets.password
 
 
 def main():
-
-    setServer('Prod')
-
     # Test functions here.
+    # setServer('Prod')
     # x = getArchivalObject(2,456421)
+
+
+
+
+
+#####################################
+# Authentication function           #
+#####################################
+
+# Run first, returns session headers for next API call.
+def ASAuthenticate(user,baseURL,password):
+    try:
+        auth = requests.post(baseURL + '/users/'+user+'/login?password='+password).json()
+        session = auth["session"]
+        headers = {'X-ArchivesSpace-Session':session, 'Content_Type':'application/json'}
+    except json.decoder.JSONDecodeError:
+        print("Error: There was a problem authenticating to the API!")
+        sys.exit(1)
+    return headers
 
 
 
@@ -75,6 +94,13 @@ def getResponse(endpoint):
 
 #### TEST ####
 
+def getCollectionManagement(repo,asid):
+    # supply repo and id
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/collection_management/' + str(asid)
+    output = requests.get(baseURL + endpoint, headers=headers).json()
+    output = json.dumps(output)
+    return output
 
 ##############
 
@@ -240,17 +266,6 @@ def getSubject(id):
 # Functions to get multiple objects #
 #####################################
 
-def getUsers():
-    headers = ASAuthenticate(user,baseURL,password)
-    endpoint = '//users?all_ids=true'
-    ids = requests.get(baseURL + endpoint, headers=headers).json()
-    records = []
-    for id in ids:
-        endpoint = '//users/'+str(id)
-        output = requests.get(baseURL + endpoint, headers=headers).json()
-        records.append(output)
-        output = json.dumps(records)
-        return output
 
 
 def getAccessions(repo):
@@ -266,6 +281,46 @@ def getAccessions(repo):
         # print(output)
     output = json.dumps(records)
     return output
+
+
+def getAgents():
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '//agents/people?all_ids=true'
+    ids = requests.get(baseURL + endpoint, headers=headers).json()
+    #iterate over each returned ID, grabbing the json object
+    records = []
+    for id in ids:
+        endpoint = '//agents/people/'+str(id)
+        output = requests.get(baseURL + endpoint, headers=headers).json()
+        records.append(output)
+        #print(output)
+    #output = json.dump(records)
+    return records
+
+
+def getArchivalObjectChildren(repo,asid):
+    # Get a list of asids of children of an archival object.
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/archival_objects/' + str(asid) + '/children'
+    response = requests.get(baseURL + endpoint, headers=headers).json()
+    my_ids = [x['uri'].split('/')[-1] for x in response]
+    return my_ids
+
+
+def getAssessments(repo):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '//repositories/' + str(repo) + '/assessments?all_ids=true'
+    ids = requests.get(baseURL + endpoint, headers=headers).json()
+    #iterate over each returned assessment, grabbing the json object
+    records = []
+    for id in ids:
+        endpoint = '//repositories/' + str(repo) + '/assessments/'+str(id)
+        output = requests.get(baseURL + endpoint, headers=headers).json()
+        records.append(output)
+        # print(output)
+    output = json.dumps(records)
+    return output
+
 
 def getResources(repo):
     # https://archivesspace.github.io/archivesspace/api/#get-repositories-repo_id-resources-id
@@ -291,36 +346,7 @@ def getResourceIDs(repo):
     ids = requests.get(baseURL + endpoint, headers=headers).json()
     return ids
 
-  
 
-def getAgents():
-    headers = ASAuthenticate(user,baseURL,password)
-    endpoint = '//agents/people?all_ids=true'
-    ids = requests.get(baseURL + endpoint, headers=headers).json()
-    #iterate over each returned ID, grabbing the json object
-    records = []
-    for id in ids:
-        endpoint = '//agents/people/'+str(id)
-        output = requests.get(baseURL + endpoint, headers=headers).json()
-        records.append(output)
-        #print(output)
-    #output = json.dump(records)
-    return records
-   
-
-def getAssessments(repo):
-    headers = ASAuthenticate(user,baseURL,password)
-    endpoint = '//repositories/' + str(repo) + '/assessments?all_ids=true'
-    ids = requests.get(baseURL + endpoint, headers=headers).json()
-    #iterate over each returned assessment, grabbing the json object
-    records = []
-    for id in ids:
-        endpoint = '//repositories/' + str(repo) + '/assessments/'+str(id)
-        output = requests.get(baseURL + endpoint, headers=headers).json()
-        records.append(output)
-        # print(output)
-    output = json.dumps(records)
-    return output
 
 
 def getSubjects():
@@ -335,13 +361,18 @@ def getSubjects():
     return records
 
 
-def getArchivalObjectChildren(repo,asid):
-    # Get a list of asids of children of an archival object.
+
+def getUsers():
     headers = ASAuthenticate(user,baseURL,password)
-    endpoint = '/repositories/' + str(repo) + '/archival_objects/' + str(asid) + '/children'
-    response = requests.get(baseURL + endpoint, headers=headers).json()
-    my_ids = [x['uri'].split('/')[-1] for x in response]
-    return my_ids
+    endpoint = '//users?all_ids=true'
+    ids = requests.get(baseURL + endpoint, headers=headers).json()
+    records = []
+    for id in ids:
+        endpoint = '//users/'+str(id)
+        output = requests.get(baseURL + endpoint, headers=headers).json()
+        records.append(output)
+        output = json.dumps(records)
+        return output
 
 
 def daosRecurse(repo,asid):
@@ -377,6 +408,9 @@ def findDigitalObjectDescendants(repo,asid):
 
 
 
+
+
+
 ###################################
 # Functions to post data          #
 ###################################
@@ -403,23 +437,20 @@ def postDigitalObject(repo,asid,record):
     post = json.dumps(post)
     return post
 
+def unpublishArchivalObject(repo,asid):
+    x = getArchivalObject(repo,asid)
+    y = json.loads(x)
+    y['publish'] = False
+    z = json.dumps(y)
+    resp = postArchivalObject(repo,asid,z)
+    return resp
 
 
-#####################################
-# Authentication function           #
-#####################################
-
-# Run first, returns session headers for next API call.
-def ASAuthenticate(user,baseURL,password):
-    auth = requests.post(baseURL + '/users/'+user+'/login?password='+password).json()
-    session = auth["session"]
-    headers = {'X-ArchivesSpace-Session':session, 'Content_Type':'application/json'}
-    #print('authenticated')
-    return headers
 
 
 
 
 if __name__ == '__main__':
     main()
+
 
