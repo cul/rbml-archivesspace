@@ -77,10 +77,11 @@ def main():
 		ext.append(e)
 
 
+	# extents_input will be an integer indicating which extent to use;
+	# default 0 will mean to use all extents.
+
 	if len(extents) > 1:
 		extents_input = input('Use which extent(s)? ' + ';   '.join(ext) + ' [enter 1-' + str(len(ext)) + ' or RETURN for all]: ') or 0
-
-		print(extents_input)
 
 		extents_input = int(extents_input)
 
