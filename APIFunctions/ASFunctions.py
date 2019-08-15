@@ -322,6 +322,50 @@ def getAssessments(repo):
     return output
 
 
+def getByDate(repo,date,date_type='ctime',comparator='equal',filter=None,fields=['id','create_time','title']):
+    # Returns records with create_time <, =, or > than given date. 
+    # OPTIONAL FIELDS:
+    #   comparators: equal (default), greater_than, lesser_than (not 'less_than'!)
+    #   filters: None (default), archival_objects, resources, accessions, 
+    #      collection_managment, top_containers
+    #   fields: Can be any field at top level of returned json object; 
+    #      these will form the output dict of each returned record.
+    #   date_type: ctime or mtime (date created or date modified)
+
+    # Select ctime or mtime based on param
+    date_field = 'create_time' if date_type == 'ctime' else 'system_mtime'
+
+
+    aqparams='{"query":{"field":"' + date_field + '","value":"' + date + '","comparator":"' + comparator + '","jsonmodel_type":"date_field_query"},"jsonmodel_type":"advanced_query"}'
+
+    records = getSearchResults(repo,aqparams)
+
+    # Filtering based on record type (archival_objects, resources, etc.)
+    if filter == None:
+        records_out = records
+    else:
+        records_out = [ rec for rec in records if filter in rec['id'] ]
+
+    print('Number of matching records = ' + str(len(records_out)))
+
+    # Compile a dictionary for each record, based on which fields are requested (see defaults in def). 
+    output = []
+    for r in records_out:
+        rec_dict = {}
+        for f in fields:
+            # If field is not in a record (e.g., 'publish' is not in all types) the value will be empty.
+            if f in r:
+                rec_dict[f] = r[f]
+            else:
+                rec_dict[f] = ''
+        output.append(rec_dict)
+
+    return output
+ 
+
+
+
+
 def getResources(repo):
     # https://archivesspace.github.io/archivesspace/api/#get-repositories-repo_id-resources-id
     headers = ASAuthenticate(user,baseURL,password)
@@ -359,6 +403,66 @@ def getSubjects():
         output = requests.get(baseURL + endpoint, headers=headers).json()
         records.append(output)
     return records
+
+
+
+def getSearchResults(repo,query_params):
+    # General function to process an advanced query and return unfiltered results. Intended to be called by other functions where the query string may be built by user input and the results parsed, e.g, getByCreateDate.
+    # Supply repo id and advanced query string of the form:
+    #     x = getSearchResults(2, '{"query":{"field":"create_time",
+    #           "value":"2019-08-13","comparator":"equal",
+    #           "jsonmodel_type":"date_field_query"},
+    #           "jsonmodel_type":"advanced_query"}')
+    # 
+    # See http://lyralists.lyrasis.org/pipermail/archivesspace_users_group/2015-May/001654.html for advanced query info.
+
+    records = []
+
+    page_size=100 #default
+    pageno = 1 # default
+    headers = ASAuthenticate(user,baseURL,password)
+
+    endpoint = '//repositories/' + str(repo) + '/search?page=' + str(pageno) + '&page_size=' + str(page_size) + '&aq=' + query_params
+    response_init = requests.get(baseURL + endpoint, headers=headers).json()
+    
+    hit_count=response_init['total_hits']
+    # Check to see if hits exceed default page_size; if so, increase page_size to match hits and do API call again.
+
+    print('Number of search hits: ' + str(hit_count))
+
+    if hit_count > page_size:
+        
+        # Check to see if count exceeds page size limit (250); if so, need to iterate through pages. 
+        if hit_count < 250:
+            page_size=(hit_count + 1) # add one, just for fun
+            endpoint = '//repositories/' + str(repo) + '/search?page=' + str(pageno) + '&page_size=' + str(page_size) + '&aq=' + query_params
+            response = requests.get(baseURL + endpoint, headers=headers).json()
+            records = response['results']
+
+        else: 
+            response_list = []
+            # Hit count >= 250; need to paginate!
+            page_size = 250
+            # use divmod to get number of pages needed
+            dm = divmod(hit_count,page_size)
+            page_cnt = dm[0] if dm[1] == 0 else dm[0] + 1
+
+            # print('page_cnt=' + str(page_cnt))
+
+            for i in range(page_cnt):
+                pageno = i + 1
+                print("Fetching page " + str(pageno) + ' of ' + str(page_cnt))
+                # run for each page
+                endpoint = '//repositories/' + str(repo) + '/search?page=' + str(pageno) + '&page_size=' + str(page_size) + '&aq=' + query_params
+                response = requests.get(baseURL + endpoint, headers=headers).json()
+                records.extend(response['results'])
+
+    else:
+        response = response_init
+        records = response['results']
+
+    return(records)
+
 
 
 
@@ -452,5 +556,4 @@ def unpublishArchivalObject(repo,asid):
 
 if __name__ == '__main__':
     main()
-
 
