@@ -1,4 +1,4 @@
-import GoogleSheetAPITools as gs
+import sheetFeeder as gs
 import subprocess
 import re
 import os
@@ -7,7 +7,7 @@ import os
 # Script to extract information from EAD via XSLT and report as rows in a Google sheet.
 
 # Requirements:
-#  • GoogleSheetAPITools (https://github.com/dwhodges2/googlesheet_tools)
+#  • sheetFeeder (https://github.com/dwhodges2/sheetFeeder)
 #  • XSLT that produces a pipe (|) delimited text row for each processed file.
 #  • XSLT should also return a pipe-delimeted header row when run with param "header" = "Y". 
 #  • Saxon, preferably v9 or better, to run XSLT transform.

@@ -1,7 +1,7 @@
 import subprocess
 import re
 import os.path
-import GoogleSheetAPITools as gs
+import sheetFeeder as gs
 
 
 def main():

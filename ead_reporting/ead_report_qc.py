@@ -1,4 +1,4 @@
-import GoogleSheetAPITools as gs
+import sheetFeeder as gs
 import subprocess
 import re
 import os

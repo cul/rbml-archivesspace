@@ -3,7 +3,7 @@ import json
 from pprint import pprint
 import re
 import csv
-from GoogleSheetAPITools import dataSheet
+from sheetFeeder import dataSheet
 
 # Script to take a list of uids for archival objects and remove any notes with subnotes containing <extref> xml elements.
 

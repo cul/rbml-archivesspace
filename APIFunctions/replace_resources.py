@@ -2,14 +2,14 @@
 # Requirements:
 # - ASFunctions.py
 # - A csv of format repo,asid
-# - GoogleSheetAPITools (optional, for reporting purposes)
+# - sheetFeeder (optional, for reporting purposes)
 
 import ASFunctions as asf
 import json
 from pprint import pprint
 import re
 import csv
-from GoogleSheetAPITools import dataSheet
+from sheetFeeder import dataSheet
 
 
 def main():

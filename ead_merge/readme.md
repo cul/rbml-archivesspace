@@ -5,7 +5,7 @@ ead_merge.py is a script to merge legacy EAD XML with ArchivesSpace-exported EAD
 Prerequisites: 
  * Python subprocess module
  * Python re module (regex)
- * GoogleSheetAPITools - https://github.com/dwhodges2/googlesheet_tools
+ * sheetFeeder - https://github.com/dwhodges2/sheetFeeder
  * A Google sheet prepared with non-dsc elements marked to migrate (see screenshot) and relative file paths for legacy EAD files
  * Saxon 9-HE or other XSLT 2.0 processor
  * A folder of legacy XML files with BibIDs

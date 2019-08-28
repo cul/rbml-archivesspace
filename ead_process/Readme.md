@@ -4,7 +4,7 @@ ead_process.py is a script to select data from two different XML sources, and po
 
 Dependencies:
 
-* GoogleSheetAPITools - https://github.com/dwhodges2/googlesheet_tools
+* sheetFeeder - https://github.com/dwhodges2/sheetFeeder
 * lxml
 * re
 
