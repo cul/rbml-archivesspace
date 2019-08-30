@@ -6,50 +6,55 @@ Optional parameters:
   * subject: Term to describe type of material (default = AUDIO RECORDINGS)
 -->
 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xpath-default-namespace="urn:isbn:1-931666-22-9" exclude-result-prefixes="xs" version="2.0"
-    >
-    <xsl:output omit-xml-declaration="yes"  method="text"/>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" xpath-default-namespace="urn:isbn:1-931666-22-9"
+    exclude-result-prefixes="xs" version="2.0">
+    <xsl:output omit-xml-declaration="yes" method="text"/>
     <xsl:strip-space elements="*"/>
-    
+
     <!-- Optionally limit scope to a particular series (default 0 means process all series) -->
     <xsl:param name="series_scope" as="xs:integer">0</xsl:param>
-    
+
     <xsl:param name="subject">AUDIO RECORDINGS</xsl:param>
-   <!-- <xsl:param name="subject">VIDEO RECORDINGS</xsl:param>-->
-    
-    
+    <!-- <xsl:param name="subject">VIDEO RECORDINGS</xsl:param>-->
+
+
     <xsl:variable name="delim1">|</xsl:variable>
-    
-    <xsl:variable name="lf"><xsl:text>&#xA;</xsl:text></xsl:variable>
-    
-    <xsl:variable name="heads">fa_url|collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|origination|box_num|container2|extent|physfacet|subject|scopenote|language</xsl:variable>
-    
-        
+
+    <xsl:variable name="lf">
+        <xsl:text>&#xA;</xsl:text>
+    </xsl:variable>
+
+    <xsl:variable name="heads"
+        >fa_url|collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|origination|box_num|container2|extent|physfacet|subject|scopenote|language</xsl:variable>
+
+
 
     <xsl:template match="ead">
 
         <!-- Insert header row (defined above) -->
         <xsl:value-of select="$heads"/>
         <xsl:value-of select="$lf"/>
-        
+
         <xsl:choose>
             <xsl:when test="$series_scope != 0">
                 <!-- if $series_scope selects a particular series, only process that series -->
-                <xsl:apply-templates select="/ead/archdesc/dsc/c[$series_scope]//c[@level = 'file']"/>
+                <xsl:apply-templates select="/ead/archdesc/dsc/c[$series_scope]//c[@level = 'file']"
+                />
             </xsl:when>
- 
+
             <xsl:otherwise>
-                <xsl:apply-templates select="//c[@level = 'file']"/>                
+                <xsl:apply-templates select="//c[@level = 'file']"/>
             </xsl:otherwise>
         </xsl:choose>
 
     </xsl:template>
-     
-     
-        
-  
+
+
+
+
     <xsl:template match="c[@level = 'file']">
-            
+
         <!--       set fixed variables  -->
         <xsl:variable name="fa_url">
             <xsl:value-of select="normalize-space(//eadheader/eadid/@url)"/>
@@ -78,156 +83,132 @@ Optional parameters:
         <xsl:variable name="language">
             <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language)"/>
         </xsl:variable>
-        
-        
-        
+
+
+
         <!--   includes test for dao, which indicates presence of previously digitized content     -->
         <xsl:choose>
             <xsl:when test="did/dao">
                 <!--  dao indicator-->
-                <xsl:text>PREVIOUSLY DIGITIZED</xsl:text>
+                <xsl:text>PREVIOUSLY DIGITIZED: </xsl:text>
+                <xsl:value-of select="did/dao[1]/@*:href"/>
                 <xsl:value-of select="$delim1"/>
-                <!-- collection title-->
-                <xsl:value-of select="$collection_name"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- bib ID-->
-                <xsl:value-of select="$bib_id"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- repo -->
-                <xsl:value-of select="$repo_code"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- as id -->
-                <xsl:value-of select="substring-after(@id, 'aspace_')"/>
-                <!-- blank column -->
-                <xsl:value-of select="$delim1"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- title -->
-                <xsl:value-of select="normalize-space(did/unittitle)"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- date -->
-                <xsl:value-of select="normalize-space(did/unitdate)"/>
-                <!-- box number -->
-                <xsl:value-of select="normalize-space(did/container[@type = 'box'])"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- folder/reel etc number -->
-                <xsl:value-of select="normalize-space(did/container[2])"/>
-                <xsl:value-of select="$delim1"/>
-                <!--  dao indicator-->
-                <xsl:text>PREVIOUSLY DIGITIZED</xsl:text>
-                <xsl:value-of select="$delim1"/>
-                <xsl:text>&#xA;</xsl:text>
             </xsl:when>
             <xsl:otherwise>
                 <!--finding aid URL-->
                 <xsl:value-of select="$fa_url"/>
                 <xsl:value-of select="$delim1"/>
-                <!--collection title-->
-                <xsl:value-of select="$collection_name"/>
-                <xsl:value-of select="$delim1"/>
-                <!--bib ID-->
-                <xsl:value-of select="$bib_id"/>
-                <xsl:value-of select="$delim1"/>
-                <!--rights-->
-                <xsl:value-of select="$rights"/>
-                <xsl:value-of select="$delim1"/>
-                <!--restrictions-->
-                <xsl:value-of select="$restrictions"/>
-                <xsl:value-of select="$delim1"/>
-                <!--repo -->
-                <xsl:value-of select="$repo_code"/>
-                <!--                  series location  -->
-                <xsl:value-of select="$delim1"/>
-                <xsl:choose>
-                    <xsl:when test="parent::c[@level = 'series']">
-                        <!-- grab series -->
-                        <xsl:value-of select="parent::c[@level = 'series']/did/unittitle"/>
-                        <xsl:value-of select="$delim1"/>
-                        <!-- blank subseries column  -->
-                        <xsl:text>No Subseries</xsl:text>
-                        <xsl:value-of select="$delim1"/>
-                        <xsl:text>No Parent File</xsl:text>
-                        <xsl:value-of select="$delim1"/>
-                    </xsl:when>
-                    <xsl:when test="parent::c[@level = 'subseries']">
-                        <!-- grab series and subseries-->
-                        <xsl:value-of select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
-                        <xsl:value-of select="$delim1"/>
-                        <xsl:value-of select="normalize-space(parent::c[@level = 'subseries']/did/unittitle)"/>
-                        <xsl:value-of select="$delim1"/>
-                        <xsl:text>No Parent File</xsl:text>
-                        <xsl:value-of select="$delim1"/>
-                    </xsl:when>
-                    <xsl:when test="parent::c[@level = 'file']">
-                        <!--  grab series and subseries and file -->
-                        <xsl:value-of select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
-                        <xsl:value-of select="$delim1"/>
-                        <xsl:value-of select="normalize-space(ancestor::c[@level = 'subseries'][1]/did/unittitle)"/>
-                        <xsl:value-of select="$delim1"/>
-                        <xsl:value-of select="normalize-space(parent::c[@level = 'file']/did/unittitle)"/>
-                        <xsl:value-of select="$delim1"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <!-- TODO: check this case for parallel structure -->
-                        <xsl:value-of select="$delim1"/>
-                        <xsl:text>CHECK HIERARCHY</xsl:text>
-                        <xsl:value-of select="$delim1"/>
-                        <xsl:value-of select="$delim1"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <!--  as id -->
-                <xsl:value-of select="substring-after(@id, 'aspace_')"/>
-                <xsl:value-of select="$delim1"/>
-                <!--  title -->
-                <xsl:value-of select="normalize-space(did/unittitle)"/>
-                <xsl:value-of select="$delim1"/>
-                <!--  date -->
-                <xsl:choose>
-                    <xsl:when test="did/unitdate[1]/text() = 'undated'">
-                        <xsl:text>uuuu</xsl:text>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:for-each select="did/unitdate">
-                            <xsl:value-of select="normalize-space(.)"/> 
-                        </xsl:for-each>
-                       
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:value-of select="$delim1"/>
-                <!--   creator  -->
-                <xsl:choose>
-                    <xsl:when test="did/origination">
-                        <xsl:value-of select="normalize-space(did/origination)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$creator"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:value-of select="$delim1"/>
-                <!-- box number -->
-                <xsl:value-of select="normalize-space(did/container[@type = 'box'])"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- folder/reel etc number -->
-                <xsl:value-of select="normalize-space(did/container[2])"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- extent -->
-                <xsl:value-of select="normalize-space(did/physdesc/extent)"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- physfacet -->
-                <xsl:value-of select="normalize-space(did/physdesc/physfacet)"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- subject  -->
-                <xsl:value-of select="$subject"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- scope note -->
-                <xsl:value-of select="normalize-space(did/scopecontent/p)"/>
-                <xsl:value-of select="$delim1"/>
-                <!-- language  -->
-                <xsl:value-of select="$language"/>
-                <xsl:value-of select="$lf"/>
             </xsl:otherwise>
         </xsl:choose>
-        
-        
+
+        <!--collection title-->
+        <xsl:value-of select="$collection_name"/>
+        <xsl:value-of select="$delim1"/>
+        <!--bib ID-->
+        <xsl:value-of select="$bib_id"/>
+        <xsl:value-of select="$delim1"/>
+        <!--rights-->
+        <xsl:value-of select="$rights"/>
+        <xsl:value-of select="$delim1"/>
+        <!--restrictions-->
+        <xsl:value-of select="$restrictions"/>
+        <xsl:value-of select="$delim1"/>
+        <!--repo -->
+        <xsl:value-of select="$repo_code"/>
+        <!--                  series location  -->
+        <xsl:value-of select="$delim1"/>
+        <xsl:choose>
+            <xsl:when test="parent::c[@level = 'series']">
+                <!-- grab series -->
+                <xsl:value-of select="parent::c[@level = 'series']/did/unittitle"/>
+                <xsl:value-of select="$delim1"/>
+                <!-- blank subseries column  -->
+                <xsl:text>No Subseries</xsl:text>
+                <xsl:value-of select="$delim1"/>
+                <xsl:text>No Parent File</xsl:text>
+                <xsl:value-of select="$delim1"/>
+            </xsl:when>
+            <xsl:when test="parent::c[@level = 'subseries']">
+                <!-- grab series and subseries-->
+                <xsl:value-of
+                    select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
+                <xsl:value-of select="$delim1"/>
+                <xsl:value-of
+                    select="normalize-space(parent::c[@level = 'subseries']/did/unittitle)"/>
+                <xsl:value-of select="$delim1"/>
+                <xsl:text>No Parent File</xsl:text>
+                <xsl:value-of select="$delim1"/>
+            </xsl:when>
+            <xsl:when test="parent::c[@level = 'file']">
+                <!--  grab series and subseries and file -->
+                <xsl:value-of
+                    select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
+                <xsl:value-of select="$delim1"/>
+                <xsl:value-of
+                    select="normalize-space(ancestor::c[@level = 'subseries'][1]/did/unittitle)"/>
+                <xsl:value-of select="$delim1"/>
+                <xsl:value-of select="normalize-space(parent::c[@level = 'file']/did/unittitle)"/>
+                <xsl:value-of select="$delim1"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- TODO: check this case for parallel structure -->
+                <xsl:value-of select="$delim1"/>
+                <xsl:text>CHECK HIERARCHY</xsl:text>
+                <xsl:value-of select="$delim1"/>
+                <xsl:value-of select="$delim1"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <!--  as id -->
+        <xsl:value-of select="substring-after(@id, 'aspace_')"/>
+        <xsl:value-of select="$delim1"/>
+        <!--  title -->
+        <xsl:value-of select="normalize-space(did/unittitle)"/>
+        <xsl:value-of select="$delim1"/>
+        <!--  date -->
+        <xsl:choose>
+            <xsl:when test="did/unitdate[1]/text() = 'undated'">
+                <xsl:text>uuuu</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="normalize-space(did/unitdate[1])"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select="$delim1"/>
+        <!--   creator  -->
+        <xsl:choose>
+            <xsl:when test="did/origination">
+                <xsl:value-of select="normalize-space(did/origination)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$creator"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select="$delim1"/>
+        <!-- box number -->
+        <xsl:value-of select="normalize-space(did/container[@type = 'box'][1])"/>
+        <xsl:value-of select="$delim1"/>
+        <!-- folder/reel etc number -->
+        <xsl:value-of select="normalize-space(did/container[2])"/>
+        <xsl:value-of select="$delim1"/>
+        <!-- extent -->
+        <xsl:value-of select="normalize-space(did/physdesc/extent)"/>
+        <xsl:value-of select="$delim1"/>
+        <!-- physfacet -->
+        <xsl:value-of select="normalize-space(did/physdesc/physfacet)"/>
+        <xsl:value-of select="$delim1"/>
+        <!-- subject  -->
+        <xsl:value-of select="$subject"/>
+        <xsl:value-of select="$delim1"/>
+        <!-- scope note -->
+        <xsl:for-each select="scopecontent/p">
+            <xsl:value-of select="normalize-space(.)"/>
+            <xsl:text> </xsl:text>
+        </xsl:for-each>
+        <xsl:value-of select="$delim1"/>
+        <!-- language  -->
+        <xsl:value-of select="$language"/>
+        <xsl:value-of select="$lf"/>
+
     </xsl:template>
-    
+
 </xsl:stylesheet>
