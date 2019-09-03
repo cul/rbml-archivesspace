@@ -11,50 +11,50 @@ Optional parameters:
     exclude-result-prefixes="xs" version="2.0">
     <xsl:output omit-xml-declaration="yes" method="text"/>
     <xsl:strip-space elements="*"/>
-
+    
     <!-- Optionally limit scope to a particular series (default 0 means process all series) -->
     <xsl:param name="series_scope" as="xs:integer">0</xsl:param>
-
+    
     <xsl:param name="subject">AUDIO RECORDINGS</xsl:param>
     <!-- <xsl:param name="subject">VIDEO RECORDINGS</xsl:param>-->
-
-
+    
+    
     <xsl:variable name="delim1">|</xsl:variable>
-
+    
     <xsl:variable name="lf">
         <xsl:text>&#xA;</xsl:text>
     </xsl:variable>
-
+    
     <xsl:variable name="heads"
-        >fa_url|collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|origination|box_num|container2|extent|physfacet|subject|scopenote|language</xsl:variable>
-
-
-
+        >fa_url|collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|origination|box_num|container2|extent_number|extent|physfacet|subject|scopenote|language|suggested_file_name</xsl:variable>
+    
+    
+    
     <xsl:template match="ead">
-
+        
         <!-- Insert header row (defined above) -->
         <xsl:value-of select="$heads"/>
         <xsl:value-of select="$lf"/>
-
+        
         <xsl:choose>
             <xsl:when test="$series_scope != 0">
                 <!-- if $series_scope selects a particular series, only process that series -->
                 <xsl:apply-templates select="/ead/archdesc/dsc/c[$series_scope]//c[@level = 'file']"
                 />
             </xsl:when>
-
+            
             <xsl:otherwise>
                 <xsl:apply-templates select="//c[@level = 'file']"/>
             </xsl:otherwise>
         </xsl:choose>
-
+        
     </xsl:template>
-
-
-
-
+    
+    
+    
+    
     <xsl:template match="c[@level = 'file']">
-
+        
         <!--       set fixed variables  -->
         <xsl:variable name="fa_url">
             <xsl:value-of select="normalize-space(//eadheader/eadid/@url)"/>
@@ -83,9 +83,9 @@ Optional parameters:
         <xsl:variable name="language">
             <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language)"/>
         </xsl:variable>
-
-
-
+        
+        
+        
         <!--   includes test for dao, which indicates presence of previously digitized content     -->
         <xsl:choose>
             <xsl:when test="did/dao">
@@ -100,7 +100,7 @@ Optional parameters:
                 <xsl:value-of select="$delim1"/>
             </xsl:otherwise>
         </xsl:choose>
-
+        
         <!--collection title-->
         <xsl:value-of select="$collection_name"/>
         <xsl:value-of select="$delim1"/>
@@ -190,6 +190,9 @@ Optional parameters:
         <!-- folder/reel etc number -->
         <xsl:value-of select="normalize-space(did/container[2])"/>
         <xsl:value-of select="$delim1"/>
+        <!-- extent_number -->
+        <xsl:value-of select="substring-before(normalize-space(did/physdesc/extent), ' ')"/>
+        <xsl:value-of select="$delim1"/>
         <!-- extent -->
         <xsl:value-of select="normalize-space(did/physdesc/extent)"/>
         <xsl:value-of select="$delim1"/>
@@ -207,8 +210,24 @@ Optional parameters:
         <xsl:value-of select="$delim1"/>
         <!-- language  -->
         <xsl:value-of select="$language"/>
+        <xsl:value-of select="$delim1"/>
+        <!-- suggested file name  -->
+        <xsl:value-of select="substring-after(normalize-space($repo_code), 'US-NNC-')"/>
+        <xsl:text>_</xsl:text>
+        <xsl:value-of select="normalize-space($bib_id)"/>
+        <xsl:text>_</xsl:text>
+        <xsl:value-of select="normalize-space(did/container[@type = 'box'][1])"/>
+        <xsl:text>_</xsl:text>
+        <xsl:choose>
+            <xsl:when test="did/container[2]">
+                <xsl:value-of select="normalize-space(did/container[2])"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="position()"/>
+            </xsl:otherwise>
+        </xsl:choose>  
         <xsl:value-of select="$lf"/>
-
+        
     </xsl:template>
-
+    
 </xsl:stylesheet>
