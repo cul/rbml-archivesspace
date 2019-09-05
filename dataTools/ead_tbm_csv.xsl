@@ -15,8 +15,8 @@ Optional parameters:
     <!-- Optionally limit scope to a particular series (default 0 means process all series) -->
     <xsl:param name="series_scope" as="xs:integer">0</xsl:param>
     
-    <xsl:param name="subject">AUDIO RECORDINGS</xsl:param>
-    <!-- <xsl:param name="subject">VIDEO RECORDINGS</xsl:param>-->
+    <xsl:param name="form">AUDIO RECORDINGS</xsl:param>
+    <!-- <xsl:param name="form">VIDEO RECORDINGS</xsl:param>-->
     
     
     <xsl:variable name="delim1">|</xsl:variable>
@@ -26,7 +26,7 @@ Optional parameters:
     </xsl:variable>
     
     <xsl:variable name="heads"
-        >collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|origination|box_num|container2|extent_number|extent|physfacet|subject|scopenote|language|suggested_file_name</xsl:variable>
+        >collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|origination|box_num|container2|extent_number|extent|physfacet|form|scopenote|language|suggested_file_name</xsl:variable>
     
     
     
@@ -184,7 +184,7 @@ Optional parameters:
         <xsl:value-of select="normalize-space(did/physdesc/physfacet)"/>
         <xsl:value-of select="$delim1"/>
         <!-- subject  -->
-        <xsl:value-of select="$subject"/>
+        <xsl:value-of select="$form"/>
         <xsl:value-of select="$delim1"/>
         <!-- scope note -->
         <xsl:for-each select="scopecontent/p">
