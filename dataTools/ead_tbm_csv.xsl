@@ -26,7 +26,7 @@ Optional parameters:
     </xsl:variable>
     
     <xsl:variable name="heads"
-        >fa_url|collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|origination|box_num|container2|extent_number|extent|physfacet|subject|scopenote|language|suggested_file_name</xsl:variable>
+        >collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|origination|box_num|container2|extent_number|extent|physfacet|subject|scopenote|language|suggested_file_name</xsl:variable>
     
     
     
@@ -56,9 +56,6 @@ Optional parameters:
     <xsl:template match="c[@level = 'file']">
         
         <!--       set fixed variables  -->
-        <xsl:variable name="fa_url">
-            <xsl:value-of select="normalize-space(//eadheader/eadid/@url)"/>
-        </xsl:variable>
         <xsl:variable name="collection_name">
             <xsl:value-of select="normalize-space(//archdesc/did/unittitle)"/>
         </xsl:variable>
@@ -86,20 +83,7 @@ Optional parameters:
         
         
         
-        <!--   includes test for dao, which indicates presence of previously digitized content     -->
-        <xsl:choose>
-            <xsl:when test="did/dao">
-                <!--  dao indicator-->
-                <xsl:text>PREVIOUSLY DIGITIZED: </xsl:text>
-                <xsl:value-of select="did/dao[1]/@*:href"/>
-                <xsl:value-of select="$delim1"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <!--finding aid URL-->
-                <xsl:value-of select="$fa_url"/>
-                <xsl:value-of select="$delim1"/>
-            </xsl:otherwise>
-        </xsl:choose>
+       
         
         <!--collection title-->
         <xsl:value-of select="$collection_name"/>
@@ -211,22 +195,35 @@ Optional parameters:
         <!-- language  -->
         <xsl:value-of select="$language"/>
         <xsl:value-of select="$delim1"/>
-        <!-- suggested file name  -->
-        <xsl:value-of select="substring-after(normalize-space($repo_code), 'US-NNC-')"/>
-        <xsl:text>_</xsl:text>
-        <xsl:value-of select="normalize-space($bib_id)"/>
-        <xsl:text>_</xsl:text>
-        <xsl:value-of select="normalize-space(did/container[@type = 'box'][1])"/>
-        <xsl:text>_</xsl:text>
+        <!-- suggested file name; includes test for dao, which indicates presence of previously digitized content     -->
         <xsl:choose>
-            <xsl:when test="did/container[2]">
-                <xsl:value-of select="normalize-space(did/container[2])"/>
+            <xsl:when test="did/dao">
+                <!--  dao indicator-->
+                <xsl:text>PREVIOUSLY DIGITIZED: </xsl:text>
+                <xsl:value-of select="did/dao[1]/@*:href"/>
+                <xsl:value-of select="$lf"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="position()"/>
+                <!--suggested file name-->
+                <xsl:value-of select="substring-after(normalize-space($repo_code), 'US-NNC-')"/>
+                <xsl:text>_</xsl:text>
+                <xsl:value-of select="normalize-space($bib_id)"/>
+                <xsl:text>_</xsl:text>
+                <xsl:value-of select="normalize-space(did/container[@type = 'box'][1])"/>
+                <xsl:text>_</xsl:text>
+                <xsl:choose>
+                    <xsl:when test="did/container[2]">
+                        <xsl:value-of select="normalize-space(did/container[2])"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="position()"/>
+                    </xsl:otherwise>
+                </xsl:choose>  
+                <xsl:value-of select="$lf"/>
             </xsl:otherwise>
-        </xsl:choose>  
-        <xsl:value-of select="$lf"/>
+        </xsl:choose>
+        
+        
         
     </xsl:template>
     
