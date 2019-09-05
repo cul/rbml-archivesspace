@@ -3,7 +3,7 @@
     
 Optional parameters:
   * series_scope (integer): the sequential number of a series to process. Default 0 causes all series to be processed.
-  * subject: Term to describe type of material (default = AUDIO RECORDINGS)
+  * form: Term to describe type of material (default = AUDIO RECORDINGS)
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
