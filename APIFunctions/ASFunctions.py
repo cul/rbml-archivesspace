@@ -92,17 +92,6 @@ def getResponse(endpoint):
     return output
 
 
-#### TEST ####
-
-def getCollectionManagement(repo,asid):
-    # supply repo and id
-    headers = ASAuthenticate(user,baseURL,password)
-    endpoint = '/repositories/' + str(repo) + '/collection_management/' + str(asid)
-    output = requests.get(baseURL + endpoint, headers=headers).json()
-    output = json.dumps(output)
-    return output
-
-##############
 
 #####################################
 # Functions to get single objects   #
@@ -127,6 +116,27 @@ def getArchivalObjectByRef(repo,ref):
     output = getArchivalObject(repo,asid)
     return output
 
+def getCollectionManagement(repo,asid):
+    # supply repo and id
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/repositories/' + str(repo) + '/collection_management/' + str(asid)
+    output = requests.get(baseURL + endpoint, headers=headers).json()
+    output = json.dumps(output)
+    return output
+
+def getEnumeration(asid):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/config/enumerations/' + str(asid)
+    output = requests.get(baseURL + endpoint, headers=headers).json()
+    output = json.dumps(output)
+    return output
+
+def getEnumerationValue(asid):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/config/enumeration_values/' + str(asid)
+    output = requests.get(baseURL + endpoint, headers=headers).json()
+    output = json.dumps(output)
+    return output
 
 # This doesn't work yet :(
 def getResourceByID(repo,ref):
@@ -540,6 +550,34 @@ def postDigitalObject(repo,asid,record):
     post = requests.post(baseURL + endpoint, headers=headers, data=record).json()
     post = json.dumps(post)
     return post
+
+def postEnumeration(asid,record):
+    # TODO: This perhaps does not work?
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/config/enumerations/' + str(asid)
+    post = requests.post(baseURL + endpoint, headers=headers, data=record).json()
+    post = json.dumps(post)
+    return post
+
+def postEnumerationValue(asid,record):
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/config/enumeration_values/' + str(asid)
+    post = requests.post(baseURL + endpoint, headers=headers, data=record).json()
+    post = json.dumps(post)
+    return post
+
+def suppressEnumerationValue(asid,mode='suppress'):
+    # Set mode to 'unsuppress' to do so, otherwise suppress
+    if mode == 'suppress':
+        suppress_flag = 'suppressed=true'
+    else:
+        suppress_flag = 'suppressed=false'
+    headers = ASAuthenticate(user,baseURL,password)
+    endpoint = '/config/enumeration_values/' + str(asid) + '/suppressed?' + suppress_flag
+    post = requests.post(baseURL + endpoint, headers=headers).json()
+    post = json.dumps(post)
+    return post
+
 
 def unpublishArchivalObject(repo,asid):
     x = getArchivalObject(repo,asid)
