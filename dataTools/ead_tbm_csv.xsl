@@ -65,6 +65,22 @@ Optional parameters:
         <xsl:variable name="repo_code">
             <xsl:value-of select="(//eadheader/eadid/@mainagencycode)"/>
         </xsl:variable>
+        <xsl:variable name="expanded_repo_code">
+            <xsl:choose>
+                <xsl:when test="//eadheader/eadid/@mainagencycode = 'US-NNC-RB'">
+                    <xsl:text>RBML</xsl:text>
+                </xsl:when>
+                <xsl:when test="//eadheader/eadid/@mainagencycode = 'US-NNC-AV'">
+                    <xsl:text>Avery</xsl:text>
+                </xsl:when>
+                <xsl:when test="//eadheader/eadid/@mainagencycode = 'US-NNC-UT'">
+                    <xsl:text>Burke</xsl:text>
+                </xsl:when>
+                <xsl:when test="//eadheader/eadid/@mainagencycode = 'US-NNC-EA'">
+                    <xsl:text>Starr</xsl:text>
+                </xsl:when>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:variable name="rights">
             <!--            DEFAULT onsite -->
             <xsl:text>In copyright</xsl:text>
@@ -205,12 +221,12 @@ Optional parameters:
             </xsl:when>
             <xsl:otherwise>
                 <!--suggested file name-->
-                <xsl:value-of select="substring-after(normalize-space($repo_code), 'US-NNC-')"/>
+                <xsl:value-of select="$expanded_repo_code"/>
                 <xsl:text>_</xsl:text>
                 <xsl:value-of select="normalize-space($bib_id)"/>
                 <xsl:text>_</xsl:text>
                 <xsl:value-of select="normalize-space(did/container[@type = 'box'][1])"/>
-                <xsl:text>_</xsl:text>
+                <xsl:text>-</xsl:text>
                 <xsl:choose>
                     <xsl:when test="did/container[2]">
                         <xsl:value-of select="normalize-space(did/container[2])"/>
