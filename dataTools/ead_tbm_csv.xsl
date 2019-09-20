@@ -26,7 +26,7 @@ Optional parameters:
     </xsl:variable>
     
     <xsl:variable name="heads"
-        >collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|origination|box_num|container2|extent_number|extent|physfacet|form|scopenote|language|suggested_file_name</xsl:variable>
+        >collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|creator_1|creator_1_id|creator_2|creator_2_id|box_num|container2|extent_number|extent|physfacet|form|scopenote|language|suggested_file_name</xsl:variable>
     
     
     
@@ -92,6 +92,10 @@ Optional parameters:
         <xsl:variable name="creator">
             <!--            DEFAULT from collection-->
             <xsl:value-of select="normalize-space(//archdesc/did/origination)"/>
+        </xsl:variable>
+        <xsl:variable name="creator_id">
+            <!--            DEFAULT from collection-->
+            <xsl:value-of select="normalize-space(//archdesc/did/origination/*/@authfilenumber)"/>
         </xsl:variable>
         <xsl:variable name="language">
             <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language)"/>
@@ -174,16 +178,49 @@ Optional parameters:
             </xsl:otherwise>
         </xsl:choose>
         <xsl:value-of select="$delim1"/>
-        <!--   creator  -->
+        
+        <!--   creator 1 -->
         <xsl:choose>
-            <xsl:when test="did/origination">
-                <xsl:value-of select="normalize-space(did/origination)"/>
+            <xsl:when test="did/origination[1]">
+                <xsl:value-of select="normalize-space(did/origination[1])"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$creator"/>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:value-of select="$delim1"/>
+        <!--   creator 1 id -->
+        <xsl:choose>
+            <xsl:when test="did/origination[1]">
+                <xsl:value-of select="normalize-space(did/origination[1]/*/@authfilenumber)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$creator_id"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select="$delim1"/>
+        
+        <!--   creator 2 -->
+        <xsl:choose>
+            <xsl:when test="did/origination[2]">
+                <xsl:value-of select="normalize-space(did/origination[2])"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!--do nothing-->
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select="$delim1"/>
+        <!--   creator 2 id -->
+        <xsl:choose>
+            <xsl:when test="did/origination[2]">
+                <xsl:value-of select="normalize-space(did/origination[2]/*/@authfilenumber)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!--do nothing-->
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select="$delim1"/>
+        
         <!-- box number -->
         <xsl:value-of select="normalize-space(did/container[@type = 'box'][1])"/>
         <xsl:value-of select="$delim1"/>
