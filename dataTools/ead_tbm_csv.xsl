@@ -246,7 +246,14 @@ Optional parameters:
         </xsl:for-each>
         <xsl:value-of select="$delim1"/>
         <!-- language  -->
-        <xsl:value-of select="$language"/>
+        <xsl:choose>
+            <xsl:when test="did/langmaterial">
+                <xsl:value-of select="normalize-space(did/langmaterial)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$language"/>
+            </xsl:otherwise>
+        </xsl:choose>
         <xsl:value-of select="$delim1"/>
         <!-- suggested file name; includes test for dao, which indicates presence of previously digitized content     -->
         <xsl:choose>
