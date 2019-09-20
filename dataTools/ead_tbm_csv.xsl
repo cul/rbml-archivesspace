@@ -82,12 +82,12 @@ Optional parameters:
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="rights">
-            <!--            DEFAULT onsite -->
-            <xsl:text>In copyright</xsl:text>
+            <!--            DEFAULT In Copyright. See https://hyacinth.library.columbia.edu/controlled_vocabularies/22/terms for list of terms  -->
+            <xsl:text>In Copyright</xsl:text>
         </xsl:variable>
         <xsl:variable name="restrictions">
-            <!--            DEFAULT TBD -->
-            <xsl:text>Onsite access only</xsl:text>
+            <!--            DEFAULT Onsite. Permitted values: Public Access; On-site Access; On-site Access By Request; Closed; Embargoed -->
+            <xsl:text>On-site Access</xsl:text>
         </xsl:variable>
         <xsl:variable name="creator">
             <!--            DEFAULT from collection-->
