@@ -1,16 +1,15 @@
 import json
 import requests
-import secrets
-import secretsDev
-import secretsTest
 import csv
 import sys
 import os
-
+from configparser import ConfigParser
 
 
 #
 # Compilation of ArchivesSpace API functions. 
+# See README for config.ini setup.
+
 # Usage: from another python script, add
 #   import ASFunctions as asf
 #
@@ -26,16 +25,27 @@ global baseURL
 global user
 global password
 global session_token
+global config
+
 
 try:
+    # See if there is an initial session token in environment to use.
     session_token = os.environ['session'] 
 except:
     session_token = ''
 
-baseURL = secrets.baseURL
-user = secrets.user
-password = secrets.password
 
+try:
+    # Read default config values
+    config = ConfigParser()
+    config.read('config.ini')
+
+    baseURL = config['PROD']['baseURL']
+    user = config['PROD']['user']
+    password = config['PROD']['password']
+except:
+    print("Error: There was a problem reading the config.ini file.")
+    sys.exit(1)
 
 
 
@@ -82,19 +92,20 @@ def setServer(server):
     global baseURL
     global user
     global password
+    global config
     if server == 'Dev':
-        baseURL = secretsDev.baseURL
-        user = secretsDev.user
-        password = secretsDev.password
+        baseURL = config['DEV']['baseURL']
+        user = config['DEV']['user']
+        password = config['DEV']['password']
     else:
         if server == 'Test':
-            baseURL = secretsTest.baseURL
-            user = secretsTest.user
-            password = secretsTest.password
+            baseURL = config['TEST']['baseURL']
+            user = config['TEST']['user']
+            password = config['TEST']['password']
         else:
-            baseURL = secrets.baseURL
-            user = secrets.user
-            password = secrets.password
+            baseURL = config['PROD']['baseURL']
+            user = config['PROD']['user']
+            password = config['PROD']['password']
 
 
 

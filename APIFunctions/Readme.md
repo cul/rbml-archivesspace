@@ -2,14 +2,22 @@
 
 These scripts interact with the ArchivesSpace API. Current development is focussed on ASFunctions.py, which is intended to be imported as a function library in other scripts. It requires Python 3, while some older individual action scripts are still in Python 2.
 
-Scripts in the repo require a secrets.py (prod) or secretsDev.py (dev) file, formatted as follows:
+Scripts require a `config.ini` file to read URLs and credentials for ASpace servers (most likely, Prod,Dev, and Test). It should be formatted as follows:
 
 ~~~~
-baseURL='https://{API_endpoint}'
-user='{username}'
-password='{password}'
-baseOAIURL='{OAI URL, eg., https://aspace.library.columbia.edu/public/oai}'
-oaiPrefix = '{OAI prefix, e.g., oai:columbia}'
+[PROD]
+baseURL = https://your-aspace-domain/api/
+baseOAIURL = {OAI URL, eg., https://your-aspace-domain/public/oai}
+oaiPrefix = {OAI prefix, e.g., oai:columbia}
+user = {username}
+password = {password}
+
+[DEV]
+(similar to above, for Dev)
+
+[TEST]
+(similar to above, for Test)
+
 ~~~~
 
 
