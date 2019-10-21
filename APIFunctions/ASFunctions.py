@@ -5,6 +5,8 @@ import secretsDev
 import secretsTest
 import csv
 import sys
+import os
+
 
 
 #
@@ -23,6 +25,12 @@ import sys
 global baseURL
 global user
 global password
+global session_token
+
+try:
+    session_token = os.environ['session'] 
+except:
+    session_token = ''
 
 baseURL = secrets.baseURL
 user = secrets.user
@@ -35,6 +43,7 @@ def main():
     # Test functions here.
     # setServer('Prod')
     # x = getArchivalObject(2,456421)
+    quit()
 
 
 
@@ -44,17 +53,23 @@ def main():
 # Authentication function           #
 #####################################
 
-# Run first, returns session headers for next API call.
+# Returns session headers for next API call, either using existing session token or generating one. 
 def ASAuthenticate(user,baseURL,password):
-    try:
-        auth = requests.post(baseURL + '/users/'+user+'/login?password='+password).json()
-        session = auth["session"]
-        headers = {'X-ArchivesSpace-Session':session, 'Content_Type':'application/json'}
-    except json.decoder.JSONDecodeError:
-        print("Error: There was a problem authenticating to the API!")
-        sys.exit(1)
+    global session_token
+    if session_token != '':
+        # there is already a token in env
+        headers = {'X-ArchivesSpace-Session':session_token, 'Content_Type':'application/json'}
+    else:
+        # generate a new token and save to env
+        try:
+            auth = requests.post(baseURL + '/users/'+user+'/login?password='+password).json()
+            session_token = auth["session"]
+            os.environ['session'] = session_token
+        except json.decoder.JSONDecodeError:
+            print("Error: There was a problem authenticating to the API!")
+            sys.exit(1)
+        headers = {'X-ArchivesSpace-Session':session_token, 'Content_Type':'application/json'}
     return headers
-
 
 
 #################
