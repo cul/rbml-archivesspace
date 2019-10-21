@@ -2,7 +2,7 @@
 
 These scripts interact with the ArchivesSpace API. Current development is focussed on ASFunctions.py, which is intended to be imported as a function library in other scripts. It requires Python 3, while some older individual action scripts are still in Python 2.
 
-Scripts require a `config.ini` file to read URLs and credentials for ASpace servers (most likely, Prod,Dev, and Test). It should be formatted as follows:
+Scripts require a `config.ini` file to read URLs and credentials for ASpace servers (most likely, Prod,Dev, and Test). (Modify `config_[CHANGEME].ini` and save as `config.ini`.) It should be formatted as follows:
 
 ~~~~
 [PROD]
