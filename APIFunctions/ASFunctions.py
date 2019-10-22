@@ -18,14 +18,21 @@ from configparser import ConfigParser
 #
 
 
-# Set server to Prod as default. Override in parent script with
-# ASFunctions.setServer('Test') or ASFunctions.setServer('Dev').
 
 global baseURL
 global user
 global password
 global session_token
 global config
+
+
+my_name = __file__
+
+# This makes sure the script can be run from any working directory and still find related files.
+my_path = os.path.dirname(__file__)
+
+config_path = os.path.join(my_path, 'config.ini')
+
 
 
 try:
@@ -35,10 +42,12 @@ except:
     session_token = ''
 
 
+# Set server to Prod as default. Override in parent script with
+# ASFunctions.setServer('Test') or ASFunctions.setServer('Dev').
 try:
     # Read default config values
     config = ConfigParser()
-    config.read('config.ini')
+    config.read(config_path)
 
     baseURL = config['PROD']['baseURL']
     user = config['PROD']['user']
