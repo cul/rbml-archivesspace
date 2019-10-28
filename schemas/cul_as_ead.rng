@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--Revised 9/2019 to conform to ArchivesSpace EADs as read by Finding Aid application. DH: 2019-09-18  -->
+
+
 <!-- 
 	EAD 2002 Relax NG Schema
 	Version: 200804 Release
@@ -1425,7 +1429,7 @@
 			<ref name="accruals"/>
 			<ref name="acqinfo"/>
 			<ref name="altformavail"/>
-			<!-- <ref name="appraisal"/> -->
+			 <ref name="appraisal"/> 
 			<ref name="arrangement"/>
 			<ref name="bibliography"/>
 			<ref name="bioghist"/>
@@ -2887,18 +2891,6 @@
 	<define name="c">
 		<element name="c">
 
-<!--
-			<sch:pattern>
-				<sch:rule context="ead:c">
-					<sch:report
-						test="ead:accruals | ead:acqinfo | ead:appraisal | ead:bibliography | ead:bioghist | ead:controlaccess | ead:custodhist | ead:descgrp | ead:dsc | ead:fileplan | ead:head | ead:index | ead:note | ead:odd | ead:originalsloc | ead:otherfindaid | ead:phystech | ead:prefercite | ead:processinfo | ead:thead"
-						> ERROR: <sch:name/> has a child element which is not permitted. Allowable
-						elements are did, scopecontent, arrangement, accessrestrict, userestrict,
-						altformavail, relatedmaterial, separatedmaterial, dao, daogrp, and c
-					</sch:report>
-				</sch:rule>
-			</sch:pattern>
--->			
 			<ref name="a.desc.c"/>
 			<!--<optional>
 				<ref name="head"/>
@@ -4056,9 +4048,6 @@
 		</optional>
 	</define>
 	
-	
-	
-<!--	TODO: merge -->
 	<define name="href">
 		<attribute name="href">
 			<data type="anyURI"/>
