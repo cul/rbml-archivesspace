@@ -510,6 +510,31 @@ def getSearchResults(repo,query_params):
 
 
 
+def getUnpublished(repo,filter=None,fields=['id','create_time','title']):
+    # Returns unpublished records for a given repo. Any list of top-level fields can be selected to return in output.
+
+    aqparams='{"query":{"field":"publish","value":false,"jsonmodel_type":"boolean_field_query"},"jsonmodel_type":"advanced_query"}'
+    records = getSearchResults(repo,aqparams)
+    # Filtering based on record type (archival_objects, resources, etc.)
+    if filter == None:
+        records_out = records
+    else:
+        records_out = [ rec for rec in records if filter in rec['id'] ]
+    print('Number of matching records = ' + str(len(records_out)))
+    # Compile a dictionary for each record, based on which fields are requested (see defaults in def). 
+    output = []
+    for r in records_out:
+        rec_dict = {}
+        for f in fields:
+            # If field is not in a record (e.g., 'publish' is not in all types) the value will be empty.
+            if f in r:
+                rec_dict[f] = r[f]
+            else:
+                rec_dict[f] = ''
+        output.append(rec_dict)
+    return output
+
+
 
 def getUsers():
     headers = ASAuthenticate(user,baseURL,password)
