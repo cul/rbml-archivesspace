@@ -5,19 +5,23 @@ import re
 import csv
 from sheetFeeder import dataSheet
 
-# Script to take a list of uids for archival objects with daos in them (scraped from EAD), and do a bulk search/replace on the URIs of the digital_objects. 
-# Requires a CSV of format repo,uid.
+# Script to take a list of refs for archival objects with daos in them (scraped from EAD), and do a bulk publish or unpublish of the digital_objects. 
+# Requires a CSV of format repo,ref.
 
 def main():
 
     # Set to Test | Dev | Prod
     asf.setServer('Prod')
 
-    the_report_sheet=dataSheet('1wNO0t2j5G9U0hUmb7E-jLd4T5skTs1aRxN7HrlyZwEI','daos-unpub!A:Z')
+    the_report_sheet=dataSheet('1wNO0t2j5G9U0hUmb7E-jLd4T5skTs1aRxN7HrlyZwEI','daos-publish!A:Z')
+
+    # Set value to switch to, publish (True) or unpublish (False)
+    publish_value = True
 
 
-    id_file = 'replace_dao_unpublish.csv'
-    output_folder = 'output/daos-unpub'
+    # id_file = '/Users/dwh2128/Documents/ACFA/TEST/ACFA-162/acfa-162-mitchell.csv'
+    id_file = '/Users/dwh2128/Documents/ACFA/TEST/ACFA-162/acfa-162-kay.csv'
+    output_folder = 'output/daos-publish'
 
     # Read a list of repo and object ids (csv)
     the_ids = []
@@ -63,7 +67,7 @@ def main():
         y = x
 
         # Here set the desired value
-        y['publish'] = True
+        y['publish'] = publish_value
 
 
         if y['publish'] == the_old_field_data:
