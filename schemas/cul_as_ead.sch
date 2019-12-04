@@ -62,8 +62,13 @@
 
     <pattern name="did_structure">
         <rule context="ead:archdesc/ead:did">
+            <!--
             <assert test="ead:langmaterial/ead:language[normalize-space(.)]" diagnostics="did">
                 WARNING: <name/> must indicate language(s) of material (langmaterial/language). 
+            </assert>
+            -->
+            <assert test="ead:langmaterial" diagnostics="did">
+                WARNING: <name/> must indicate language(s) of material. 
             </assert>
             <assert test="ead:origination" diagnostics="did">
                 WARNING: <name/> must have origination as a child element. 
