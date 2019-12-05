@@ -58,8 +58,11 @@ def main():
         # Test if there is already an access restriction note.
         has_note = False
         for a_note in the_data["notes"]:
-            if a_note["type"] == "accessrestrict":
-                has_note = True
+            try:
+                if a_note["type"] == "accessrestrict":
+                    has_note = True
+            except KeyError:
+                print("Note has no type -- skipping.")
 
         if has_note == True:
             print("Already has note -- skipping.")
