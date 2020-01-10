@@ -534,6 +534,29 @@ def getUnpublished(repo,filter=None,fields=['id','create_time','title']):
         output.append(rec_dict)
     return output
 
+def getCollectionManagements(repo,filter=None,fields=['id','parent_id','title','system_mtime']):
+    # Returns list of collection management records for a given repo. Filter by parent type, i.e., resource | accession (default all). Any arbitrary set of top-level fields can be returned.
+
+    aqparams='{"query":{"field":"primary_type", "value":"collection_management", "jsonmodel_type":"field_query"},"jsonmodel_type":"advanced_query"}'
+    records = getSearchResults(repo,aqparams)
+    # Filtering based on parent type (resource, accession)
+    if filter == None:
+        records_out = records
+    else:
+        records_out = [ rec for rec in records if filter in rec['parent_type'] ]
+    print('Number of matching records = ' + str(len(records_out)))
+    # Compile a dictionary for each record, based on which fields are requested (see defaults in def). 
+    output = []
+    for r in records_out:
+        rec_dict = {}
+        for f in fields:
+            # If field is not in a record the value will be empty.
+            if f in r:
+                rec_dict[f] = r[f]
+            else:
+                rec_dict[f] = ''
+        output.append(rec_dict)
+    return output
 
 
 def getUsers():
