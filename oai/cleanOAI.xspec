@@ -167,6 +167,7 @@
 
 
 <!-- Parse multiple langauges in 546 and add to 041|a subfields in correct ISO lang codes. -->
+<!--    
     <x:scenario 
         label="if a 041 and 546 exists, copy 546 and then generate 041s from the language strings by refering to the iso 639-2b code list below; 'marc:datafield[@tag = '041'][marc:subfield][../marc:datafield[@tag = '546']]">
         <x:context>
@@ -201,7 +202,31 @@
             </datafield>
         </x:expect>
     </x:scenario>
+-->
 
+
+    <x:scenario 
+        label="preserve all 041 languages.">
+        <x:context>
+            <marc:datafield ind1=" " ind2=" " tag="041">
+                <marc:subfield code="a">eng</marc:subfield>
+                <marc:subfield code="a">hrv</marc:subfield>
+                <marc:subfield code="a">srp</marc:subfield>
+                <marc:subfield code="a">chi</marc:subfield>
+            </marc:datafield>
+            
+        </x:context>
+        
+        <x:expect label="041 languages preserved" >
+            <datafield ind1=" " ind2=" " tag="041">
+                <subfield code="a">eng</subfield>
+                <subfield code="a">hrv</subfield>
+                <subfield code="a">srp</subfield>
+                <subfield code="a">chi</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+    
 
     <x:scenario label="if a 041 has empty a subfield and no 546 exists to populate language, remove empty 041s from output">
     
@@ -409,7 +434,7 @@
      </x:scenario>
 
     <x:scenario 
-        label="For corporate names (110 and 610), don't remove trailing comma if subuordinate name available; 'marc:datafield[@tag = '110' or @tag = '610']/marc:subfield[@code='a']">
+        label="For corporate names (110 and 610), don't remove trailing comma if subordinate name available; 'marc:datafield[@tag = '110' or @tag = '610']/marc:subfield[@code='a']">
         <x:context>
             <marc:datafield ind1="2" ind2=" " tag="110">
                 <marc:subfield code="a">Columbia University,</marc:subfield>
@@ -427,7 +452,7 @@
     
 
     <x:scenario 
-        label="For 110$b and 610$b, remove trailing comma.">
+        label="For 110$b and 610$b, remove trailing punctuation.">
         <x:context>
             <marc:datafield ind1="2" ind2=" " tag="110">
                 <marc:subfield code="a">Columbia University.</marc:subfield>
@@ -444,7 +469,23 @@
         </x:expect>
     </x:scenario>
     
+    <x:scenario 
+        label="For 110$a and 610$a, remove erroneous trailing punctuation if no $b following.">
+        <x:context>
+            <marc:datafield ind1="2" ind2=" " tag="110">
+                <marc:subfield code="a">Columbia University.,.,</marc:subfield>
+                <marc:subfield code="e">creator.</marc:subfield>
+            </marc:datafield>
+            
+        </x:context>
+        <x:expect label="110$b or 610$b has ending punctuation removed">
+            <datafield ind1="2" ind2=" " tag="110">
+                <subfield code="a">Columbia University</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
     
+
     <x:scenario  pending="Not yet implemented" label="Scenario for testing function stripComma">
         <x:call template="stripComma"/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
