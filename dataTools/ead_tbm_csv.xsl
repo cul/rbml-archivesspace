@@ -97,10 +97,18 @@ Optional parameters:
             <!--            DEFAULT from collection-->
             <xsl:value-of select="normalize-space(//archdesc/did/origination/*/@authfilenumber)"/>
         </xsl:variable>
-        <xsl:variable name="language">
-            <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language)"/>
-        </xsl:variable>
-        
+	<xsl:variable name="language">
+            <xsl:choose>
+            <xsl:when test="//archdesc/did/langmaterial/language[2]">
+                <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language[1])"/>
+                <xsl:text>; </xsl:text>
+            <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language[2])"/>
+            </xsl:when>
+            <xsl:otherwise>
+            <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language)"/>    
+            </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>        
         
         
        
