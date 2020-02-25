@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--Revised 9/2019 to conform to ArchivesSpace EADs as read by Finding Aid application. DH: 2019-09-18  -->
-<!--Revised 2/2020 to add Jpan to ISO 15924 scriptcode list. -->
+<!--Revised 2/2020 to add Jpan and other missing ISO 15924 scriptcodes list. See script_iso15924 enumeration in AS. DH: 2020-02-25 -->
+
 
 
 <!-- 
@@ -2210,96 +2211,180 @@
 			<optional>
 				<attribute name="scriptcode">
 					<choice>
+						<value>Adlm</value>
+						<value>Afak</value>
+						<value>Aghb</value>
+						<value>Ahom</value>
 						<value>Arab</value>
+						<value>Aran</value>
+						<value>Armi</value>
 						<value>Armn</value>
+						<value>Avst</value>
 						<value>Bali</value>
+						<value>Bamu</value>
+						<value>Bass</value>
 						<value>Batk</value>
 						<value>Beng</value>
+						<value>Bhks</value>
 						<value>Blis</value>
 						<value>Bopo</value>
 						<value>Brah</value>
 						<value>Brai</value>
 						<value>Bugi</value>
 						<value>Buhd</value>
+						<value>Cakm</value>
 						<value>Cans</value>
+						<value>Cari</value>
 						<value>Cham</value>
 						<value>Cher</value>
 						<value>Cirt</value>
 						<value>Copt</value>
+						<value>Cpmn</value>
 						<value>Cprt</value>
 						<value>Cyrl</value>
 						<value>Cyrs</value>
 						<value>Deva</value>
+						<value>Dogr</value>
 						<value>Dsrt</value>
+						<value>Dupl</value>
 						<value>Egyd</value>
 						<value>Egyh</value>
 						<value>Egyp</value>
+						<value>Elba</value>
+						<value>Elym</value>
 						<value>Ethi</value>
 						<value>Geok</value>
 						<value>Geor</value>
 						<value>Glag</value>
+						<value>Gong</value>
+						<value>Gonm</value>
 						<value>Goth</value>
+						<value>Gran</value>
 						<value>Grek</value>
 						<value>Gujr</value>
 						<value>Guru</value>
+						<value>Hanb</value>
 						<value>Hang</value>
 						<value>Hani</value>
 						<value>Hano</value>
 						<value>Hans</value>
 						<value>Hant</value>
+						<value>Hatr</value>
 						<value>Hebr</value>
 						<value>Hira</value>
+						<value>Hluw</value>
 						<value>Hmng</value>
+						<value>Hmnp</value>
 						<value>Hrkt</value>
 						<value>Hung</value>
 						<value>Inds</value>
 						<value>Ital</value>
+						<value>Jamo</value>
 						<value>Java</value>
 						<value>Jpan</value>
+						<value>Jurc</value>
 						<value>Kali</value>
 						<value>Kana</value>
 						<value>Khar</value>
 						<value>Khmr</value>
+						<value>Khoj</value>
+						<value>Kitl</value>
+						<value>Kits</value>
 						<value>Knda</value>
+						<value>Kore</value>
+						<value>Kpel</value>
+						<value>Kthi</value>
+						<value>Lana</value>
 						<value>Laoo</value>
 						<value>Latf</value>
 						<value>Latg</value>
 						<value>Latn</value>
+						<value>Leke</value>
 						<value>Lepc</value>
 						<value>Limb</value>
 						<value>Lina</value>
 						<value>Linb</value>
+						<value>Lisu</value>
+						<value>Loma</value>
+						<value>Lyci</value>
+						<value>Lydi</value>
+						<value>Mahj</value>
+						<value>Maka</value>
 						<value>Mand</value>
+						<value>Mani</value>
+						<value>Marc</value>
 						<value>Maya</value>
+						<value>Medf</value>
+						<value>Mend</value>
+						<value>Merc</value>
 						<value>Mero</value>
 						<value>Mlym</value>
+						<value>Modi</value>
 						<value>Mong</value>
+						<value>Moon</value>
+						<value>Mroo</value>
+						<value>Mtei</value>
+						<value>Mult</value>
 						<value>Mymr</value>
+						<value>Nand</value>
+						<value>Narb</value>
+						<value>Nbat</value>
+						<value>Newa</value>
+						<value>Nkdb</value>
+						<value>Nkgb</value>
 						<value>Nkoo</value>
+						<value>Nshu</value>
 						<value>Ogam</value>
+						<value>Olck</value>
 						<value>Orkh</value>
 						<value>Orya</value>
+						<value>Osge</value>
 						<value>Osma</value>
+						<value>Palm</value>
+						<value>Pauc</value>
 						<value>Perm</value>
 						<value>Phag</value>
+						<value>Phli</value>
+						<value>Phlp</value>
+						<value>Phlv</value>
 						<value>Phnx</value>
+						<value>Piqd</value>
 						<value>Plrd</value>
+						<value>Prti</value>
 						<value>Qaaa</value>
 						<value>Qabx</value>
+						<value>Rjng</value>
+						<value>Rohg</value>
 						<value>Roro</value>
 						<value>Runr</value>
+						<value>Samr</value>
 						<value>Sara</value>
+						<value>Sarb</value>
+						<value>Saur</value>
+						<value>Sgnw</value>
 						<value>Shaw</value>
+						<value>Shrd</value>
+						<value>Shui</value>
+						<value>Sidd</value>
+						<value>Sind</value>
 						<value>Sinh</value>
+						<value>Sogd</value>
+						<value>Sogo</value>
+						<value>Sora</value>
+						<value>Soyo</value>
+						<value>Sund</value>
 						<value>Sylo</value>
 						<value>Syrc</value>
 						<value>Syre</value>
 						<value>Syrj</value>
 						<value>Syrn</value>
 						<value>Tagb</value>
+						<value>Takr</value>
 						<value>Tale</value>
 						<value>Talu</value>
 						<value>Taml</value>
+						<value>Tang</value>
+						<value>Tavt</value>
 						<value>Telu</value>
 						<value>Teng</value>
 						<value>Tfng</value>
@@ -2307,12 +2392,21 @@
 						<value>Thaa</value>
 						<value>Thai</value>
 						<value>Tibt</value>
+						<value>Tirh</value>
 						<value>Ugar</value>
 						<value>Vaii</value>
 						<value>Visp</value>
+						<value>Wara</value>
+						<value>Wcho</value>
+						<value>Wole</value>
 						<value>Xpeo</value>
 						<value>Xsux</value>
 						<value>Yiii</value>
+						<value>Zanb</value>
+						<value>Zinh</value>
+						<value>Zmth</value>
+						<value>Zsye</value>
+						<value>Zsym</value>
 						<value>Zxxx</value>
 						<value>Zyyy</value>
 						<value>Zzzz</value>
