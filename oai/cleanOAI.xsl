@@ -39,7 +39,10 @@
 
     <!-- template to copy the rest of the nodes -->
     <xsl:template match="comment() | text() | processing-instruction()">
-        <xsl:copy/>
+       <!-- <xsl:copy/> -->
+        <xsl:call-template name="cleanText">
+            <xsl:with-param name="theText"><xsl:value-of select="."/></xsl:with-param>
+        </xsl:call-template>
     </xsl:template>
     <!--    end three templates     -->
 
@@ -116,12 +119,12 @@
                         <xsl:text>NNC-OH</xsl:text>                                            
                     </xsl:when>
                     <xsl:otherwise> 
-                        <xsl:value-of select="marc:subfield[@code='c']"/>
+                        <xsl:apply-templates select="marc:subfield[@code='c']/text()"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </subfield>
             <subfield code="e">
-                <xsl:value-of select="marc:subfield[@code = 'e']"/>
+                <xsl:apply-templates select="marc:subfield[@code = 'e']/text()"/>
             </subfield>
         </datafield>
         
@@ -140,7 +143,7 @@
     <xsl:template match="marc:datafield[@tag = '245']/marc:subfield[@code = 'g']">
         <subfield code="g">
             <xsl:text>bulk </xsl:text>
-            <xsl:value-of select="."/>
+            <xsl:apply-templates select="text()"/>
         </subfield>
     </xsl:template>
     
@@ -148,7 +151,7 @@
     <xsl:template match="marc:datafield[@tag = '544']">
         <datafield ind1="1" ind2=" " tag="544">
         <subfield code="d">
-            <xsl:value-of select="marc:subfield[@code='d']"/>
+            <xsl:apply-templates select="marc:subfield[@code='d']/text()"/>
         </subfield>
         </datafield>
     </xsl:template>
@@ -183,7 +186,7 @@
     <xsl:template match="marc:datafield[@tag = '856']">
         <datafield ind1="4" ind2="2" tag="856">
             <subfield code="u">
-                <xsl:value-of select="marc:subfield[@code='u']"/>    
+                <xsl:apply-templates select="marc:subfield[@code='u']/text()"/>    
             </subfield>
             <!--<subfield code="z">
                 <xsl:value-of select="marc:subfield[@code='z']"/>
@@ -200,7 +203,7 @@
             <xsl:choose>
                 <xsl:when test="../marc:subfield[@code='b']">
                     <!--  there is a $b following, keep punctuation   -->
-                    <xsl:value-of select="."/>  
+                    <xsl:apply-templates select="text()"/>  
                 </xsl:when>
                 <xsl:otherwise>
                     <!--  there is no $b following, strip punctuation   -->
@@ -224,9 +227,58 @@
             </xsl:choose>
         </subfield>
     </xsl:template>
-    
+        
+  
     
 
+    <!--    reorder elements -->
+    <!-- Grab the record, copy the leader and sort the control and data fields. -->
+    <xsl:template match="marc:record">        
+        <record>
+            <xsl:element name="leader">
+                <xsl:value-of select="marc:leader"/>
+            </xsl:element>
+            <!--           for prod, move 099 to 001 -->
+            <xsl:element name="controlfield">
+                <xsl:attribute name="tag">001</xsl:attribute>
+                <xsl:apply-templates select="marc:datafield[@tag = '099']/marc:subfield[@code = 'a']/text()"/>
+            </xsl:element>
+            <!--         added 003 to allow for creation of 035 upon import   -->
+            <xsl:element name="controlfield">
+                <xsl:attribute name="tag">003</xsl:attribute>
+                <xsl:text>NNC</xsl:text>
+            </xsl:element>
+            <xsl:element name="controlfield">
+                <xsl:attribute name="tag">008</xsl:attribute>
+                <xsl:apply-templates select="marc:controlfield/text()"/>
+            </xsl:element>
+            <xsl:for-each select="marc:datafield">
+                <xsl:sort select="@tag"/>
+                <xsl:apply-templates select="."/>
+            </xsl:for-each>
+        </record>
+            
+    </xsl:template>
+
+    <!--    remove colons from beginning of fields -->
+    <xsl:template match="marc:subfield[starts-with(., ':')]">
+        <xsl:element name="subfield">
+            <xsl:attribute name="code">
+                <xsl:value-of select="@code"/>
+            </xsl:attribute>
+            <xsl:copy-of select="normalize-space(translate(., ':', ''))"/>
+        </xsl:element>
+    </xsl:template>
+
+    <!--    remove commas from end of sub field d -->
+    <xsl:template match="marc:subfield[@code = 'd']">
+        <subfield code="d">
+            <xsl:call-template name="stripPunctuation"/>
+        </subfield>
+    </xsl:template>
+    
+    
+    
     <!-- Strip trailing comma from specified text nodes  -->
     <xsl:template name="stripComma">
         <xsl:analyze-string select="normalize-space(.)" regex="^(.*)(,)$">
@@ -239,7 +291,7 @@
             </xsl:non-matching-substring>
         </xsl:analyze-string>
     </xsl:template>
-
+    
     <!-- Strip trailing punctuation from specified text nodes  -->
     <xsl:template name="stripPunctuation">
         <xsl:analyze-string select="normalize-space(.)" regex="^(.*?)([,\.]+)$">
@@ -268,51 +320,42 @@
     </xsl:template>
     
     
-
-    <!--    reorder elements -->
-    <!-- Grab the record, copy the leader and sort the control and data fields. -->
-    <xsl:template match="marc:record">        
-        <record>
-            <xsl:element name="leader">
-                <xsl:value-of select="marc:leader"/>
-            </xsl:element>
-            <!--           for prod, move 099 to 001 -->
-            <xsl:element name="controlfield">
-                <xsl:attribute name="tag">001</xsl:attribute>
-                <xsl:value-of select="marc:datafield[@tag = '099']/marc:subfield[@code = 'a']"/>
-            </xsl:element>
-            <!--         added 003 to allow for creation of 035 upon import   -->
-            <xsl:element name="controlfield">
-                <xsl:attribute name="tag">003</xsl:attribute>
-                <xsl:text>NNC</xsl:text>
-            </xsl:element>
-            <xsl:element name="controlfield">
-                <xsl:attribute name="tag">008</xsl:attribute>
-                <xsl:value-of select="marc:controlfield"/>
-            </xsl:element>
-            <xsl:for-each select="marc:datafield">
-                <xsl:sort select="@tag"/>
-                <xsl:apply-templates select="."/>
-            </xsl:for-each>
-        </record>
-            
+    <!-- Strip trailing punctuation from specified text nodes  -->
+    <xsl:template name="trimPunctuation">
+        <xsl:analyze-string select="normalize-space(.)" regex="^(.*?)([,\.]+)$">
+            <xsl:matching-substring>
+                <xsl:value-of select="regex-group(1)"/>
+                <xsl:value-of select="substring(regex-group(2),1,1)"/>
+                
+            </xsl:matching-substring>
+            <xsl:non-matching-substring>
+                <!-- in case match fails -->
+                <xsl:value-of select='.'/>
+            </xsl:non-matching-substring>
+        </xsl:analyze-string>
     </xsl:template>
-
-    <!--    remove colons from beginning of fields -->
-    <xsl:template match="marc:subfield[starts-with(., ':')]">
-        <xsl:element name="subfield">
-            <xsl:attribute name="code">
-                <xsl:value-of select="@code"/>
-            </xsl:attribute>
-            <xsl:copy-of select="normalize-space(translate(., ':', ''))"/>
-        </xsl:element>
-    </xsl:template>
-
-    <!--    remove commas from end of sub field d -->
-    <xsl:template match="marc:subfield[@code = 'd']">
-        <subfield code="d">
-            <xsl:call-template name="stripComma"/>
-        </subfield>
+    
+    
+    <xsl:template name="cleanText">
+        <xsl:param name="theText"/>
+        <xsl:analyze-string select="$theText" regex="([—–…])">
+            <xsl:matching-substring>
+                <xsl:choose>
+                    <xsl:when test="regex-group(1) = '—'">
+                     <xsl:text>--</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="regex-group(1) = '–'">
+                        <xsl:text>-</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="regex-group(1) = '…'">
+                        <xsl:text>...</xsl:text>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:matching-substring>
+            <xsl:non-matching-substring>
+                <xsl:value-of select="."/>
+            </xsl:non-matching-substring>
+        </xsl:analyze-string>
     </xsl:template>
     
 

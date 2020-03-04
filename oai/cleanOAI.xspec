@@ -377,24 +377,24 @@
             <datafield ind1="1" ind2="0" tag="600">
                 <subfield code="a">Taylor, Nathaniel W</subfield>
                 <subfield code="q">(Nathaniel William),</subfield>
-                <subfield code="d">1786-1858,.</subfield>
+                <subfield code="d">1786-1858</subfield>
                 <subfield code="v">Archives</subfield>
             </datafield>
             <datafield ind1="1" ind2="0" tag="600">
                 <subfield code="a">Bonhoeffer, Dietrich,</subfield>
-                <subfield code="d">1906-1945.</subfield>
+                <subfield code="d">1906-1945</subfield>
                 <subfield code="x">Criticism and interpretation</subfield>
             </datafield>
             <datafield ind1="1" ind2="0" tag="600">
                 <subfield code="a">Neutra, Richard Joseph,</subfield>
-                <subfield code="d">1892-1970.</subfield>
+                <subfield code="d">1892-1970</subfield>
                 <subfield code="x">Homes and haunts</subfield>
                 <subfield code="z">California</subfield>
                 <subfield code="z">Los Angeles</subfield>
             </datafield>
             <datafield ind1="1" ind2="0" tag="600">
                 <subfield code="a">Trippe, Sarah Louise,</subfield>
-                <subfield code="d">1850-1931.</subfield>
+                <subfield code="d">1850-1931</subfield>
                 <subfield code="v">Archives</subfield>
             </datafield>
         </x:expect>
