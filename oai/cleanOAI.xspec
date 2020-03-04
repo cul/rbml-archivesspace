@@ -542,4 +542,58 @@
             </datafield>
         </x:expect>
     </x:scenario>
+    
+    <x:scenario 
+        label="Trim excess punctuation from 'd' subfields">
+        <x:context>
+            <marc:datafield ind1="1" ind2=" " tag="100">
+                <marc:subfield code="a">Wright, Frank Lloyd,</marc:subfield>
+                <marc:subfield code="d">1867-1959,.,.,.</marc:subfield>
+                <marc:subfield code="e">creator.</marc:subfield>
+                <marc:subfield code="0">http://id.loc.gov/authorities/names/n79032932</marc:subfield>
+            </marc:datafield>
+        </x:context>
+        <x:expect label="100$d has ending punctuation stripped">
+            <datafield ind1="1" ind2=" " tag="100">
+                <subfield code="a">Wright, Frank Lloyd,</subfield>
+                <subfield code="d">1867-1959</subfield>
+                
+                <subfield code="0">http://id.loc.gov/authorities/names/n79032932</subfield>
+            </datafield>
+        </x:expect>
+    </x:scenario>
+    
+    
+    <x:scenario 
+        label="Translate Voyager-incompatible characters to ASCII equivalents">
+        <x:context>
+            <marc:datafield ind1=" " ind2=" " tag="545">
+                <marc:subfield code="a">Marie Mattingly Meloney (1883-1943) was a journalist and magazine editor who led fundraising campaigns to purchase radium for Marie Curie in the 1920s. She was granted an interview with Curie in 1920, after being appointed editor of The Delineator. Upon learning that Curie's laboratory lacked the financial resources to purchase radium—an element Curie herself had discovered in 1898—which Curie needed to continue her experiments, Meloney promised to help.</marc:subfield>
+            </marc:datafield>
+            <marc:datafield ind1=" " ind2=" " tag="545">
+                <marc:subfield code="a">1811–1816 - John M. Mason, Provost</marc:subfield>
+            </marc:datafield>
+ 
+            <marc:datafield ind1=" " ind2=" " tag="545">
+                <marc:subfield code="a">The Bear Run property was not without fault, however. Correspondence between Kaufmann and Morris Knowles Engineers in April 1936 delineates several concerns regarding the foundation upon which Fallingwater was to be built: “…we cannot recommend the site as suitable, from a structural standpoint, for a building of importance such as that contemplated.” Ignoring this warning, construction began on Fallingwater in June.</marc:subfield>
+            </marc:datafield>
+            
+        </x:context>
+        <x:expect label="dashes and ellipses replaced with ascii">
+ 
+            <datafield ind1=" " ind2=" " tag="545">
+                <subfield code="a">Marie Mattingly Meloney (1883-1943) was a journalist and magazine editor who led fundraising campaigns to purchase radium for Marie Curie in the 1920s. She was granted an interview with Curie in 1920, after being appointed editor of The Delineator. Upon learning that Curie's laboratory lacked the financial resources to purchase radium--an element Curie herself had discovered in 1898--which Curie needed to continue her experiments, Meloney promised to help.</subfield>
+            </datafield>
+            <datafield ind1=" " ind2=" " tag="545">
+                <subfield code="a">1811-1816 - John M. Mason, Provost</subfield>
+            </datafield>
+            
+            <datafield ind1=" " ind2=" " tag="545">
+                <subfield code="a">The Bear Run property was not without fault, however. Correspondence between Kaufmann and Morris Knowles Engineers in April 1936 delineates several concerns regarding the foundation upon which Fallingwater was to be built: “...we cannot recommend the site as suitable, from a structural standpoint, for a building of importance such as that contemplated.” Ignoring this warning, construction began on Fallingwater in June.</subfield>
+            </datafield>
+            
+
+        </x:expect>
+    </x:scenario>
+    
 </x:description>
