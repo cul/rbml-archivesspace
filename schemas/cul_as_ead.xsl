@@ -58,6 +58,17 @@
     <xsl:template match="archdesc/did" mode="eval">
 <!--  Test the presence of required elements in <did>      -->
 
+        <xsl:if test="langmaterial/language
+            [preceding-sibling::*/@langcode = 
+            @langcode]">
+            <xsl:call-template name="errorMsg">
+                <xsl:with-param name="tag">languages</xsl:with-param>
+                <xsl:with-param name="errStr">Duplicate language field found (@langcode='<xsl:value-of select="langmaterial/language
+                    [preceding-sibling::*/@langcode = 
+                    @langcode]/@langcode"/>'). </xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
+
         <xsl:if test="not(langmaterial)">
             <xsl:call-template name="errorMsg">
                 <xsl:with-param name="tag">archdesc</xsl:with-param>
