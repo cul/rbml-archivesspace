@@ -26,8 +26,10 @@
     
     <xsl:template match="@authfilenumber" mode="eval">
         <!-- TODO: add here the regex test for authority URIs, per acfa-195.      -->
+    <!-- TEST THIS! -->
 
-        <xsl:if test="contains(.,'.html')">
+        
+        <xsl:if test="not(matches(.,'^https?://\S+\d+$'))">
             <xsl:call-template name="errorMsg">
                 <xsl:with-param name="tag">authorities</xsl:with-param>
                 <xsl:with-param name="errStr">@authfilenumber <xsl:value-of select="."/> is not correctly formed. </xsl:with-param>
