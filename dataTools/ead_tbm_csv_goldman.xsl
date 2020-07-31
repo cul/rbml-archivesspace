@@ -26,7 +26,7 @@ Optional parameters:
     </xsl:variable>
     
     <xsl:variable name="heads"
-        >collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|creator_1|creator_1_id|creator_2|creator_2_id|box_num|container2|extent_number|extent|physfacet|form|scopenote|language|suggested_file_name</xsl:variable>
+        >collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title_1|parent_file_title_2|ref_id|unittitle|unitdate|creator_1|creator_1_id|creator_2|creator_2_id|box_num|container2|extent_number|extent|physfacet|form|scopenote|language|suggested_file_name</xsl:variable>
     
     
     
@@ -129,6 +129,7 @@ Optional parameters:
         <xsl:value-of select="$repo_code"/>
         <!--                  series location  -->
         <xsl:value-of select="$delim1"/>
+<!--    added one additional level, to find file-within-file constructs at one additional level of nesting     -->
         <xsl:choose>
             <xsl:when test="parent::c[@level = 'series']">
                 <!-- grab series -->
@@ -137,7 +138,9 @@ Optional parameters:
                 <!-- blank subseries column  -->
                 <xsl:text>No Subseries</xsl:text>
                 <xsl:value-of select="$delim1"/>
-                <xsl:text>No Parent File</xsl:text>
+                <xsl:text>No Parent File 1</xsl:text>
+                <xsl:value-of select="$delim1"/>
+                <xsl:text>No Parent File 2</xsl:text>
                 <xsl:value-of select="$delim1"/>
             </xsl:when>
             <xsl:when test="parent::c[@level = 'subseries']">
@@ -150,8 +153,11 @@ Optional parameters:
                 <xsl:value-of select="$delim1"/>
                 <xsl:text>No Parent File</xsl:text>
                 <xsl:value-of select="$delim1"/>
+                <xsl:text>No Parent File 2</xsl:text>
+                <xsl:value-of select="$delim1"/>
             </xsl:when>
-            <xsl:when test="parent::c[@level = 'file']">
+<!--         test for container   -->
+            <xsl:when test="parent::c[@level = 'file']/did/container">
                 <!--  grab series and subseries and file -->
                 <xsl:value-of
                     select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
@@ -161,12 +167,21 @@ Optional parameters:
                 <xsl:value-of select="$delim1"/>
                 <xsl:value-of select="normalize-space(parent::c[@level = 'file']/did/unittitle)"/>
                 <xsl:value-of select="$delim1"/>
+                <xsl:text>No Parent File 2</xsl:text>
+                <xsl:value-of select="$delim1"/>
             </xsl:when>
             <xsl:otherwise>
-                <!-- TODO: check this case for parallel structure -->
+<!--              assume that one additional level of nesting c exists  -->
+                <xsl:value-of
+                    select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
                 <xsl:value-of select="$delim1"/>
-                <xsl:text>CHECK HIERARCHY</xsl:text>
+                <xsl:value-of
+                    select="normalize-space(ancestor::c[@level = 'subseries'][1]/did/unittitle)"/>
                 <xsl:value-of select="$delim1"/>
+<!--             get the grandparent   -->
+                <xsl:value-of select="normalize-space(../parent::c[@level = 'file']/did/unittitle)"/>
+                <xsl:value-of select="$delim1"/>
+                <xsl:value-of select="normalize-space(parent::c[@level = 'file']/did/unittitle)"/>
                 <xsl:value-of select="$delim1"/>
             </xsl:otherwise>
         </xsl:choose>
