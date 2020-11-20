@@ -5,6 +5,7 @@ Optional parameters:
   * series_scope (integer): the sequential number of a series to process. Default 0 causes all series to be processed.
   * form: Term to describe type of material (default = AUDIO RECORDINGS)
 -->
+<!--Added item level capture as well. 2020-11-20 kws-->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" xpath-default-namespace="urn:isbn:1-931666-22-9"
@@ -39,12 +40,12 @@ Optional parameters:
         <xsl:choose>
             <xsl:when test="$series_scope != 0">
                 <!-- if $series_scope selects a particular series, only process that series -->
-                <xsl:apply-templates select="/ead/archdesc/dsc/c[$series_scope]//c[@level = 'file']"
+                <xsl:apply-templates select="/ead/archdesc/dsc/c[$series_scope]//c[@level = 'file' or 'item']"
                 />
             </xsl:when>
             
             <xsl:otherwise>
-                <xsl:apply-templates select="//c[@level = 'file']"/>
+                <xsl:apply-templates select="//c[@level = 'file' or 'item']"/>
             </xsl:otherwise>
         </xsl:choose>
         
@@ -53,7 +54,7 @@ Optional parameters:
     
     
     
-    <xsl:template match="c[@level = 'file']">
+    <xsl:template match="c[@level = 'file' or 'item']">
         
         <!--       set fixed variables  -->
         <xsl:variable name="collection_name">
