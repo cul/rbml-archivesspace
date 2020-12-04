@@ -6,10 +6,69 @@
     
  <xsl:output indent="yes"/>
  
+<!--    <xsl:param name="from_time"><xsl:value-of select="current-dateTime() - xs:dayTimeDuration('P1DT2H')"/></xsl:param>
+-->
+
+<!-- Default offset is 30 hours before current time. All records with datestamp after this time will be captured. Send a different time value as param from_time to change. -->
+
+    
+    <!-- $cutoff_date param: Only provide if want to override the relative offset with an absolute dateTime value in ISO format, e.g., 2020-01-21T16:32:21Z or  2020-03-25T19:27:22.169-04:00. If not provided, will rely on $time_offset param. -->
+    <xsl:param name="cutoff_date"/>
+ 
+ 
+    <!-- $time_offset param: Pass to stylesheet in xs:dayTimeDuration format (P{days}DT{hours}H). If none, will use the default value defined below -->
+    <xsl:param name="time_offset">P0DT24H</xsl:param>
+    
+    <xsl:variable name="from_time">
+        <!-- if there is a specific cutoff date provided use that, otherwise subtract the offset from current dateTime. -->
+        <xsl:choose>
+            <xsl:when test="normalize-space($cutoff_date)">
+                <xsl:value-of select="$cutoff_date"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="current-dateTime() - xs:dayTimeDuration($time_offset)"/>
+            </xsl:otherwise>
+        </xsl:choose>        
+    </xsl:variable>
+    
+    <xsl:variable name="theDateTime"><xsl:value-of select="current-dateTime()"/></xsl:variable>
+    
+    
+
+    <xsl:variable name="lf"><xsl:text>&#x0A;</xsl:text></xsl:variable>
+ 
+ 
+ 
     <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
     
     <xsl:template match="/">
+        
+        <!-- TEST -->
+            
+
+            
+       <xsl:message>  
+           <xsl:text>Time of execution: </xsl:text>
+           <xsl:value-of select="$theDateTime"/>
+           <xsl:value-of select="$lf"/>
+       </xsl:message>
+        
+        <xsl:message>
+            <xsl:text>cut-off datetime: </xsl:text>
+            <xsl:value-of select="$from_time"/>
+            <xsl:value-of select="$lf"/>
+       </xsl:message>
+        <!-- Output record count to stdout -->
+        <xsl:message>
+
+            <xsl:value-of select="$lf"/>
+            <xsl:text>Count of records processed: </xsl:text>
+            <xsl:value-of select="count( repository/record[contains(header/identifier, '/resources/')  and header/datestamp >= $from_time])"></xsl:value-of>
+            <xsl:value-of select="$lf"/>
+        </xsl:message>
+        
         <collection>
+
             <xsl:for-each select="repository/record">
                 <xsl:apply-templates select="."/>
             </xsl:for-each>
@@ -18,7 +77,7 @@
     
     <!--  Only records that have /resources/ in identifier are passed to template (to exclude archival_objects, etc.) -->
     <xsl:template match="record">
-        <xsl:if test="contains(header/identifier, '/resources/')">
+        <xsl:if test="contains(header/identifier, '/resources/') and header/datestamp >= $from_time">
             <xsl:apply-templates select="metadata/marc:collection/marc:record"/>
         </xsl:if>
     </xsl:template>
@@ -233,7 +292,18 @@
 
     <!--    reorder elements -->
     <!-- Grab the record, copy the leader and sort the control and data fields. -->
-    <xsl:template match="marc:record">        
+    <xsl:template match="marc:record">
+        <!-- output some info to saxon text stream -->
+        
+      
+        <xsl:message>
+            <xsl:value-of select="marc:datafield[@tag='099']/marc:subfield[@code='a']"/>
+            <xsl:text>: </xsl:text>
+            <xsl:value-of select="marc:datafield[@tag='245']/marc:subfield[@code='a']"/>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="ancestor::record/header/datestamp"/>
+            <xsl:text>) </xsl:text>
+        </xsl:message>        
         <record>
             <xsl:element name="leader">
                 <xsl:value-of select="marc:leader"/>
