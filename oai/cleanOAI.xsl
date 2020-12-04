@@ -5,19 +5,23 @@
     <!--  this stylesheet will take OAI marc records from the Columbia University Libraries ArchivesSpace instance and clean them up for Voyager import.  -->
     
  <xsl:output indent="yes"/>
- 
-<!--    <xsl:param name="from_time"><xsl:value-of select="current-dateTime() - xs:dayTimeDuration('P1DT2H')"/></xsl:param>
+    
+    
+    <!--    <xsl:param name="from_time"><xsl:value-of select="current-dateTime() - xs:dayTimeDuration('P1DT2H')"/></xsl:param>
 -->
-
-<!-- Default offset is 30 hours before current time. All records with datestamp after this time will be captured. Send a different time value as param from_time to change. -->
-
+    
+    <!-- Default offset is 30 hours before current time. All records with datestamp after this time will be captured. Send a different time value as param from_time to change. -->
+    
     
     <!-- $cutoff_date param: Only provide if want to override the relative offset with an absolute dateTime value in ISO format, e.g., 2020-01-21T16:32:21Z or  2020-03-25T19:27:22.169-04:00. If not provided, will rely on $time_offset param. -->
     <xsl:param name="cutoff_date"/>
- 
- 
+    
+    
     <!-- $time_offset param: Pass to stylesheet in xs:dayTimeDuration format (P{days}DT{hours}H). If none, will use the default value defined below -->
-    <xsl:param name="time_offset">P0DT24H</xsl:param>
+<!-- TODO: This is no longer used; date selection done by OAI harvest, so could be removed here. -->
+<!--    <xsl:param name="time_offset">P0DT24H</xsl:param>
+--> 
+    <xsl:param name="time_offset">P800DT24H</xsl:param>
     
     <xsl:variable name="from_time">
         <!-- if there is a specific cutoff date provided use that, otherwise subtract the offset from current dateTime. -->
@@ -34,46 +38,44 @@
     <xsl:variable name="theDateTime"><xsl:value-of select="current-dateTime()"/></xsl:variable>
     
     
-
+    
     <xsl:variable name="lf"><xsl:text>&#x0A;</xsl:text></xsl:variable>
- 
- 
- 
-    <!--  The initial match kicks of a loop that ignores the OAI XML apparatus -->
+    
+    
+    
+    <!--  The initial match kicks off a loop that ignores the OAI XML apparatus -->
     
     <xsl:template match="/">
-        
-        <!-- TEST -->
-            
-
-            
-       <xsl:message>  
-           <xsl:text>Time of execution: </xsl:text>
-           <xsl:value-of select="$theDateTime"/>
-           <xsl:value-of select="$lf"/>
-       </xsl:message>
+              
+        <xsl:message>  
+            <xsl:text>Time of execution: </xsl:text>
+            <xsl:value-of select="$theDateTime"/>
+            <xsl:value-of select="$lf"/>
+        </xsl:message>
         
         <xsl:message>
             <xsl:text>cut-off datetime: </xsl:text>
             <xsl:value-of select="$from_time"/>
             <xsl:value-of select="$lf"/>
-       </xsl:message>
+        </xsl:message>
         <!-- Output record count to stdout -->
         <xsl:message>
-
+            
             <xsl:value-of select="$lf"/>
             <xsl:text>Count of records processed: </xsl:text>
             <xsl:value-of select="count( repository/record[contains(header/identifier, '/resources/')  and header/datestamp >= $from_time])"></xsl:value-of>
             <xsl:value-of select="$lf"/>
         </xsl:message>
         
+        
         <collection>
-
             <xsl:for-each select="repository/record">
                 <xsl:apply-templates select="."/>
             </xsl:for-each>
         </collection>
     </xsl:template>
+    
+
     
     <!--  Only records that have /resources/ in identifier are passed to template (to exclude archival_objects, etc.) -->
     <xsl:template match="record">
@@ -81,6 +83,102 @@
             <xsl:apply-templates select="metadata/marc:collection/marc:record"/>
         </xsl:if>
     </xsl:template>
+    
+    
+    
+    <!--    Assemble elements in the correct order. -->
+
+    <xsl:template match="marc:record">   
+        <!-- output some info to saxon text stream -->
+        <xsl:message>
+            <xsl:value-of select="marc:datafield[@tag='099']/marc:subfield[@code='a']"/>
+            <xsl:text>: </xsl:text>
+            <xsl:value-of select="marc:datafield[@tag='245']/marc:subfield[@code='a']"/>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="ancestor::record/header/datestamp"/>
+            <xsl:text>) </xsl:text>
+        </xsl:message>        
+        
+        <!-- Save the repo code. -->
+        <xsl:variable name="repo"><xsl:value-of select="replace(ancestor::record/header/identifier, '^.*?repositories/(\d)/.*?$','$1')"></xsl:value-of></xsl:variable>
+        
+        <record>
+            <xsl:variable name="dataFields">
+                <!-- This variable tree assembles all datafield elements for inclusion. They are sorted by @tag when invoked. -->
+                <xsl:apply-templates select="marc:datafield"/>
+                
+                <!-- RBMLBOOKS  -->
+                <xsl:if test="$repo = '6'">
+                    <datafield ind1=" " ind2=" " tag='336'>
+                        <subfield code='a'>text</subfield>
+                        <subfield code='b'>txt</subfield>
+                        <subfield code='2'>rdacontent</subfield>
+                    </datafield>
+                    <datafield ind1=" " ind2=" " tag='337'>
+                        <subfield code='a'>unmediated</subfield>
+                        <subfield code='b'>n</subfield>
+                        <subfield code='2'>rdamedia</subfield>                    
+                    </datafield>
+                    <datafield ind1=" " ind2=" " tag='338'>
+                        <subfield code='a'>volume</subfield>
+                        <subfield code='b'>nc</subfield>
+                        <subfield code='2'>rdacarrier</subfield>
+                    </datafield>
+                </xsl:if>
+                <!-- END RBMLBOOKS  -->
+            </xsl:variable>
+            
+            <xsl:choose>
+                <!-- RBMLBOOKS  -->
+                <xsl:when test="$repo = '6'">
+                    <leader>00000cac a2200070 u 4500</leader>
+                </xsl:when>
+                <!-- END RBMLBOOKS  -->
+                <xsl:otherwise>
+                    <leader>
+                        <xsl:value-of select="marc:leader"/>
+                    </leader>                    
+                </xsl:otherwise>
+            </xsl:choose>
+            
+            <!--           for prod, move 099 to 001 -->
+            <controlfield tag='001'>
+                <xsl:apply-templates select="marc:datafield[@tag = '099']/marc:subfield[@code = 'a']/text()"/>
+            </controlfield>
+            
+            <xsl:choose>
+                <!-- RBMLBOOKS  -->
+                <xsl:when test="contains(ancestor::record/header/identifier, 'repositories/6')">
+                    <controlfield tag='008'>
+                        <xsl:value-of select="replace(marc:controlfield[@tag='008'],'xxu','vp')"/>
+                    </controlfield>
+                </xsl:when>
+                <!-- END RBMLBOOKS  -->
+                
+                <xsl:otherwise>
+                    <!--         added 003 to allow for creation of 035 upon import   -->
+                    <controlfield tag='003'>NNC</controlfield>
+                    <controlfield tag='008'>
+                        <xsl:value-of select="marc:controlfield[@tag='008']"/>
+                    </controlfield>
+                </xsl:otherwise>
+            </xsl:choose>
+          
+            
+            <!-- Insert all datafields saved in the variable $dataFields, sorted by tag order. -->
+            <xsl:for-each select="$dataFields/datafield">
+                <xsl:sort select="@tag"/>
+                <xsl:copy-of select="."/>
+            </xsl:for-each>
+            
+        </record>
+        
+    </xsl:template>
+    
+    
+ 
+    
+    
     
     <!--    three templates copy everything sans namespace -->
     <xsl:template match="*">
@@ -106,6 +204,25 @@
     <!--    end three templates     -->
 
 
+    <!-- RBMLBOOKS  -->
+
+    <xsl:template match="marc:datafield[@tag= ('044',  '049', '852')][contains(ancestor::record/header/identifier, 'repositories/6')]">
+        <!--   remove these fields  -->
+    </xsl:template>
+
+    
+    <xsl:template match="marc:datafield[@tag= '300'][contains(ancestor::record/header/identifier, 'repositories/6')]">
+        <datafield ind1='{@ind1}' ind2='{@ind2}' tag='300'>
+            <subfield code='a'>
+            <!-- Concatenate 300 subfields into one string -->
+            <xsl:value-of select="string-join(marc:subfield, ' ')"/>
+            </subfield>           
+        </datafield>
+    </xsl:template>
+    
+    <!-- END RBMLBOOKS  -->
+
+
     <!--  remove elements without content (extra 035 and 040s etc being exported by AS for some reason) -->
     <xsl:template match="marc:datafield[not(marc:subfield)]">
         <!--        do nothing  -->
@@ -126,19 +243,13 @@
                 <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
             </subfield>
         </datafield>
-        <!-- <xsl:if test="not(../marc:datafield[@tag='035'][marc:subfield[contains(., 'NNC')]])">
-            <datafield ind1=" " ind2=" " tag="035">
-                <subfield code="a">
-                    <xsl:text>(NNC)</xsl:text>
-                    <xsl:value-of select="normalize-space(substring-after(., '-'))"/>
-                </subfield>
-            </datafield>    
-        </xsl:if>-->
     </xsl:template>
 
 
+    <!-- NOT RBMLBOOKS -->
+
     <!--  add repo to 040 field; test for UA in 852$j  -->
-    <xsl:template match="marc:datafield[@tag = '040'][marc:subfield]">
+    <xsl:template match="marc:datafield[@tag = '040'][marc:subfield] [not(contains(ancestor::record/header/identifier, 'repositories/6'))]">
 
     <!-- check if is UA -->
     <xsl:variable name="isUA">
@@ -151,6 +262,7 @@
         
 
         <datafield ind1=" " ind2=" " tag="040">
+            
             <subfield code="a">
                 <xsl:choose>
                     <xsl:when test="$isUA='Y'">
@@ -182,12 +294,15 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </subfield>
-            <subfield code="e">
-                <xsl:apply-templates select="marc:subfield[@code = 'e']/text()"/>
-            </subfield>
+            <xsl:if test="marc:subfield[@code = 'e']">
+                   <xsl:apply-templates select="marc:subfield[@code = 'e']"/>
+            </xsl:if>
         </datafield>
         
      </xsl:template>
+
+    <!-- END NOT RBMLBOOKS -->
+
 
     <!--    If there are 041 with empty subfields AND there are no 546 languages to parse, delete -->
     <xsl:template
@@ -195,8 +310,24 @@
             <!-- Do nothing -->
     </xsl:template>
 
-  
+ 
+ 
+    <!-- RBMLBOOKS --> 
+    <xsl:template match="marc:datafield[@tag = '245'][contains(ancestor::record/header/identifier, 'repositories/6')]">
+        <datafield ind1='{@ind1}' ind2='{@ind2}' tag='245'>
+            <xsl:apply-templates select="marc:subfield[not(@code = ('g','f'))]"/>
+        </datafield>
+        
+        <xsl:if test="marc:subfield[@code='g'] or marc:subfield[@code='f']">
+            <datafield ind1=' ' ind2='1' tag='264'>
+            <xsl:for-each select="marc:subfield[@code='f'] | marc:subfield[@code='g']">
+                <subfield code='c'><xsl:value-of select='normalize-space(.)'/></subfield>
+            </xsl:for-each>
+        </datafield>
+        </xsl:if>
+    </xsl:template>
     
+    <!-- END RBMLBOOKS --> 
 
     <!--  add "bulk" in front of 245 $g field  -->
     <xsl:template match="marc:datafield[@tag = '245']/marc:subfield[@code = 'g']">
@@ -214,35 +345,43 @@
         </subfield>
         </datafield>
     </xsl:template>
-    
+ 
+ 
+    <!-- ONLY FOR NON-RBMLBOOKS -->
+
     <!--  remove subfield e from 1XX  -->
 
-    <xsl:template match="marc:datafield[@tag[starts-with(., '1')]]/marc:subfield[@code = 'e']">
+    <xsl:template match="marc:datafield[@tag[starts-with(., '1')]]/marc:subfield[@code = 'e'] [not(contains(ancestor::record/header/identifier, 'repositories/6'))]">
         <!--     do nothing   -->
     </xsl:template>
 
     <!--  remove subfield e from 6XX  -->
 
-    <xsl:template match="marc:datafield[@tag[starts-with(., '6')]]/marc:subfield[@code = 'e']">
+    <xsl:template match="marc:datafield[@tag[starts-with(., '6')]]/marc:subfield[@code = 'e'] [not(contains(ancestor::record/header/identifier, 'repositories/6'))]">
         <!--     do nothing   -->
     </xsl:template>
 
     <!--  remove subfield e from 7XX  -->
 
-    <xsl:template match="marc:datafield[@tag[starts-with(., '7')]]/marc:subfield[@code = 'e']">
+    <xsl:template match="marc:datafield[@tag[starts-with(., '7')]]/marc:subfield[@code = 'e'] [not(contains(ancestor::record/header/identifier, 'repositories/6'))]">
         <!--     do nothing   -->
     </xsl:template>
-
+    
 
     <!--  remove subfield 0 from 6XX when there are subject subdivisions ($v, $x, $y, $z)  -->
     
-    <xsl:template match="marc:datafield[@tag[starts-with(., '6')]]/marc:subfield[@code = '0'][../marc:subfield/@code[contains('vxyz',.)]]">
+    <xsl:template match="marc:datafield[@tag[starts-with(., '6')]]/marc:subfield[@code = '0'][../marc:subfield/@code[contains('vxyz',.)]] [not(contains(ancestor::record/header/identifier, 'repositories/6'))]">
              <!--     do nothing   -->
     </xsl:template>
+    
+    <!-- END NON-RBMLBOOKS -->
     
 
 <!--  add $3 "Finding aid" to 856 fields -->
     <xsl:template match="marc:datafield[@tag = '856']">
+        
+        <!-- NOT RBMLBOOKS -->
+        <xsl:if test="not(contains(ancestor::record/header/identifier, 'repositories/6'))">
         <datafield ind1="4" ind2="2" tag="856">
             <subfield code="u">
                 <xsl:apply-templates select="marc:subfield[@code='u']/text()"/>    
@@ -254,6 +393,9 @@
                 <xsl:text>Finding aid</xsl:text>
             </subfield>
         </datafield>
+        </xsl:if>
+        <!-- END NOT RBMLBOOKS -->
+        
     </xsl:template>
 
     <!-- For corporate names (110 and 610), remove trailing comma if no subordinate name available. -->
@@ -289,55 +431,12 @@
         
   
     
-
-    <!--    reorder elements -->
-    <!-- Grab the record, copy the leader and sort the control and data fields. -->
-    <xsl:template match="marc:record">
-        <!-- output some info to saxon text stream -->
-        
-      
-        <xsl:message>
-            <xsl:value-of select="marc:datafield[@tag='099']/marc:subfield[@code='a']"/>
-            <xsl:text>: </xsl:text>
-            <xsl:value-of select="marc:datafield[@tag='245']/marc:subfield[@code='a']"/>
-            <xsl:text> (</xsl:text>
-            <xsl:value-of select="ancestor::record/header/datestamp"/>
-            <xsl:text>) </xsl:text>
-        </xsl:message>        
-        <record>
-            <xsl:element name="leader">
-                <xsl:value-of select="marc:leader"/>
-            </xsl:element>
-            <!--           for prod, move 099 to 001 -->
-            <xsl:element name="controlfield">
-                <xsl:attribute name="tag">001</xsl:attribute>
-                <xsl:apply-templates select="marc:datafield[@tag = '099']/marc:subfield[@code = 'a']/text()"/>
-            </xsl:element>
-            <!--         added 003 to allow for creation of 035 upon import   -->
-            <xsl:element name="controlfield">
-                <xsl:attribute name="tag">003</xsl:attribute>
-                <xsl:text>NNC</xsl:text>
-            </xsl:element>
-            <xsl:element name="controlfield">
-                <xsl:attribute name="tag">008</xsl:attribute>
-                <xsl:apply-templates select="marc:controlfield/text()"/>
-            </xsl:element>
-            <xsl:for-each select="marc:datafield">
-                <xsl:sort select="@tag"/>
-                <xsl:apply-templates select="."/>
-            </xsl:for-each>
-        </record>
-            
-    </xsl:template>
-
+    
     <!--    remove colons from beginning of fields -->
     <xsl:template match="marc:subfield[starts-with(., ':')]">
-        <xsl:element name="subfield">
-            <xsl:attribute name="code">
-                <xsl:value-of select="@code"/>
-            </xsl:attribute>
+        <subfield code='{@code}'>
             <xsl:copy-of select="normalize-space(translate(., ':', ''))"/>
-        </xsl:element>
+        </subfield>
     </xsl:template>
 
     <!--    remove commas from end of sub field d -->

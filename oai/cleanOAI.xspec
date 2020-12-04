@@ -595,5 +595,109 @@
 
         </x:expect>
     </x:scenario>
+       
+    
+<!--  RBMLBOOKS (repository 6)  -->
+    
+    <x:scenario
+        label="RBMLBOOKS record">
+        <x:context>
+            <record>
+                <header>
+                    <identifier>oai:columbia//repositories/6/resources/6410</identifier>
+                    <datestamp>2020-11-30T21:57:46Z</datestamp>
+                </header>
+                <metadata>
+                <marc:collection xmlns="http://www.loc.gov/MARC21/slim" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+                    <marc:record>
+                        <marc:leader>00000npcaa2200000 u 4500</marc:leader>
+                        <marc:controlfield tag="008">201130i        xxu                 eng d</marc:controlfield>
+                        <marc:datafield ind1=" " ind2=" " tag="035">
+                            <marc:subfield code="a">CULASPC-9999999</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="040">
+                            <marc:subfield code="a">NNC-RB</marc:subfield>
+                            <marc:subfield code="b">eng</marc:subfield>
+                            <marc:subfield code="c">NNC-RB</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="041">
+                            <marc:subfield code="a">eng</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="044">
+                            <marc:subfield code="a">xxu</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="049">
+                            <marc:subfield code="a">NNC-RB</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="099">
+                            <marc:subfield code="a">9999999</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1="0" ind2="0" tag="245">
+                            <marc:subfield code="a">TEST Mary, Queen of Scots collection,</marc:subfield>
+                            <marc:subfield code="f">1700 – 1890 </marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="300">
+                            <marc:subfield code="a">approximately 1000</marc:subfield>
+                            <marc:subfield code="f">Volumes</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="852">
+                            <marc:subfield code="a">Columbia University Libraries</marc:subfield>
+                            <marc:subfield code="b">Rare Book and Manuscript Library Book Collections</marc:subfield>
+                            <marc:subfield code="c">9999999</marc:subfield>
+                        </marc:datafield>
+                    </marc:record>
+                </marc:collection>
+            </metadata>
+            </record>
+            
+        </x:context>
+        
+        <x:expect label="Process RBMLBOOKS with separate rules. See ACFA-278.">
+            <record>
+                <leader>00000cac a2200070 u 4500</leader>
+                <controlfield tag="001">9999999</controlfield>
+                <controlfield tag="008">201130i        vp                 eng d</controlfield>
+                <datafield ind1=" " ind2=" " tag="035">
+                    <subfield code="a">(NNC)CULASPC:voyager:9999999</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="040">
+                    <subfield code="a">NNC-RB</subfield>
+                    <subfield code="b">eng</subfield>
+                    <subfield code="c">NNC-RB</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="041">
+                    <subfield code="a">eng</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="099">
+                    <subfield code="a">9999999</subfield>
+                </datafield>
+                <datafield ind1="0" ind2="0" tag="245">
+                    <subfield code="a">TEST Mary, Queen of Scots collection,</subfield>
+                </datafield>
+                <datafield ind1=" " ind2="1" tag="264">
+                    <subfield code="c">1700 – 1890</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="300">
+                    <subfield code="a">approximately 1000 Volumes</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="336">
+                    <subfield code="a">text</subfield>
+                    <subfield code="b">txt</subfield>
+                    <subfield code="2">rdacontent</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="337">
+                    <subfield code="a">unmediated</subfield>
+                    <subfield code="b">n</subfield>
+                    <subfield code="2">rdamedia</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="338">
+                    <subfield code="a">volume</subfield>
+                    <subfield code="b">nc</subfield>
+                    <subfield code="2">rdacarrier</subfield>
+                </datafield>
+            </record>
+        </x:expect>
+    </x:scenario>
+    
     
 </x:description>
