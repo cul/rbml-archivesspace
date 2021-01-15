@@ -108,6 +108,7 @@
                 <xsl:apply-templates select="marc:datafield"/>
                 
                 <!-- RBMLBOOKS  -->
+                <!-- Some add-ins only for RBMLBOOKS -->
                 <xsl:if test="$repo = '6'">
                     <datafield ind1=" " ind2=" " tag='336'>
                         <subfield code='a'>text</subfield>
@@ -131,7 +132,7 @@
             <xsl:choose>
                 <!-- RBMLBOOKS  -->
                 <xsl:when test="$repo = '6'">
-                    <leader>00000cac a2200070 u 4500</leader>
+                    <leader>00000cac a22000707i 4500</leader>
                 </xsl:when>
                 <!-- END RBMLBOOKS  -->
                 <xsl:otherwise>
@@ -150,7 +151,19 @@
                 <!-- RBMLBOOKS  -->
                 <xsl:when test="contains(ancestor::record/header/identifier, 'repositories/6')">
                     <controlfield tag='008'>
-                        <xsl:value-of select="replace(marc:controlfield[@tag='008'],'xxu','vp')"/>
+                        <!-- Test if there are only bulk dates, and change pos 6 to k if so; -->
+                        <!-- otherwise leave as inclusive ('i') dates. -->
+                        <xsl:choose>
+                            <xsl:when test="marc:datafield[@tag='245']/marc:subfield[@code='g']
+                                and 
+                                not(marc:datafield[@tag='245']/marc:subfield[@code='f'])">
+                                <xsl:value-of select="replace(substring(marc:controlfield[@tag='008'], 1, 7), 'i', 'k')"/>
+                            </xsl:when>
+                            <xsl:otherwise><xsl:value-of select="substring(marc:controlfield[@tag='008'],1,7)"/></xsl:otherwise>
+                        </xsl:choose>
+                       
+                        <xsl:value-of select="replace(substring(marc:controlfield[@tag='008'], 8),'xxu','vp')"/>
+                        <!--<xsl:value-of select="replace(marc:controlfield[@tag='008'],'xxu','vp')"/>-->
                     </controlfield>
                 </xsl:when>
                 <!-- END RBMLBOOKS  -->
@@ -220,6 +233,34 @@
         </datafield>
     </xsl:template>
     
+    <!--   Omit 099   -->
+    <xsl:template match="marc:datafield[@tag='099'][contains(ancestor::record/header/identifier, 'repositories/6')]">
+    </xsl:template>
+   
+   
+        <!--   Omit 035 if has only bibid w no prefix    -->
+ 
+    <xsl:template match="marc:datafield[@tag='035'][contains(ancestor::record/header/identifier, 'repositories/6')]">
+        <xsl:if test="not(matches(marc:subfield[@code='a'], '^\d+$'))">
+            
+            <datafield ind1="{@ind1}" ind2="{@ind2}" tag="035">
+                <xsl:apply-templates/>
+            </datafield>
+        </xsl:if>
+    </xsl:template>
+   
+
+
+    <xsl:template match="marc:datafield[starts-with(@tag,'1')][contains(ancestor::record/header/identifier, 'repositories/6')]">
+        <datafield ind1="{@ind1}" ind2="{@ind2}" tag="7{substring(@tag,2,2)}">
+            <xsl:apply-templates/>
+        </datafield>
+        
+    </xsl:template>
+    
+
+
+
     <!-- END RBMLBOOKS  -->
 
 
@@ -233,10 +274,13 @@
         <!--        do nothing  -->
     </xsl:template>
 
+
+    <!-- NOT RBMLBOOKS -->
+    
     <!--    reformat 035 CULASPC to local practice, add NNC 035 field -->
     <!--    commented out second test, no longer applicable for dupe NNC 035s: added test for adjacent silbing with 035 containing NNC; if exists, do nothing. If not, create.    -->
     <!--  see below, added a control field 003 to allow for proper 035 building upon ingest into voyager  -->
-    <xsl:template match="marc:datafield[@tag = '035'][marc:subfield[contains(., 'CULASPC')]]">
+    <xsl:template match="marc:datafield[@tag = '035'][marc:subfield[contains(., 'CULASPC')]][not(contains(ancestor::record/header/identifier, 'repositories/6'))]">
         <datafield ind1=" " ind2=" " tag="035">
             <subfield code="a">
                 <xsl:text>(NNC)CULASPC:voyager:</xsl:text>
@@ -245,8 +289,6 @@
         </datafield>
     </xsl:template>
 
-
-    <!-- NOT RBMLBOOKS -->
 
     <!--  add repo to 040 field; test for UA in 852$j  -->
     <xsl:template match="marc:datafield[@tag = '040'][marc:subfield] [not(contains(ancestor::record/header/identifier, 'repositories/6'))]">
@@ -303,6 +345,13 @@
 
     <!-- END NOT RBMLBOOKS -->
 
+
+    <!-- RBMLBOOKS   -->
+    <xsl:template match="marc:datafield[@tag = '040']/marc:subfield[@code=('a','c')] [contains(ancestor::record/header/identifier, 'repositories/6')]">
+        <subfield code='{@code}'>NNC</subfield>        
+    </xsl:template>
+    <!-- END RBMLBOOKS   -->
+    
 
     <!--    If there are 041 with empty subfields AND there are no 546 languages to parse, delete -->
     <xsl:template

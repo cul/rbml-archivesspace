@@ -602,16 +602,11 @@
     <x:scenario
         label="RBMLBOOKS record">
         <x:context>
-            <record>
-                <header>
-                    <identifier>oai:columbia//repositories/6/resources/6410</identifier>
-                    <datestamp>2020-11-30T21:57:46Z</datestamp>
-                </header>
-                <metadata>
+            <record><header><identifier>oai:columbia//repositories/6/resources/6410</identifier><datestamp>2020-12-22T23:56:54Z</datestamp></header><metadata>
                 <marc:collection xmlns="http://www.loc.gov/MARC21/slim" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
                     <marc:record>
                         <marc:leader>00000npcaa2200000 u 4500</marc:leader>
-                        <marc:controlfield tag="008">201130i        xxu                 eng d</marc:controlfield>
+                        <marc:controlfield tag="008">201229i17001890xxu                 mul d</marc:controlfield>
                         <marc:datafield ind1=" " ind2=" " tag="035">
                             <marc:subfield code="a">CULASPC-9999999</marc:subfield>
                         </marc:datafield>
@@ -622,9 +617,8 @@
                         </marc:datafield>
                         <marc:datafield ind1=" " ind2=" " tag="041">
                             <marc:subfield code="a">eng</marc:subfield>
-                        </marc:datafield>
-                        <marc:datafield ind1=" " ind2=" " tag="044">
-                            <marc:subfield code="a">xxu</marc:subfield>
+                            <marc:subfield code="a">fre</marc:subfield>
+                            <marc:subfield code="a">lat</marc:subfield>
                         </marc:datafield>
                         <marc:datafield ind1=" " ind2=" " tag="049">
                             <marc:subfield code="a">NNC-RB</marc:subfield>
@@ -632,13 +626,57 @@
                         <marc:datafield ind1=" " ind2=" " tag="099">
                             <marc:subfield code="a">9999999</marc:subfield>
                         </marc:datafield>
-                        <marc:datafield ind1="0" ind2="0" tag="245">
+                        <marc:datafield ind1="1" ind2=" " tag="100">
+                            <marc:subfield code="a">De Peyster, J. Watts</marc:subfield>
+                            <marc:subfield code="q">(John Watts),</marc:subfield>
+                            <marc:subfield code="d">1821-1907.</marc:subfield>
+                            <marc:subfield code="4">donor</marc:subfield>
+                            <marc:subfield code="0">http://id.loc.gov/authorities/names/n79055105</marc:subfield>
+                        </marc:datafield>
+                        
+                        <marc:datafield ind1="2" ind2=" " tag="110">
+                            <marc:subfield code="a">Daughters of Sarah,</marc:subfield>
+                            <marc:subfield code="e">creator,</marc:subfield>
+                            <marc:subfield code="g">(Organization).</marc:subfield>
+                            <marc:subfield code="0">http://id.loc.gov/authorities/names/no90003894</marc:subfield>
+                        </marc:datafield>
+                        
+                        <marc:datafield ind1="1" ind2="0" tag="245">
                             <marc:subfield code="a">TEST Mary, Queen of Scots collection,</marc:subfield>
-                            <marc:subfield code="f">1700 – 1890 </marc:subfield>
+                            <marc:subfield code="g">bulk 1700-1890 </marc:subfield>
                         </marc:datafield>
                         <marc:datafield ind1=" " ind2=" " tag="300">
-                            <marc:subfield code="a">approximately 1000</marc:subfield>
+                            <marc:subfield code="a">approximately 1001</marc:subfield>
                             <marc:subfield code="f">Volumes</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="500">
+                            <marc:subfield code="a">Collection title supplied by cataloger</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="500">
+                            <marc:subfield code="a">See also individual catalog records for titles in the collection. This collection has a special classification with the identifying letter &quot;M&quot; prefixed to the call number, and sublocation code MARY Q preceding the call number</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1="2" ind2=" " tag="520">
+                            <marc:subfield code="a">Collection of books and manuscripts relating to Mary, Queen of Scots, and to the Thirty Years' War; most of the collection was donated to the Library by General J. Watts de Peyster, 1888-1893</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1="1" ind2="0" tag="600">
+                            <marc:subfield code="a">De Peyster, J. Watts</marc:subfield>
+                            <marc:subfield code="q">(John Watts),</marc:subfield>
+                            <marc:subfield code="d">1821-1907.</marc:subfield>
+                            <marc:subfield code="0">http://id.loc.gov/authorities/names/n79055105</marc:subfield>
+                            <marc:subfield code="x">Library</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1="0" ind2="0" tag="600">
+                            <marc:subfield code="a">Mary,</marc:subfield>
+                            <marc:subfield code="c">Queen of Scots,</marc:subfield>
+                            <marc:subfield code="d">1542-1587.</marc:subfield>
+                            <marc:subfield code="0">http://id.loc.gov/authorities/names/n80044764</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2="0" tag="650">
+                            <marc:subfield code="a">Thirty Years' War, 1618-1648</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1="2" ind2=" " tag="710">
+                            <marc:subfield code="a">Mary, Queen of Scots Collection (Columbia University. Rare Book and Manuscript Library),</marc:subfield>
+                            <marc:subfield code="e">creator.</marc:subfield>
                         </marc:datafield>
                         <marc:datafield ind1=" " ind2=" " tag="852">
                             <marc:subfield code="a">Columbia University Libraries</marc:subfield>
@@ -647,38 +685,36 @@
                         </marc:datafield>
                     </marc:record>
                 </marc:collection>
-            </metadata>
-            </record>
+            </metadata></record>
             
         </x:context>
         
         <x:expect label="Process RBMLBOOKS with separate rules. See ACFA-278.">
             <record>
-                <leader>00000cac a2200070 u 4500</leader>
+                <leader>00000cac a22000707i 4500</leader>
                 <controlfield tag="001">9999999</controlfield>
-                <controlfield tag="008">201130i        vp                 eng d</controlfield>
+                <controlfield tag="008">201229k17001890vp                 mul d</controlfield>
                 <datafield ind1=" " ind2=" " tag="035">
-                    <subfield code="a">(NNC)CULASPC:voyager:9999999</subfield>
+                    <subfield code="a">CULASPC-9999999</subfield>
                 </datafield>
                 <datafield ind1=" " ind2=" " tag="040">
-                    <subfield code="a">NNC-RB</subfield>
+                    <subfield code="a">NNC</subfield>
                     <subfield code="b">eng</subfield>
-                    <subfield code="c">NNC-RB</subfield>
+                    <subfield code="c">NNC</subfield>
                 </datafield>
                 <datafield ind1=" " ind2=" " tag="041">
                     <subfield code="a">eng</subfield>
+                    <subfield code="a">fre</subfield>
+                    <subfield code="a">lat</subfield>
                 </datafield>
-                <datafield ind1=" " ind2=" " tag="099">
-                    <subfield code="a">9999999</subfield>
-                </datafield>
-                <datafield ind1="0" ind2="0" tag="245">
+                <datafield ind1="1" ind2="0" tag="245">
                     <subfield code="a">TEST Mary, Queen of Scots collection,</subfield>
                 </datafield>
                 <datafield ind1=" " ind2="1" tag="264">
-                    <subfield code="c">1700 – 1890</subfield>
+                    <subfield code="c">bulk 1700-1890</subfield>
                 </datafield>
                 <datafield ind1=" " ind2=" " tag="300">
-                    <subfield code="a">approximately 1000 Volumes</subfield>
+                    <subfield code="a">approximately 1001 Volumes</subfield>
                 </datafield>
                 <datafield ind1=" " ind2=" " tag="336">
                     <subfield code="a">text</subfield>
@@ -695,9 +731,121 @@
                     <subfield code="b">nc</subfield>
                     <subfield code="2">rdacarrier</subfield>
                 </datafield>
+                <datafield ind1=" " ind2=" " tag="500">
+                    <subfield code="a">Collection title supplied by cataloger</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="500">
+                    <subfield code="a">See also individual catalog records for titles in the collection. This collection has a special classification with the identifying letter "M" prefixed to the call number, and sublocation code MARY Q preceding the call number</subfield>
+                </datafield>
+                <datafield ind1="2" ind2=" " tag="520">
+                    <subfield code="a">Collection of books and manuscripts relating to Mary, Queen of Scots, and to the Thirty Years' War; most of the collection was donated to the Library by General J. Watts de Peyster, 1888-1893</subfield>
+                </datafield>
+                <datafield ind1="1" ind2="0" tag="600">
+                    <subfield code="a">De Peyster, J. Watts</subfield>
+                    <subfield code="q">(John Watts),</subfield>
+                    <subfield code="d">1821-1907</subfield>
+                    <subfield code="0">http://id.loc.gov/authorities/names/n79055105</subfield>
+                    <subfield code="x">Library</subfield>
+                </datafield>
+                <datafield ind1="0" ind2="0" tag="600">
+                    <subfield code="a">Mary,</subfield>
+                    <subfield code="c">Queen of Scots,</subfield>
+                    <subfield code="d">1542-1587</subfield>
+                    <subfield code="0">http://id.loc.gov/authorities/names/n80044764</subfield>
+                </datafield>
+                <datafield ind1=" " ind2="0" tag="650">
+                    <subfield code="a">Thirty Years' War, 1618-1648</subfield>
+                </datafield>
+                <datafield ind1="1" ind2=" " tag="700">
+                    <subfield code="a">De Peyster, J. Watts</subfield>
+                    <subfield code="q">(John Watts),</subfield>
+                    <subfield code="d">1821-1907</subfield>
+                    <subfield code="4">donor</subfield>
+                    <subfield code="0">http://id.loc.gov/authorities/names/n79055105</subfield>
+                </datafield>
+                <datafield ind1="2" ind2=" " tag="710">
+                    <subfield code="a">Daughters of Sarah</subfield>
+                    <subfield code="e">creator,</subfield>
+                    <subfield code="g">(Organization).</subfield>
+                    <subfield code="0">http://id.loc.gov/authorities/names/no90003894</subfield>
+                </datafield>
+               <datafield ind1="2" ind2=" " tag="710">
+                    <subfield code="a">Mary, Queen of Scots Collection (Columbia University. Rare Book and Manuscript Library),</subfield>
+                    <subfield code="e">creator.</subfield>
+                </datafield>
             </record>
         </x:expect>
     </x:scenario>
     
+    
+    <x:scenario
+        label="RBMLBOOKS record 2 (008,035)">
+        <x:context>
+            <record><header><identifier>oai:columbia//repositories/6/resources/6410</identifier><datestamp>2020-12-22T23:56:54Z</datestamp></header><metadata>
+                <marc:collection xmlns="http://www.loc.gov/MARC21/slim" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+                    <marc:record>
+                        <marc:leader>00000npcaa2200000 u 4500</marc:leader>
+                        <marc:controlfield tag="008">201229i17001890xxu                 mul d</marc:controlfield>
+                        <marc:datafield ind1=" " ind2=" " tag="035">
+                            <marc:subfield code="a">9999999</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="040">
+                            <marc:subfield code="a">NNC-RB</marc:subfield>
+                            <marc:subfield code="b">eng</marc:subfield>
+                            <marc:subfield code="c">NNC-RB</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="041">
+                            <marc:subfield code="a">eng</marc:subfield>
+                            <marc:subfield code="a">fre</marc:subfield>
+                            <marc:subfield code="a">lat</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="049">
+                            <marc:subfield code="a">NNC-RB</marc:subfield>
+                        </marc:datafield>
+                        <marc:datafield ind1=" " ind2=" " tag="099">
+                            <marc:subfield code="a">9999999</marc:subfield>
+                        </marc:datafield>
+                        
+  
+                    </marc:record>
+                </marc:collection>
+            </metadata></record>
+            
+        </x:context>
+        
+        <x:expect label="RBMLBOOKS: variation for 008, 035. See ACFA-278.">
+            <record>
+                <leader>00000cac a22000707i 4500</leader>
+                <controlfield tag="001">9999999</controlfield>
+                <controlfield tag="008">201229i17001890vp                 mul d</controlfield>
+                 <datafield ind1=" " ind2=" " tag="040">
+                    <subfield code="a">NNC</subfield>
+                    <subfield code="b">eng</subfield>
+                    <subfield code="c">NNC</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="041">
+                    <subfield code="a">eng</subfield>
+                    <subfield code="a">fre</subfield>
+                    <subfield code="a">lat</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="336">
+                    <subfield code="a">text</subfield>
+                    <subfield code="b">txt</subfield>
+                    <subfield code="2">rdacontent</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="337">
+                    <subfield code="a">unmediated</subfield>
+                    <subfield code="b">n</subfield>
+                    <subfield code="2">rdamedia</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="338">
+                    <subfield code="a">volume</subfield>
+                    <subfield code="b">nc</subfield>
+                    <subfield code="2">rdacarrier</subfield>
+                </datafield>
+ 
+            </record>
+        </x:expect>
+    </x:scenario>
     
 </x:description>
