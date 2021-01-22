@@ -239,8 +239,9 @@
    
    
         <!--   Omit 035 if has only bibid w no prefix    -->
- 
-    <xsl:template match="marc:datafield[@tag='035'][contains(ancestor::record/header/identifier, 'repositories/6')]">
+        <!--   (Cancelling this per kws convo 1/22/21.)       -->
+<!--
+     <xsl:template match="marc:datafield[@tag='035'][marc:subfield][contains(ancestor::record/header/identifier, 'repositories/6')]">
         <xsl:if test="not(matches(marc:subfield[@code='a'], '^\d+$'))">
             
             <datafield ind1="{@ind1}" ind2="{@ind2}" tag="035">
@@ -248,7 +249,7 @@
             </datafield>
         </xsl:if>
     </xsl:template>
-   
+   -->
 
 
     <xsl:template match="marc:datafield[starts-with(@tag,'1')][contains(ancestor::record/header/identifier, 'repositories/6')]">

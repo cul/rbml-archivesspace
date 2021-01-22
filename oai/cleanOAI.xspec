@@ -818,7 +818,12 @@
                 <leader>00000cac a22000707i 4500</leader>
                 <controlfield tag="001">9999999</controlfield>
                 <controlfield tag="008">201229i17001890vp                 mul d</controlfield>
-                 <datafield ind1=" " ind2=" " tag="040">
+                <datafield ind1=" "
+                    ind2=" "
+                    tag="035">
+                    <subfield code="a">9999999</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="040">
                     <subfield code="a">NNC</subfield>
                     <subfield code="b">eng</subfield>
                     <subfield code="c">NNC</subfield>
