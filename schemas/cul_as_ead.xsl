@@ -200,7 +200,7 @@
    
     <xsl:template match="extref/@*:href" mode="eval">
         <!-- Test for links to .xls|.xlsx|.pdf over http that may be blocked by browser. -->
-        <xsl:if test="matches(.,'\s?http:.*\.(xlsx?|pdf)\s?')">
+        <xsl:if test="matches(.,'\s?http:.*\.(xlsx?|docx?|pdf|csv)\s?')">
             <xsl:call-template name="errorMsg">
                 <xsl:with-param name="tag">data</xsl:with-param>
                 <xsl:with-param name="errStr">extref has insecure link to binary file: <xsl:value-of select="."/></xsl:with-param>
