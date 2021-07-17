@@ -1,8 +1,6 @@
-# Script to copy the latest EAD files and validate them against schema and schematron. Output is piped to a google sheet report using sheetFeeder.
+# Script to copy the latest EAD files and parse, validate them against schema, and evaluate them with XSLT audit stylesheet. Output is piped to a google sheet report using sheetFeeder.
 
 
-import subprocess
-import csv
 import os
 import re
 import datetime
@@ -13,21 +11,26 @@ import digester  # for generating composite digest of report info.
 
 def main():
 
-    report_level = "low"
-    # 'low' = only parse/schema errors; 'high' = include schematron warnings
-
-    my_name = __file__
-    script_name = os.path.basename(my_name)
+    MY_NAME = __file__
+    global SCRIPT_NAME
+    SCRIPT_NAME = os.path.basename(MY_NAME)
 
     # This makes sure the script can be run from any working directory and still find related files.
-    my_path = os.path.dirname(__file__)
+    MY_PATH = os.path.dirname(__file__)
+
+    sheet_id = '1Ltf5_hhR-xN4YSvNWmPX8bqJA1UjqAaSjgeHBr_5chA'
+
+    parse_sheet = dataSheet(sheet_id, 'parse!A:Z')  # Test
+    validation_sheet = dataSheet(sheet_id, 'schema!A:Z')  # Test
+    eval_sheet = dataSheet(sheet_id, 'eval!A:Z')  # Test
+
+    # This is a dupe for other reporting
+    # the_data_sheet2 = dataSheet(
+    #     "198ON5qZ3MYBWPbSAopWkGE6hcUD8P-KMkWkq2qRooOY", "validation!A:Z")
 
     now1 = datetime.datetime.now()
     start_time = str(now1)
     end_time = ""  # set later
-
-    print("Script " + my_name + " begun at " + start_time + ". ")
-    print(" ")
 
     ################################
     #
@@ -38,15 +41,15 @@ def main():
     print("====== Syncing files from production cache... ======")
     print(" ")
 
-    keyPath = "/home/ldpdapp/.ssh/id_dsa"
+    # keyPath = "/home/ldpdserv/.ssh/id_dsa"
     fromPath = (
-        "ldpdapp@ldpd-nginx-prod1:/opt/passenger/ldpd/findingaids_prod/caches/ead_cache"
+        "ldpdserv@ldpd-nginx-prod1:/opt/passenger/ldpd/findingaids_prod/caches/ead_cache"
     )
     toPath = "/cul/cul0/ldpd/archivesspace/"
 
     myOptions = "--exclude 'clio*'"
 
-    x = util.rsync_process(keyPath, fromPath, toPath, myOptions)
+    x = util.rsync_process(fromPath, toPath, myOptions)
     print(x)
 
     print(" ")
@@ -57,199 +60,144 @@ def main():
     #
     ################################
 
-    print("====== Validating files... ======")
-    print(" ")
+    schema_path = os.path.join(MY_PATH, "../schemas/cul_as_ead.rng")
 
-    if report_level == "high":
-        print(
-            '* Logging level: "'
-            + report_level
-            + '" — showing all errors and warnings. *'
-        )
-    else:
-        print(
-            '* Logging level: "'
-            + report_level
-            + '" – showing only errors. Check report for complete results including warnings. *'
-        )
+    csv_out_path = os.path.join(MY_PATH, "temp_out.txt")
 
-    print(" ")
-
-    # The Google Sheet to send data to
-    the_data_sheet = dataSheet(
-        "1tQY9kR5YOh1e7i4dVRsl_GMxpNnUgCkb5X8qJQBAsG0", "validation!A:Z")
-
-    # the_data_sheet = dataSheet(
-    #     '1tQY9kR5YOh1e7i4dVRsl_GMxpNnUgCkb5X8qJQBAsG0', 'test!A:Z')  # Test
-
-    # This is a dupe for other reporting
-    the_data_sheet2 = dataSheet(
-        "198ON5qZ3MYBWPbSAopWkGE6hcUD8P-KMkWkq2qRooOY", "validation!A:Z")
-
-    # Set path to saxon processor for evaluator xslt
-    saxon_path = os.path.join(my_path, '../../resources/saxon-9.8.0.12-he.jar')
-
-    # Set path to schema validator (Jing)
-    jing_path = os.path.join(
-        my_path, "../../resources/jing-20091111/bin/jing.jar")
-
-    schema_filename = "schemas/cul_as_ead.rng"
-    # schematron_filename = "schemas/cul_as_ead.sch"
-    xslt_filename = "schemas/cul_as_ead.xsl"
-    schema_path = os.path.join(my_path, schema_filename)
-    xslt_path = os.path.join(my_path, xslt_filename)
+    xslt_path = os.path.join(MY_PATH, "../schemas/cul_as_ead2.xsl")  # test
 
     data_folder = "/cul/cul0/ldpd/archivesspace/ead_cache"
+    # data_folder = "/Users/dwh2128/Documents/ACFA/exist-local/backups/cached_eads/ead_rsync_test"  # test
     # data_folder = '/cul/cul0/ldpd/archivesspace/test/ead'  # for testing
 
     # Use in notification email to distinguish errors/warnings
     icons = {
-        "redx": "\U0000274C",  # use for parse errors
+        "redx": "\U0000274C",
         "exclamation": "\U00002757",
-        "warning": "\U000026A0\U0000FE0F",  # use for schema validation errors
+        "warning": "\U000026A0\U0000FE0F",
         "qmark": "\U00002753",
     }
 
-    # Load files from directory into a list
-    the_file_paths = []
-    for root, dirs, files in os.walk(os.path.abspath(data_folder)):
-        for file in files:
-            the_file_paths.append(os.path.join(root, file))
+    # check for malformed xml. If there is, then don't do further validation because it will fail once it hits an unparseable file.
 
-    # The column heads for the report spreadsheet
-    the_heads = [
-        "bibid",
-        "file",
-        "well-formed?",
-        "valid?",
-        "schema output",
-        "schematron output",
-        "warning type",
-    ]
+    print(" ")
+    print("====== Checking well-formedness ... ======")
 
-    the_results = []
+    parse_errs = []
+    try:
+        x = util.run_bash('xmllint ' + data_folder +
+                          '/* --noout', errorPrefix='PARSE')
+        # print(x)
+        log_it("All files well-formed.")
 
-    the_results.append(the_heads)
+    except Exception as e:
+        if 'PARSEERROR' in str(e):
+            parse_errs = [
+                msg_parse(l, icons['redx'])
+                for l in str(e).splitlines()
+                if 'as_ead' in l]
 
-    # counters
-    parse_errors = 0
-    validation_errors = 0
-    sch_warnings = 0
+            # print(parse_errs)
+        for e in get_unique_bibids(parse_errs):
+            log_it(icons['redx'] + " " +
+                   str(e) + " has parsing errors.")
 
-    for a_file in the_file_paths:
-        the_file_data = []
-        file_name = a_file.split("/")[-1]
-        bibid = file_name.split("_")[-1].split(".")[0]
+    parse_err_cnt = get_unique_count(parse_errs)
 
-        validation_result = util.jing_process(jing_path, a_file, schema_path)
+    if parse_errs:
 
-        if "fatal:" in validation_result:
-            # It's a parsing error.
-            err_msg = icons["redx"] + " FATAL ERROR: " + \
-                file_name + " could not be parsed!"
-            print(err_msg)
-            digester.post_digest(script_name, err_msg)
-            wf_status = False
-            validation_status = False
-            parse_errors += 1
-        else:
-            wf_status = True
-            if "error:" in validation_result:
-                # It's a validation error.
-                validation_status = False
-                err_msg = icons["warning"] + " ERROR: " + \
-                    file_name + " contains validation errors."
-                print(err_msg)
-                digester.post_digest(script_name, err_msg)
-                validation_errors += 1
-            else:
-                validation_status = True
+        log_it('There were ' + str(parse_err_cnt) +
+               ' unparseable records! Validation of files could not be completed. Fix syntax and run script again.')
+        parse_sheet.clear()
+        parse_sheet.appendData(parse_errs)
+        quit()
 
-        if validation_result:
-            validation_result_clean = clean_output(validation_result, incl_types=False)[
-                0
-            ]
-        else:
-            validation_result_clean = validation_result
+    # No parsing errors, so proceed...
+    parse_sheet.clear()
 
-        if wf_status == False:
-            schematron_result_clean = "-"
-            warning_types = []
+    print(" ")
+    print("====== Validating files... ======")
 
-        else:
+    # Validate against schema. Xargs batches files so they won't exceed
+    # limit on arguments with thousands of files.
 
-            # schematron_result = util.jing_process(
-            #     jing_path, a_file, schematron_path)
-            schematron_result = util.saxon_process(
-                saxon_path, a_file, xslt_path, None)
+    x = util.run_bash('find ' + data_folder +
+                      ' -name "as_ead*"  | xargs -L 128 java -jar ' +
+                      util.config['FILES']['jingPath'] + ' -d ' + schema_path, errorPrefix='JING')
 
-            if schematron_result:
-                # It's a schematron violiation.
-                if report_level == "high":
-                    # Only show if required by reporting level var (use to filter out large numbers of warnings).
-                    err_msg = "WARNING: " + file_name + " has Schematron rule violations."
-                    print(err_msg)
-                    digester.post_digest(script_name, err_msg)
-                sch_warnings += 1
+    schema_errs = [
+        msg_parse(l, icons['exclamation'])
+        for l in str(x).splitlines()
+        if 'as_ead' in l]
 
-            if schematron_result:
-                x = clean_output(schematron_result, incl_types=True)
-                schematron_result_clean = x[0]
-                warning_types = x[1]
-            else:
-                schematron_result_clean = ""
-                warning_types = ""
+    schema_err_cnt = get_unique_count(schema_errs)
 
-        the_file_data = [
-            bibid,
-            file_name,
-            wf_status,
-            validation_status,
-            validation_result_clean,
-            schematron_result_clean,
-            ", ".join(warning_types),
-        ]
+    if schema_errs:
+        for e in get_unique_bibids(schema_errs):
+            log_it(icons['exclamation'] + " " +
+                   str(e) + " has validation errors.")
+    else:
+        log_it("All files are valid.")
 
-        the_results.append(the_file_data)
+    validation_sheet.clear()
+    validation_sheet.appendData(schema_errs)
 
-    the_data_sheet.clear()
-    the_data_sheet.appendData(the_results)
-    the_data_sheet2.clear()
-    the_data_sheet2.appendData(the_results)
+    print(" ")
+    print("====== Evaluating with XSLT ... ======")
 
-    # generate log and add to log tab, if exists.
-    the_tabs = the_data_sheet.initTabs
+    try:
+        x = util.saxon_process(xslt_path, xslt_path, csv_out_path,
+                               theParams='filePath=' + data_folder)
+        eval_sheet.clear()
+        eval_sheet.importCSV(csv_out_path, delim='|')
+
+    except Exception as e:
+        if "SAXON ERROR" in str(e):
+            print("Cancelled!")
+
+    evals = eval_sheet.getDataColumns()[0]
+    eval_bibs = set(evals)
+    warnings_cnt = len(eval_bibs)
+
+    if evals:
+        log_it(icons['warning'] + " " + str(len(evals)) +
+               " warnings in " + str(warnings_cnt) + " files.")
+    else:
+        log_it("There were no problems found!")
+
+    the_tabs = validation_sheet.initTabs
 
     now2 = datetime.datetime.now()
     end_time = str(now2)
-    my_duration = str(now2 - now1)
-
-    the_log = (
-        "EADs from "
-        + data_folder
-        + " evaluated by "
-        + schema_filename
-        + " and "
-        + xslt_filename
-        + ". Parse errors: "
-        + str(parse_errors)
-        + ". Schema errors: "
-        + str(validation_errors)
-        + ". Schematron warnings: "
-        + str(sch_warnings)
-        + ". Start: "
-        + start_time
-        + ". Finished: "
-        + end_time
-        + " (duration: "
-        + my_duration
-        + ")."
-    )
 
     if "log" in the_tabs:
         log_range = "log!A:A"
+        my_duration = str(now2 - now1)
+
+        the_log = (
+            "EADs from "
+            + data_folder
+            + " evaluated by "
+            + schema_path
+            + " and "
+            + xslt_path
+            + ". Parse errors: "
+            + str(parse_err_cnt)
+            + ". Schema errors: "
+            + str(schema_err_cnt)
+            + ". XSLT warnings: "
+            + str(warnings_cnt)
+            + ". Start: "
+            + start_time
+            + ". Finished: "
+            + end_time
+            + " (duration: "
+            + my_duration
+            + ")."
+        )
+
         # today = datetime.datetime.today().strftime('%c')
-        dataSheet(the_data_sheet.id, log_range).appendData([[the_log]])
+        dataSheet(validation_sheet.id, log_range).appendData([[the_log]])
     else:
         print("*** Warning: There is no log tab in this sheet. ***")
 
@@ -257,44 +205,40 @@ def main():
 
     # print(the_log)
 
-    print("Parse errors: " + str(parse_errors))
-    digester.post_digest(script_name, "Parse errors: " + str(parse_errors))
-    print("Schema errors: " + str(validation_errors))
-    digester.post_digest(script_name, "Schema errors: " +
-                         str(validation_errors))
-    print("Schematron warnings: " + str(sch_warnings))
-    digester.post_digest(
-        script_name, "Schematron warnings: " + str(sch_warnings))
+    log_it("Files with parse errors: " + str(parse_err_cnt))
+    log_it("Files with schema errors: " + str(schema_err_cnt))
+    log_it("Files with warnings: " + str(warnings_cnt))
 
     print(" ")
 
-    exit_msg = "Script done. Check report sheet for more details: " + the_data_sheet.url
-    print(exit_msg)
-    digester.post_digest(script_name, exit_msg)
+    exit_msg = "Script done. Check report sheet for more details: " + validation_sheet.url
+    log_it(exit_msg)
 
     quit()
 
 
-def clean_output(in_str, incl_types=True):
-    out_str = in_str
-    if incl_types == True:
-        # parse diagnostics terms (error types) to new list
-        # (the schematron must enclose them in {curly braces} for this to work)
-        err_types = re.findall(r"\{(.*?)\}", in_str)
-        err_types = list(set(err_types))
-        # remove diagnostics strings, as they have been captured above
-        out_str = re.sub(r" *\{.*?\}", r"", out_str, flags=re.MULTILINE)
-    else:
-        err_types = []
-    # remove file path from each line, leaving line number
-    # out_str = re.sub(r"^ */.*?\.xml:(.*)$", r"\1", out_str, flags=re.MULTILINE)
-    # # cleanup
-    # out_str = re.sub(
-    #     r": error: (assertion failed|report):\s+", r": ", out_str, flags=re.MULTILINE
-    # )
-    out_str = re.sub(r"\n$", r"", out_str)
-    # returns a list in format [<str>,<list>]
-    return [out_str, err_types]
+def msg_parse(_str, icon):
+    # Parses errors/warnings from Jing or XMLLint into
+    # array of [[bibid, message], [bibid, message]...]
+    pattern = re.compile(r'^.*?as_ead_ldpd_(\d+)\.xml:(.*)$')
+    r = pattern.search(_str)
+    try:
+        return [r.group(1), icon + " " + r.group(2)]
+    except:
+        return []
+
+
+def log_it(msg):
+    print(msg)
+    digester.post_digest(SCRIPT_NAME, msg)
+
+
+def get_unique_count(_array):
+    return len(get_unique_bibids(_array))
+
+
+def get_unique_bibids(_array):
+    return {p[0] for p in _array}
 
 
 if __name__ == "__main__":
