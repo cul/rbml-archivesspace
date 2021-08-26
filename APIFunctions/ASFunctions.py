@@ -16,6 +16,7 @@ from configparser import ConfigParser
 # Then call functions like
 #   asf.getResource(2,4277)
 #
+#
 
 
 global baseURL
@@ -50,6 +51,8 @@ try:
     baseURL = config["PROD"]["baseURL"]
     user = config["PROD"]["user"]
     password = config["PROD"]["password"]
+    # List of used AS repo codes
+    valid_repos = json.loads(config["REPOS"]["validRepos"])
 
     # Get proxy url if there is one.
     if "httpsProxy" in config["PROXIES"]:
@@ -96,49 +99,8 @@ def main():
 ########### TEST ##########
 
 
-def postSubject(asid, record):
-    headers = ASAuthenticate(user, baseURL, password)
-    endpoint = "/subjects/" + str(asid)
-    post = postIt(baseURL + endpoint, headers, record)
-    # post = requests.post(baseURL + endpoint,
-    #                      headers=headers, data=record).json()
-    post = json.dumps(post)
-    return post
-
-
-# Generic fn to do GET with or without proxy, as defined by config.
-def getIt(uri_str, headers, params=None, output="json"):
-    if https_proxy:
-        response = requests.get(
-            uri_str, headers=headers, params=params, proxies={"https": https_proxy}
-        )
-    else:
-        response = requests.get(uri_str, headers=headers)
-    if output == "json":
-        return response.json()
-    elif output == "text":
-        return response.text
-    else:
-        print("ERROR: Output type " + output + " not recognized!")
-
-
-# Generic fn to do POST with or without proxy, as defined by config.
-
-
-def postIt(uri_str, headers, data):
-    if https_proxy:
-        return requests.post(
-            uri_str, headers=headers, data=data, proxies={"https": https_proxy}
-        ).json()
-    else:
-        return requests.post(uri_str, headers=headers, data=data).json()
-
-
-###########################
-# TEST
-
-
 def deleteArchivalObject(repo, asid):
+    # TODO: Test
     headers = ASAuthenticate(user, baseURL, password)
     print(headers)
     endpoint = "/repositories/" + str(repo) + "/archival_objects/" + str(asid)
@@ -147,6 +109,7 @@ def deleteArchivalObject(repo, asid):
 
 
 def getArchivalObjectByRef2(repo, ref):
+    # TODO! Reconcile if needed.(?)
     # supply arch obj ref_id, e.g., bed5f26c0673086345e624f9bbf1d1c5
     headers = ASAuthenticate(user, baseURL, password)
     params = {"ref_id[]": ref}
@@ -159,9 +122,13 @@ def getArchivalObjectByRef2(repo, ref):
     # return output
 
 
-#####################################
-# Authentication function           #
-#####################################
+###########################
+# TEST
+
+
+#######################################
+# Authentication and global handlers  #
+#######################################
 
 # Returns session headers for next API call, either using existing session token or generating one.
 
@@ -205,6 +172,34 @@ def ASAuthenticate(user, baseURL, password):
             "Content_Type": "application/json",
         }
     return headers
+
+
+# Generic fn to do GET with or without proxy, as defined by config.
+def getIt(uri_str, headers, params=None, output="json"):
+    if https_proxy:
+        response = requests.get(
+            uri_str, headers=headers, params=params, proxies={"https": https_proxy}
+        )
+    else:
+        response = requests.get(uri_str, headers=headers, params=params)
+    if output == "json":
+        return response.json()
+    elif output == "text":
+        return response.text
+    else:
+        print("ERROR: Output type " + output + " not recognized!")
+
+
+# Generic fn to do POST with or without proxy, as defined by config.
+
+
+def postIt(uri_str, headers, data):
+    if https_proxy:
+        return requests.post(
+            uri_str, headers=headers, data=data, proxies={"https": https_proxy}
+        ).json()
+    else:
+        return requests.post(uri_str, headers=headers, data=data).json()
 
 
 #################
@@ -293,25 +288,49 @@ def getEnumerationValue(asid):
     return output
 
 
-# This doesn't work yet :(
-
-
-def getResourceByID(repo, ref):
-    # supply resource ID
-    headers = ASAuthenticate(user, baseURL, password)
-    params = {"identifier[]": ref}
-    endpoint = "/repositories/" + str(repo) + "/find_by_id/resources"
-    output = getIt(baseURL + endpoint, headers=headers, params=params)
-    output = json.dumps(output)
-    return output
-
-
 def getResource(repo, asid):
     headers = ASAuthenticate(user, baseURL, password)
     endpoint = "/repositories/" + str(repo) + "/resources/" + str(asid)
     output = getIt(baseURL + endpoint, headers)
     output = json.dumps(output)
     return output
+
+
+def getResourceByID(bibid, repos=valid_repos):
+    # Find resource across all valid repos using field 'identifier'=<bibid>.
+    for r in repos:
+        res = getResourceByRepoID(r, bibid)
+        if res:
+            return res
+
+
+def getResourceByRepoID(repo, bibid):
+    # Find and return resource based on repo and field 'identifier'=<bibid>.
+    # Intended for use by getResourceByID.
+    aquery = {
+        "query": {
+            "op": "AND",
+            "subqueries": [
+                {
+                    "field": "primary_type",
+                    "value": "resource",
+                    "comparator": "equals",
+                    "jsonmodel_type": "field_query",
+                },
+                {
+                    "field": "identifier",
+                    "value": str(bibid),
+                    "comparator": "equals",
+                    "jsonmodel_type": "field_query",
+                },
+            ],
+            "jsonmodel_type": "boolean_query",
+        },
+        "jsonmodel_type": "advanced_query",
+    }
+    res = getSearchResults(repo, json.dumps(aquery))
+    if len(res) == 1:
+        return json.dumps(res[0])
 
 
 def getDigitalObject(repo, asid):
@@ -822,16 +841,6 @@ def postAgent(asid, record, agent_type="people"):
     return post
 
 
-def postResource(repo, asid, record):
-    headers = ASAuthenticate(user, baseURL, password)
-    endpoint = "/repositories/" + str(repo) + "/resources/" + str(asid)
-    post = postIt(baseURL + endpoint, headers, record)
-    # post = requests.post(baseURL + endpoint,
-    #                      headers=headers, data=record).json()
-    post = json.dumps(post)
-    return post
-
-
 def postDigitalObject(repo, asid, record):
     headers = ASAuthenticate(user, baseURL, password)
     endpoint = "/repositories/" + str(repo) + "/digital_objects/" + str(asid)
@@ -856,6 +865,26 @@ def postEnumeration(asid, record):
 def postEnumerationValue(asid, record):
     headers = ASAuthenticate(user, baseURL, password)
     endpoint = "/config/enumeration_values/" + str(asid)
+    post = postIt(baseURL + endpoint, headers, record)
+    # post = requests.post(baseURL + endpoint,
+    #                      headers=headers, data=record).json()
+    post = json.dumps(post)
+    return post
+
+
+def postResource(repo, asid, record):
+    headers = ASAuthenticate(user, baseURL, password)
+    endpoint = "/repositories/" + str(repo) + "/resources/" + str(asid)
+    post = postIt(baseURL + endpoint, headers, record)
+    # post = requests.post(baseURL + endpoint,
+    #                      headers=headers, data=record).json()
+    post = json.dumps(post)
+    return post
+
+
+def postSubject(asid, record):
+    headers = ASAuthenticate(user, baseURL, password)
+    endpoint = "/subjects/" + str(asid)
     post = postIt(baseURL + endpoint, headers, record)
     # post = requests.post(baseURL + endpoint,
     #                      headers=headers, data=record).json()
@@ -894,8 +923,7 @@ def unpublishArchivalObject(repo, asid):
     y = json.loads(x)
     y["publish"] = False
     z = json.dumps(y)
-    resp = postArchivalObject(repo, asid, z)
-    return resp
+    return postArchivalObject(repo, asid, z)
 
 
 if __name__ == "__main__":
