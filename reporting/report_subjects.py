@@ -30,7 +30,8 @@ end_time = ""  # set later
 asf.setServer("Prod")  # AS instance: Prod | Dev | Test
 
 
-out_path = os.path.join(my_path, "output/subjects.pickle")
+# out_path = os.path.join(my_path, "output/subjects.pickle")
+out_path = "/cul/cul0/ldpd/archivesspace/subjects/subjects.pickle"
 
 # uncomment to do the full download.
 the_subjects = asf.getSubjects()
