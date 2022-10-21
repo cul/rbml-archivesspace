@@ -1,5 +1,3 @@
-import csv
-
 import google.oauth2.credentials
 from googleapiclient.discovery import build
 
@@ -64,7 +62,11 @@ class DataSheet(GoogleSheetsClient):
             data_range (str): the A1 notation of a range to search for a logical table of data
         """
         super(DataSheet, self).__init__(
-            access_token, refresh_token, client_id, client_secret, spreadsheet_id,
+            access_token,
+            refresh_token,
+            client_id,
+            client_secret,
+            spreadsheet_id,
         )
         self.data_range = data_range
 
@@ -83,36 +85,6 @@ class DataSheet(GoogleSheetsClient):
         the_data = request.execute()
         response = the_data["values"] if "values" in the_data else []
         return response
-
-    def get_sheet_data_columns(self):
-        """Return sheet data in columns instead of rows."""
-        request = (
-            self.service.spreadsheets()
-            .values()
-            .get(
-                spreadsheetId=self.spreadsheet_id,
-                range=self.data_range,
-                valueRenderOption="FORMATTED_VALUE",
-                majorDimension="COLUMNS",
-                dateTimeRenderOption="SERIAL_NUMBER",
-            )
-        )
-        the_data = request.execute()
-        response = the_data["values"] if "values" in the_data else []
-        return response
-
-    def get_sheet_url(self):
-        """Pull the title of tab from the range."""
-        tab_name = self.data_range.split("!")[0]
-        sheet_info = self.get_sheet_info()["sheets"]
-        # Look for sheet matching name and get its ID
-        sheet_id = next(
-            i["properties"]["sheetId"]
-            for i in sheet_info
-            if i["properties"]["title"] == tab_name
-        )
-        the_url = f"https://docs.google.com/spreadsheets/d/{self.spreadsheet_id}/edit#gid={sheet_id}"
-        return the_url
 
     def clear_sheet(self):
         clear_values_request_body = {
@@ -138,42 +110,6 @@ class DataSheet(GoogleSheetsClient):
         https://developers.google.com/sheets/api/reference/rest/v4/ValueInputOption
         https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append#InsertDataOption
         """
-        request = (
-            self.service.spreadsheets()
-            .values()
-            .append(
-                spreadsheetId=self.spreadsheet_id,
-                range=self.data_range,
-                valueInputOption="USER_ENTERED",
-                insertDataOption="OVERWRITE",
-                body={"values": data},
-            )
-        )
-        response = request.execute()
-        return response
-
-    def import_csv(self, a_csv, delim=",", quote="NONE"):
-        """Will clear contents of sheet range first.
-
-        Args:
-            a_csv (str): csv to import
-            delim (str): comma by default, can be pipe, colon, etc.
-            quote (str): Can be: ALL, MINIMAL, NONNUMERIC, NONE
-        """
-        self.clear_sheet()
-        quote_behavior = {
-            "ALL": csv.QUOTE_ALL,
-            "MINIMAL": csv.QUOTE_MINIMAL,
-            "NONNUMERIC": csv.QUOTE_NONNUMERIC,
-            "NONE": csv.QUOTE_NONE,
-        }
-        quote_param = quote_behavior.get(quote.upper())
-        # TODO: Improve ability to pass parameters through to csv dialect options. See https://docs.python.org/3/library/csv.html
-        csv.register_dialect("my_dialect", delimiter=delim, quoting=quote_param)
-        data = []
-        with open(a_csv) as the_csv_data:
-            for row in csv.reader(the_csv_data, "my_dialect"):
-                data.append(row)
         request = (
             self.service.spreadsheets()
             .values()
