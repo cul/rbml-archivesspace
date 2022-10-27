@@ -38,7 +38,6 @@ class ArchivesSpaceClient:
         Returns:
             str: XML response
         """
-        # /repositories/:repo_id/resource_descriptions/:id.xml
         params = {"include_unpublished": False, "include_daos": True}
         response = self.aspace.client.get(
             f"/repositories/{repo_id}/resource_descriptions/{resource_id}.xml",
@@ -56,11 +55,16 @@ class ArchivesSpaceClient:
         return response.json()
 
     def get_all_children(self, resource):
-        """Prints out information from the tree of a resource.
-        """
+        """Prints out information from the tree of a resource."""
         for child in walk_tree(resource, self.aspace.client):
             if child["level"] != "collection":
                 if len(child["ancestors"]) > 3:
                     print(
                         child["display_string"], child["level"], len(child["ancestors"])
                     )
+
+    def get_assessments(self, repo_id):
+        """docstring for get_assessments"""
+        repo = self.aspace.repositories(repo_id)
+        for assessment in repo.assessments:
+            yield assessment.json()
