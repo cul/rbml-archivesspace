@@ -11,6 +11,9 @@ class ArchivesSpaceClient:
     def get_digital_objects(self, repo_id):
         """Get data about digital object records from AS.
 
+        Args:
+            repo_id (int): ASpace repository ID (e.g., 2)
+
         Yields:
           str: Full JSON of AS digital object record
         """
@@ -64,7 +67,19 @@ class ArchivesSpaceClient:
                     )
 
     def get_assessments(self, repo_id):
-        """docstring for get_assessments"""
+        """Gets assessment information from an ArchivesSpace repository.
+
+        Args:
+            repo_id (int): ASpace repository ID (e.g., 2)
+
+        Yields:
+            str: Full JSON of AS assessment record
+        """
         repo = self.aspace.repositories(repo_id)
         for assessment in repo.assessments:
             yield assessment.json()
+
+    def rbml_published_resources(self):
+        for resource in self.aspace.repositories(2).resources:
+            if resource.publish:
+                yield resource
