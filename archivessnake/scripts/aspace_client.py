@@ -83,3 +83,14 @@ class ArchivesSpaceClient:
         for resource in self.aspace.repositories(2).resources:
             if resource.publish:
                 yield resource
+
+    def update_aspace_field(self, aspace_json, field_name, new_info):
+        """Updates (or adds) a field to an ArchivesSpace record.
+
+        Args:
+            aspace_json (dict): ArchivesSpace data
+            field_name (str): name of field to update
+            new_info (str): value of updated field
+        """
+        aspace_json[field_name] = new_info
+        self.aspace.client.post(aspace_json["uri"], json=aspace_json)

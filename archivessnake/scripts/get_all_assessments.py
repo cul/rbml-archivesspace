@@ -1,3 +1,4 @@
+import logging
 from configparser import ConfigParser
 
 from .aspace_client import ArchivesSpaceClient
@@ -77,16 +78,6 @@ class AssessmentFinder(object):
                     uris.append(assessment["uri"])
         return uris
 
-
-lower_accepted_values = [
-    "hidden collections",
-    "tbm/ami",
-    "digital",
-    "conservation",
-    "missing",
-    "backlog",
-    "mold",
-]
 
 uris_to_replace = [
     "/repositories/2/assessments/5",
@@ -256,6 +247,12 @@ class AssessmentUpdater(object):
     ]
 
     def __init__(self, mode="dev"):
+        logging.basicConfig(
+            datefmt="%m/%d/%Y %I:%M:%S %p",
+            filename=f"update_assessments_{mode}.log",
+            format="%(asctime)s %(message)s",
+            level=logging.INFO,
+        )
         self.config = ConfigParser()
         self.config.read("local_settings.cfg")
         self.as_client = ArchivesSpaceClient(
@@ -264,13 +261,19 @@ class AssessmentUpdater(object):
             self.config.get("ArchivesSpace", "password"),
         )
 
-    def run(self):
+    def run(self, uris_to_replace):
+        """Replace purpose of assessment data with accepted value.
+
+        Args:
+            uris_to_replace (list): list of ASpace assessment record URIs
+        """
         for uri in uris_to_replace:
             new_purpose = None
             assessment_json = self.as_client.get_json(uri)
             purpose = assessment_json["purpose"]
             if len(purpose) >= 25:
-                self.move_purpose_to_scope(assessment_json)
+                self.copy_purpose_to_scope(assessment_json)
+                logging.info(f"{purpose} moved to scope field for {uri}")
             if "mold" in purpose.lower():
                 new_purpose = "Mold"
             elif "missing" in purpose.lower():
@@ -282,18 +285,21 @@ class AssessmentUpdater(object):
             elif "digital" in purpose.lower():
                 new_purpose = "Digital"
             if new_purpose:
-                print(f"{purpose}\t{new_purpose}")
+                logging.info(f"{purpose} will be replaced with {new_purpose} for {uri}")
+                self.as_client.update_aspace_field(
+                    assessment_json, "purpose", new_purpose
+                )
+                logging.info(f"{uri} purpose updated")
             else:
-                print(f"{purpose}\tno new purpose")
-            new_purpose = None
+                logging.info(f"Not updating {uri}")
 
-    def move_purpose_to_scope(self, assessment):
-        purpose = assessment["purpose"]
-        scope = assessment.get("scope")
+    def copy_purpose_to_scope(self, assessment_json):
+        """Copies information from purpose field to scope field
+
+        Args:
+            assessment_json (dict): ASpace assessment record
+        """
+        purpose = assessment_json["purpose"]
+        scope = assessment_json.get("scope")
         new_scope = ". ".join([scope, purpose]) if scope else purpose
-        print(new_scope)
-
-        # change the assessment data
-        # update scope of assessment to new text
-        # replace purpose of assessment with value of new_purpose
-        # post the new assessment
+        self.as_client.update_aspace_field(assessment_json, "scope", new_scope)
