@@ -59,12 +59,11 @@ class ArchivesSpaceClient:
 
     def get_all_children(self, resource):
         """Prints out information from the tree of a resource."""
-        for child in walk_tree(resource, self.aspace.client):
-            if child["level"] != "collection":
-                if len(child["ancestors"]) > 3:
-                    print(
-                        child["display_string"], child["level"], len(child["ancestors"])
-                    )
+        tree = walk_tree(resource, self.aspace.client)
+        next(tree)
+        for child in tree:
+            if len(child["ancestors"]) > 3:
+                print(child["display_string"], child["level"], len(child["ancestors"]))
 
     def get_assessments(self, repo_id):
         """Gets assessment information from an ArchivesSpace repository.
@@ -81,7 +80,7 @@ class ArchivesSpaceClient:
 
     def rbml_published_resources(self):
         for resource in self.aspace.repositories(2).resources:
-            if resource.publish:
+            if resource.publish and not resource.suppressed:
                 yield resource
 
     def update_aspace_field(self, aspace_json, field_name, new_info):

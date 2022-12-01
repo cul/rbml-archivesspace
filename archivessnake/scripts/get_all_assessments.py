@@ -40,6 +40,7 @@ class AssessmentFinder(object):
             if assessment_info:
                 sheet_data.append(assessment_info)
         write_data_to_csv(sheet_data, csv_filepath)
+        return csv_filepath
 
     def get_assessment_info(self, assessment):
         """Check if purpose of assessment exists and get certain fields.
@@ -268,33 +269,27 @@ class AssessmentUpdater(object):
             uris_to_replace (list): list of ASpace assessment record URIs
         """
         for uri in uris_to_replace:
-            new_purpose = None
             assessment_json = self.as_client.get_json(uri)
             purpose = assessment_json["purpose"]
             if len(purpose) >= 25:
                 self.copy_purpose_to_scope(assessment_json)
+                print(f"{purpose} moved to scope field for {uri}")
                 logging.info(f"{purpose} moved to scope field for {uri}")
-            if "mold" in purpose.lower():
-                new_purpose = "Mold"
-            elif "missing" in purpose.lower():
-                new_purpose = "Missing"
-            elif "tbm" in purpose.lower() or "ami" in purpose.lower():
-                new_purpose = "TBM/AMI"
-            elif "hidden" in purpose.lower() or "unprocessed" in purpose.lower():
-                new_purpose = "Unprocessed Collections"
-            elif "digital" in purpose.lower():
-                new_purpose = "Digital"
+                assessment_json = self.as_client.get_json(uri)
+            new_purpose = self.get_new_purpose(purpose)
             if new_purpose:
+                print(f"{purpose} will be replaced with {new_purpose} for {uri}")
                 logging.info(f"{purpose} will be replaced with {new_purpose} for {uri}")
                 self.as_client.update_aspace_field(
                     assessment_json, "purpose", new_purpose
                 )
                 logging.info(f"{uri} purpose updated")
             else:
+                print(f"Not updating {uri}")
                 logging.info(f"Not updating {uri}")
 
     def copy_purpose_to_scope(self, assessment_json):
-        """Copies information from purpose field to scope field
+        """Copies information from purpose field to scope field.
 
         Args:
             assessment_json (dict): ASpace assessment record
@@ -303,3 +298,17 @@ class AssessmentUpdater(object):
         scope = assessment_json.get("scope")
         new_scope = ". ".join([scope, purpose]) if scope else purpose
         self.as_client.update_aspace_field(assessment_json, "scope", new_scope)
+
+    def get_new_purpose(self, purpose):
+        new_purpose = None
+        if "mold" in purpose.lower():
+            new_purpose = "Mold"
+        elif "missing" in purpose.lower():
+            new_purpose = "Missing"
+        elif "tbm" in purpose.lower() or "ami" in purpose.lower():
+            new_purpose = "TBM/AMI"
+        elif "hidden" in purpose.lower() or "unprocessed" in purpose.lower():
+            new_purpose = "Unprocessed Collections"
+        elif "digital" in purpose.lower():
+            new_purpose = "Digital"
+        return new_purpose
