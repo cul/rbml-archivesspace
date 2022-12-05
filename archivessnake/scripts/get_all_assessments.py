@@ -303,6 +303,10 @@ class AssessmentUpdater(object):
         self.as_client.update_aspace_field(assessment_json, "scope", new_scope)
 
     def get_new_purpose(self, purpose):
+        """Parses a string to determine what it should be replace with.
+
+        Args:
+            purpose (str): text that should be replaced"""
         new_purpose = None
         if "mold" in purpose.lower():
             new_purpose = "Mold"
