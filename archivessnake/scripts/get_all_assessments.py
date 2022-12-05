@@ -270,23 +270,26 @@ class AssessmentUpdater(object):
         """
         for uri in uris_to_replace:
             assessment_json = self.as_client.get_json(uri)
-            purpose = assessment_json["purpose"]
-            if len(purpose) >= 25:
-                self.copy_purpose_to_scope(assessment_json)
-                print(f"{purpose} moved to scope field for {uri}")
-                logging.info(f"{purpose} moved to scope field for {uri}")
-                assessment_json = self.as_client.get_json(uri)
-            new_purpose = self.get_new_purpose(purpose)
-            if new_purpose:
-                print(f"{purpose} will be replaced with {new_purpose} for {uri}")
-                logging.info(f"{purpose} will be replaced with {new_purpose} for {uri}")
-                self.as_client.update_aspace_field(
-                    assessment_json, "purpose", new_purpose
-                )
-                logging.info(f"{uri} purpose updated")
-            else:
-                print(f"Not updating {uri}")
-                logging.info(f"Not updating {uri}")
+            purpose = assessment_json.get("purpose")
+            if purpose:
+                if len(purpose) >= 25:
+                    self.copy_purpose_to_scope(assessment_json)
+                    print(f"{purpose} moved to scope field for {uri}")
+                    logging.info(f"{purpose} moved to scope field for {uri}")
+                    assessment_json = self.as_client.get_json(uri)
+                new_purpose = self.get_new_purpose(purpose)
+                if new_purpose:
+                    print(f"{purpose} will be replaced with {new_purpose} for {uri}")
+                    logging.info(
+                        f"{purpose} will be replaced with {new_purpose} for {uri}"
+                    )
+                    self.as_client.update_aspace_field(
+                        assessment_json, "purpose", new_purpose
+                    )
+                    logging.info(f"{uri} purpose updated")
+                else:
+                    print(f"Not updating {uri}")
+                    logging.info(f"Not updating {uri}")
 
     def copy_purpose_to_scope(self, assessment_json):
         """Copies information from purpose field to scope field.
