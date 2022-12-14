@@ -6,55 +6,50 @@ Optional parameters:
   * form: Term to describe type of material (default = AUDIO RECORDINGS)
 -->
 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" xpath-default-namespace="urn:isbn:1-931666-22-9"
-    exclude-result-prefixes="xs" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xpath-default-namespace="urn:isbn:1-931666-22-9" exclude-result-prefixes="xs" version="2.0">
     <xsl:output omit-xml-declaration="yes" method="text"/>
     <xsl:strip-space elements="*"/>
-    
+
     <!-- Optionally limit scope to a particular series (default 0 means process all series) -->
     <xsl:param name="series_scope" as="xs:integer">0</xsl:param>
-    
+
     <xsl:param name="form">AUDIO RECORDINGS</xsl:param>
     <!-- <xsl:param name="form">VIDEO RECORDINGS</xsl:param>-->
-    
-    
+
+
     <xsl:variable name="delim1">|</xsl:variable>
-    
+
     <xsl:variable name="lf">
         <xsl:text>&#xA;</xsl:text>
     </xsl:variable>
-    
-    <xsl:variable name="heads"
-        >collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|creator_1|creator_1_id|creator_2|creator_2_id|box_num|container2|extent_number|extent|physfacet|form|scopenote|language|suggested_file_name</xsl:variable>
-    
-    
-    
+
+    <xsl:variable name="heads">collection_name|bib_id|rights|restrictions|repo_code|series_title|subseries_title|parent_file_title|ref_id|unittitle|unitdate|creator_1|creator_1_id|creator_2|creator_2_id|box_num|container2|extent_number|extent|physfacet|form|scopenote|language|suggested_file_name</xsl:variable>
+
+
+
     <xsl:template match="ead">
-        
+
         <!-- Insert header row (defined above) -->
         <xsl:value-of select="$heads"/>
         <xsl:value-of select="$lf"/>
-        
+
         <xsl:choose>
             <xsl:when test="$series_scope != 0">
                 <!-- if $series_scope selects a particular series, only process that series -->
-                <xsl:apply-templates select="/ead/archdesc/dsc/c[$series_scope]//c[@level = 'file']"
-                />
+                <xsl:apply-templates select="/ead/archdesc/dsc/c[$series_scope]//c[@level = 'file' or 'item']"/>
             </xsl:when>
-            
+
             <xsl:otherwise>
-                <xsl:apply-templates select="//c[@level = 'file']"/>
+                <xsl:apply-templates select="//c[@level = 'file' or 'item']"/>
             </xsl:otherwise>
         </xsl:choose>
-        
+
     </xsl:template>
-    
-    
-    
-    
-    <xsl:template match="c[@level = 'file']">
-        
+
+
+
+    <xsl:template match="c[@level = 'file' or 'item']">
+
         <!--       set fixed variables  -->
         <xsl:variable name="collection_name">
             <xsl:value-of select="normalize-space(//archdesc/did/unittitle)"/>
@@ -99,21 +94,21 @@ Optional parameters:
         </xsl:variable>
         <xsl:variable name="language">
             <xsl:choose>
-            <xsl:when test="//archdesc/did/langmaterial/language[2]">
-                <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language[1])"/>
-                <xsl:text>; </xsl:text>
-            <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language[2])"/>
-            </xsl:when>
-            <xsl:otherwise>
-            <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language)"/>    
-            </xsl:otherwise>
+                <xsl:when test="//archdesc/did/langmaterial/language[2]">
+                    <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language[1])"/>
+                    <xsl:text>; </xsl:text>
+                    <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language[2])"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="normalize-space(//archdesc/did/langmaterial/language)"/>
+                </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        
-        
-        
-       
-        
+
+
+
+
+
         <!--collection title-->
         <xsl:value-of select="$collection_name"/>
         <xsl:value-of select="$delim1"/>
@@ -143,22 +138,18 @@ Optional parameters:
             </xsl:when>
             <xsl:when test="parent::c[@level = 'subseries']">
                 <!-- grab series and subseries-->
-                <xsl:value-of
-                    select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
+                <xsl:value-of select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
                 <xsl:value-of select="$delim1"/>
-                <xsl:value-of
-                    select="normalize-space(parent::c[@level = 'subseries']/did/unittitle)"/>
+                <xsl:value-of select="normalize-space(parent::c[@level = 'subseries']/did/unittitle)"/>
                 <xsl:value-of select="$delim1"/>
                 <xsl:text>No Parent File</xsl:text>
                 <xsl:value-of select="$delim1"/>
             </xsl:when>
             <xsl:when test="parent::c[@level = 'file']">
                 <!--  grab series and subseries and file -->
-                <xsl:value-of
-                    select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
+                <xsl:value-of select="normalize-space(ancestor::c[@level = 'series'][1]/did/unittitle)"/>
                 <xsl:value-of select="$delim1"/>
-                <xsl:value-of
-                    select="normalize-space(ancestor::c[@level = 'subseries'][1]/did/unittitle)"/>
+                <xsl:value-of select="normalize-space(ancestor::c[@level = 'subseries'][1]/did/unittitle)"/>
                 <xsl:value-of select="$delim1"/>
                 <xsl:value-of select="normalize-space(parent::c[@level = 'file']/did/unittitle)"/>
                 <xsl:value-of select="$delim1"/>
@@ -187,7 +178,7 @@ Optional parameters:
             </xsl:otherwise>
         </xsl:choose>
         <xsl:value-of select="$delim1"/>
-        
+
         <!--   creator 1 -->
         <xsl:choose>
             <xsl:when test="did/origination[1]">
@@ -208,7 +199,7 @@ Optional parameters:
             </xsl:otherwise>
         </xsl:choose>
         <xsl:value-of select="$delim1"/>
-        
+
         <!--   creator 2 -->
         <xsl:choose>
             <xsl:when test="did/origination[2]">
@@ -229,7 +220,7 @@ Optional parameters:
             </xsl:otherwise>
         </xsl:choose>
         <xsl:value-of select="$delim1"/>
-        
+
         <!-- box number -->
         <xsl:value-of select="normalize-space(did/container[@type = 'box'][1])"/>
         <xsl:value-of select="$delim1"/>
@@ -289,16 +280,14 @@ Optional parameters:
                 <xsl:text>_</xsl:text>
                 <xsl:value-of select="normalize-space(did/container[@type = 'box'][1])"/>
                 <xsl:text>-</xsl:text>
-<!--               consecutive numeration based on EAD position, for collections with multiple intellectual units per physical item -->
+                <!--               consecutive numeration based on EAD position, for collections with multiple intellectual units per physical item -->
                 <xsl:value-of select="position()"/>
                 <xsl:value-of select="$lf"/>
             </xsl:otherwise>
         </xsl:choose>
-        
-        
-        
+
+
+
     </xsl:template>
-    
+
 </xsl:stylesheet>
-
-
