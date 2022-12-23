@@ -53,6 +53,13 @@ class TestAssessmentUpdater(unittest.TestCase):
         assessment_updater = AssessmentUpdater()
         self.assertTrue(assessment_updater)
 
+    @patch("scripts.aspace_client.ArchivesSpaceClient.update_aspace_field")
+    @patch("scripts.aspace_client.ArchivesSpaceClient.__init__", return_value=None)
+    def test_copy_purpose_to_scope(self, mock_aspace, mock_update):
+        assessment_json = next(mock_assessments_generator())
+        new_scope = AssessmentUpdater().copy_purpose_to_scope(assessment_json)
+        self.assertTrue(new_scope)
+
     @patch("scripts.get_all_assessments.AssessmentUpdater.__init__", return_value=None)
     def test_get_new_purpose(self, mock_init):
         self.assertIsNone(AssessmentUpdater().get_new_purpose("don't recognize"))
