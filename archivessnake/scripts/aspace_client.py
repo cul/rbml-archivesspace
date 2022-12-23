@@ -78,8 +78,9 @@ class ArchivesSpaceClient:
         for assessment in repo.assessments:
             yield assessment.json()
 
-    def rbml_published_resources(self):
-        for resource in self.aspace.repositories(2).resources:
+
+    def published_resources(self, repo_id):
+        for resource in self.aspace.repositories(repo_id).resources:
             if resource.publish and not resource.suppressed:
                 yield resource
 
@@ -93,3 +94,18 @@ class ArchivesSpaceClient:
         """
         aspace_json[field_name] = new_info
         self.aspace.client.post(aspace_json["uri"], json=aspace_json)
+
+    def get_recent_accessions(self, repo_id):
+        """Get accessions that have been updated since a provided timestamp.
+
+        Args:
+            repo_id (int): ASpace repository ID (e.g., 2)
+
+        Yields:
+            obj: JSON model object for ASpace resource
+        """
+        for year in [2018, 2019, 2020, 2021, 2022]:
+            search_string = f"repositories/{repo_id}/search?q=primary_type:accession&page=1&filter_query[]=accession_date_year:{year}&page_size=250"
+            search_results = self.aspace.client.get(search_string).json()["results"]
+            for result in search_results:
+                yield result
