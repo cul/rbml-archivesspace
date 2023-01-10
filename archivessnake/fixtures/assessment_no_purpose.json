@@ -1,0 +1,266 @@
+{
+	"lock_version": 3,
+	"accession_report": false,
+	"appraisal": true,
+	"container_list": true,
+	"catalog_record": false,
+	"control_file": true,
+	"finding_aid_ead": false,
+	"finding_aid_paper": false,
+	"finding_aid_word": false,
+	"finding_aid_spreadsheet": false,
+	"surveyed_extent": "Condition information transcribed from dealer's inventory.",
+	"review_required": false,
+	"scope": "Dealer's inventory",
+	"sensitive_material": false,
+	"deed_of_gift": true,
+	"finding_aid_online": false,
+	"related_eac_records": false,
+	"survey_begin": "2019-02-14",
+	"survey_end": "2019-02-14",
+	"inactive": false,
+	"conservation_note": "conservation note",
+	"created_by": "clb2195",
+	"last_modified_by": "jg2138",
+	"create_time": "2019-02-14T15:41:20Z",
+	"system_mtime": "2021-11-11T20:13:17Z",
+	"user_mtime": "2019-11-19T17:17:02Z",
+	"jsonmodel_type": "assessment",
+	"records": [
+		{
+			"ref": "/repositories/2/resources/4344"
+		},
+		{
+			"ref": "/repositories/2/accessions/4109"
+		}
+	],
+	"surveyed_by": [
+		{
+			"ref": "/agents/people/23"
+		}
+	],
+	"reviewer": [
+
+	],
+	"formats": [
+		{
+			"global": true,
+			"label": "Architectural Materials",
+			"readonly": false,
+			"definition_id": 9
+		},
+		{
+			"global": true,
+			"label": "Art Originals",
+			"readonly": false,
+			"definition_id": 10
+		},
+		{
+			"global": true,
+			"label": "Artifacts",
+			"readonly": false,
+			"definition_id": 11
+		},
+		{
+			"global": true,
+			"label": "Audio Materials",
+			"readonly": false,
+			"definition_id": 12
+		},
+		{
+			"global": true,
+			"label": "Biological Specimens",
+			"readonly": false,
+			"definition_id": 13
+		},
+		{
+			"global": true,
+			"label": "Botanical Specimens",
+			"readonly": false,
+			"definition_id": 14
+		},
+		{
+			"global": true,
+			"label": "Computer Storage Units",
+			"readonly": false,
+			"definition_id": 15
+		},
+		{
+			"global": true,
+			"label": "Film (negative, slide, or motion picture)",
+			"readonly": false,
+			"definition_id": 16
+		},
+		{
+			"global": true,
+			"label": "Glass",
+			"readonly": false,
+			"definition_id": 17
+		},
+		{
+			"global": true,
+			"label": "Photographs",
+			"value": "true",
+			"readonly": false,
+			"definition_id": 18
+		},
+		{
+			"global": true,
+			"label": "Scrapbooks",
+			"value": "true",
+			"readonly": false,
+			"definition_id": 19
+		},
+		{
+			"global": true,
+			"label": "Technical Drawings & Schematics",
+			"readonly": false,
+			"definition_id": 20
+		},
+		{
+			"global": true,
+			"label": "Textiles",
+			"readonly": false,
+			"definition_id": 21
+		},
+		{
+			"global": true,
+			"label": "Vellum & Parchment",
+			"readonly": false,
+			"definition_id": 22
+		},
+		{
+			"global": true,
+			"label": "Video Materials",
+			"readonly": false,
+			"definition_id": 23
+		},
+		{
+			"global": true,
+			"label": "Other",
+			"readonly": false,
+			"definition_id": 24
+		}
+	],
+	"conservation_issues": [
+		{
+			"global": true,
+			"label": "Potential Mold or Mold Damage",
+			"readonly": false,
+			"definition_id": 25
+		},
+		{
+			"global": true,
+			"label": "Recent Pest Damage",
+			"readonly": false,
+			"definition_id": 26
+		},
+		{
+			"global": true,
+			"label": "Deteriorating Film Base",
+			"readonly": false,
+			"definition_id": 27
+		},
+		{
+			"global": true,
+			"label": "Brittle Paper",
+			"readonly": false,
+			"definition_id": 28
+		},
+		{
+			"global": true,
+			"label": "Metal Fasteners",
+			"readonly": false,
+			"definition_id": 29
+		},
+		{
+			"global": true,
+			"label": "Newspaper",
+			"value": "true",
+			"readonly": false,
+			"definition_id": 30
+		},
+		{
+			"global": true,
+			"label": "Tape",
+			"readonly": false,
+			"definition_id": 31
+		},
+		{
+			"global": true,
+			"label": "Heat-Sensitive Paper",
+			"readonly": false,
+			"definition_id": 32
+		},
+		{
+			"global": true,
+			"label": "Water Damage",
+			"value": "true",
+			"readonly": false,
+			"definition_id": 33
+		}
+	],
+	"ratings": [
+		{
+			"global": true,
+			"label": "Reformatting Readiness",
+			"readonly": false,
+			"definition_id": 1
+		},
+		{
+			"global": true,
+			"label": "Housing Quality",
+			"readonly": false,
+			"definition_id": 2
+		},
+		{
+			"global": true,
+			"label": "Physical Condition",
+			"readonly": false,
+			"definition_id": 3
+		},
+		{
+			"global": true,
+			"label": "Physical Access (arrangement)",
+			"readonly": false,
+			"definition_id": 4
+		},
+		{
+			"global": true,
+			"label": "Intellectual Access (description)",
+			"readonly": false,
+			"definition_id": 5
+		},
+		{
+			"global": true,
+			"label": "Interest",
+			"readonly": false,
+			"definition_id": 6
+		},
+		{
+			"global": true,
+			"label": "Documentation Quality",
+			"readonly": false,
+			"definition_id": 7
+		},
+		{
+			"global": true,
+			"label": "Research Value",
+			"readonly": true,
+			"definition_id": 8
+		}
+	],
+	"external_documents": [
+
+	],
+	"collections": [
+		{
+			"ref": "/repositories/2/resources/4344"
+		}
+	],
+	"uri": "/repositories/2/assessments/80",
+	"repository": {
+		"ref": "/repositories/2"
+	},
+	"display_string": "80"
+}
