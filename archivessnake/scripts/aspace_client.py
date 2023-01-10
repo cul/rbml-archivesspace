@@ -78,7 +78,6 @@ class ArchivesSpaceClient:
         for assessment in repo.assessments:
             yield assessment.json()
 
-
     def published_resources(self, repo_id):
         for resource in self.aspace.repositories(repo_id).resources:
             if resource.publish and not resource.suppressed:
