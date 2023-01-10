@@ -11,6 +11,9 @@ class ArchivesSpaceClient:
     def get_digital_objects(self, repo_id):
         """Get data about digital object records from AS.
 
+        Args:
+            repo_id (int): ASpace repository ID (e.g., 2)
+
         Yields:
           str: Full JSON of AS digital object record
         """
@@ -38,7 +41,6 @@ class ArchivesSpaceClient:
         Returns:
             str: XML response
         """
-        # /repositories/:repo_id/resource_descriptions/:id.xml
         params = {"include_unpublished": False, "include_daos": True}
         response = self.aspace.client.get(
             f"/repositories/{repo_id}/resource_descriptions/{resource_id}.xml",
@@ -56,11 +58,38 @@ class ArchivesSpaceClient:
         return response.json()
 
     def get_all_children(self, resource):
-        """Prints out information from the tree of a resource.
+        """Prints out information from the tree of a resource."""
+        tree = walk_tree(resource, self.aspace.client)
+        next(tree)
+        for child in tree:
+            if len(child["ancestors"]) > 3:
+                print(child["display_string"], child["level"], len(child["ancestors"]))
+
+    def get_assessments(self, repo_id):
+        """Gets assessment information from an ArchivesSpace repository.
+
+        Args:
+            repo_id (int): ASpace repository ID (e.g., 2)
+
+        Yields:
+            str: Full JSON of AS assessment record
         """
-        for child in walk_tree(resource, self.aspace.client):
-            if child["level"] != "collection":
-                if len(child["ancestors"]) > 3:
-                    print(
-                        child["display_string"], child["level"], len(child["ancestors"])
-                    )
+        repo = self.aspace.repositories(repo_id)
+        for assessment in repo.assessments:
+            yield assessment.json()
+
+    def rbml_published_resources(self):
+        for resource in self.aspace.repositories(2).resources:
+            if resource.publish and not resource.suppressed:
+                yield resource
+
+    def update_aspace_field(self, aspace_json, field_name, new_info):
+        """Updates (or adds) a field to an ArchivesSpace record.
+
+        Args:
+            aspace_json (dict): ArchivesSpace data
+            field_name (str): name of field to update
+            new_info (str): value of updated field
+        """
+        aspace_json[field_name] = new_info
+        self.aspace.client.post(aspace_json["uri"], json=aspace_json)
