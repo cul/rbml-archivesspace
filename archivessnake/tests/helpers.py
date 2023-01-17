@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from googleapiclient.discovery import build
@@ -20,3 +21,9 @@ def mock_get_sheet_info(fixture_name):
     http = HttpMock(Path(FIXTURES_PATH, fixture_name))
     response = request.execute(http=http)
     return response
+
+
+def open_fixture_json(filename):
+    with open(Path(FIXTURES_PATH, filename), "r") as f:
+        aspace_json = json.load(f)
+    return aspace_json

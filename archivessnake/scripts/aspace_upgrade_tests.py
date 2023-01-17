@@ -27,6 +27,7 @@ class APIComparer(object):
             uri (str): ASpace uri
         """
         dev_json = self.dev_client.get_json(uri)
+        print(dev_json)
         prod_json = self.prod_client.get_json(uri)
         if dev_json == prod_json:
             print(f"No differences in {uri}")
