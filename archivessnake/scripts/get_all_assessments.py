@@ -163,4 +163,6 @@ class AssessmentUpdater(object):
             new_purpose = "Unprocessed Collections"
         elif "digital" in purpose.lower():
             new_purpose = "Digital"
+        elif "conservation" in purpose.lower():
+            new_purpose = "Conservation"
         return new_purpose
