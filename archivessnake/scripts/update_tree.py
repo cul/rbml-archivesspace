@@ -84,6 +84,25 @@ def check_date(date):
         raise e
 
 
+def find_timestamp(client, tree):
+    for ao in tree:
+        if ao.get("dates"):
+            if ao["dates"][0].get("begin"):
+                if ao["dates"][0]["begin"].endswith("T00:00:00+00:00"):
+                    print(ao["uri"])
+
+
+def update_timestamp(client, tree):
+    for ao in tree:
+        if ao.get("dates"):
+            if ao["dates"][0].get("begin"):
+                begin_string = ao["dates"][0]["begin"]
+                if begin_string.endswith("T00:00:00+00:00"):
+                    new_string = begin_string.replace("T00:00:00+00:00", "")
+                    ao["dates"][0]["begin"] = new_string
+                    client.aspace.client.post(ao["uri"], json=ao)
+
+
 class TreeUpdater:
     """Updates all children in a resource's tree."""
 
