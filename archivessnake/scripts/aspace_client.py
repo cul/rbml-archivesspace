@@ -1,5 +1,5 @@
 from asnake.aspace import ASpace
-from asnake.utils import walk_tree
+from asnake.utils import find_closest_value, walk_tree
 
 
 class ArchivesSpaceClient:
@@ -108,3 +108,30 @@ class ArchivesSpaceClient:
             search_results = self.aspace.client.get(search_string).json()["results"]
             for result in search_results:
                 yield result
+
+    def get_abstract_series(self, series_id):
+        """Returns an ASnake object for an archival object in the RBML repository.
+
+        Args:
+            series_id (int): ASpace archival object ID (e.g., 1234)
+        """
+        return self.aspace.repositories(2).archival_objects(series_id)
+
+    def get_creators(self, resource):
+        if resource.linked_agents:
+            return [a for a in resource.linked_agents if a.role == "creator"]
+
+    def get_rbml_children(self, series):
+        tree = walk_tree(series, self.aspace.client)
+        next(tree)
+        for child in tree:
+            child_obj = self.aspace.repositories(2).archival_objects(
+                child["uri"].split("/")[-1]
+            )
+            if child_obj.instances:
+                yield child_obj
+
+    def get_language(self, ao):
+        """Gets first language of closest lang_materials."""
+        languages = find_closest_value(ao, "lang_materials", self.aspace.client)
+        return languages[0]["language_and_script"]["language"]
