@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 
 from .aspace_client import ArchivesSpaceClient
+from .helpers import write_data_to_csv
 
 
 class AMISpreadsheet(object):
@@ -22,6 +23,34 @@ class AMISpreadsheet(object):
         Args:
             series_id (int): ArchivesSpace ID for series
         """
+        sheet_data = []
+        sheet_data.append(
+            [
+                "collection_name",
+                "bib_id",
+                "rights",
+                "restrictions",
+                "repo_code",
+                "series_title",
+                "subseries_title",
+                "ref_id",
+                "unittitle",
+                "unitdate",
+                "creator_1",
+                "creator_1_id",
+                "creator_2",
+                "creator_2_id",
+                "box_num",
+                "container2",
+                "extent_number",
+                "extent",
+                "physfacet",
+                "form",
+                "scopenote",
+                "language",
+                "suggested_file_name",
+            ]
+        )
         self.av_series = self.as_client.get_abstract_series(series_id)
         creators = self.as_client.get_creators(self.av_series.resource)
         self.creator_1 = creators[0].names[0].sort_name
@@ -34,10 +63,12 @@ class AMISpreadsheet(object):
         self.count = 1
         for child in children:
             try:
-                self.create_row(child)
+                row = self.create_row(child)
+                sheet_data.append(row)
             except Exception as e:
                 print(e, child.title)
         spreadsheet_name = f"{self.av_series.resource.id_0}_ami.csv"
+        write_data_to_csv(sheet_data, spreadsheet_name)
 
     def create_row(self, ao):
         row_data = []
