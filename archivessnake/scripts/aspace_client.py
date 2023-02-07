@@ -89,7 +89,7 @@ class ArchivesSpaceClient:
         Args:
             aspace_json (dict): ArchivesSpace data
             field_name (str): name of field to update
-            new_info (str): value of updated field
+            new_info (str, array, dict): value of updated field
         """
         aspace_json[field_name] = new_info
         self.aspace.client.post(aspace_json["uri"], json=aspace_json)
@@ -115,3 +115,14 @@ class ArchivesSpaceClient:
             if resource.publish and not resource.suppressed:
                 if not resource.metadata_rights_declarations:
                     yield resource
+
+    def get_rbml_children(self, series):
+        tree = walk_tree(series, self.aspace.client)
+        next(tree)
+        for child in tree:
+            child_obj = self.aspace.repositories(2).archival_objects(
+                child["uri"].split("/")[-1]
+            )
+            if child_obj.instances:
+                yield child_obj
+                
