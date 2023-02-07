@@ -108,3 +108,10 @@ class ArchivesSpaceClient:
             search_results = self.aspace.client.get(search_string).json()["results"]
             for result in search_results:
                 yield result
+
+    def resources_without_rights(self, repo_id):
+        repo = self.aspace.repositories(repo_id)
+        for resource in repo.resources:
+            if resource.publish and not resource.suppressed:
+                if not resource.metadata_rights_declarations:
+                    yield resource
