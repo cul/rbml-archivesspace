@@ -78,7 +78,7 @@ class AMISpreadsheet(object):
         row_data.append(self.restrictions)
         row_data.append(self.repo_code)
         row_data.append(ao.ancestors[-2].title)
-        subseries = ao.ancestors[-3].title if len(ao.ancestors) > 2 else ""
+        subseries = ao.ancestors[-3].title if len(ao.ancestors) > 2 else "No Subseries"
         row_data.append(subseries)
         row_data.append(ao.ref_id)
         row_data.append(getattr(ao, "title", ao.ancestors[0].title))
@@ -99,7 +99,7 @@ class AMISpreadsheet(object):
         else:
             row_data.append("")
             row_data.append("")
-        physfacet, scopenote = self.get_physfacet_scope()
+        physfacet, scopenote = self.get_physfacet_scope(ao)
         row_data.append(physfacet)
         row_data.append("VIDEO RECORDINGS")
         row_data.append(scopenote)
@@ -115,9 +115,9 @@ class AMISpreadsheet(object):
             self.count += 1
         digitized = self.is_digitized(ao)
         if digitized:
-            suggested_filename = f"PREVIOUSLY DIGITIZED: {suggested_filename}"
+            suggested_filename = f"PREVIOUSLY DIGITIZED: {digitized.digital_object.file_versions[0].file_uri}"
         row_data.append(suggested_filename)
-        print(row_data)
+        return row_data
 
     def get_physfacet_scope(self, ao):
         physfacet, scopenote = "", ""
@@ -149,5 +149,6 @@ class AMISpreadsheet(object):
             digital_objects = [
                 a for a in ao.instances if a.instance_type == "digital_object"
             ]
+            return digital_objects[0]
         else:
             return False
