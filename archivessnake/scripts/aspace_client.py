@@ -116,8 +116,8 @@ class ArchivesSpaceClient:
                 if not resource.metadata_rights_declarations:
                     yield resource
 
-    def get_rbml_children(self, series):
-        tree = walk_tree(series, self.aspace.client)
+    def get_children_with_instances(self, root):
+        tree = walk_tree(root, self.aspace.client)
         next(tree)
         for child in tree:
             child_obj = self.aspace.repositories(2).archival_objects(
@@ -125,4 +125,3 @@ class ArchivesSpaceClient:
             )
             if child_obj.instances:
                 yield child_obj
-                
