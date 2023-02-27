@@ -34,7 +34,8 @@ class FileLevelRestrictions(object):
 
     def run(self, resource_id):
         resource = self.as_client.aspace.repositories(2).resources(resource_id)
-        for child in self.as_client.get_rbml_children(resource):
+        logging.info(f"Starting {resource.title}...")
+        for child in self.as_client.get_children_with_instances(resource):
             child_json = child.json()
             if not [
                 n
