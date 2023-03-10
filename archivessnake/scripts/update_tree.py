@@ -3,6 +3,8 @@ from configparser import ConfigParser
 from datetime import datetime
 from re import fullmatch
 
+from asnake.utils import walk_tree
+
 from .aspace_client import ArchivesSpaceClient
 
 
@@ -106,29 +108,31 @@ def update_timestamp(client, tree):
 class TreeUpdater:
     """Updates all children in a resource's tree."""
 
-    def __init__(self):
-        self.config_file = "local_settings.cfg"
+    def __init__(self, mode="dev"):
         self.config = ConfigParser()
-        self.config.read(self.config_file)
+        self.config.read("local_settings.cfg")
         self.as_client = ArchivesSpaceClient(
-            self.config["ArchivesSpace"]["baseurl"],
-            self.config["ArchivesSpace"]["username"],
-            self.config["ArchivesSpace"]["password"],
+            self.config.get("ArchivesSpace", f"{mode}_baseurl"),
+            self.config.get("ArchivesSpace", "username"),
+            self.config.get("ArchivesSpace", "password"),
+        )
+        logging.basicConfig(
+            datefmt="%m/%d/%Y %I:%M:%S %p",
+            filename=f"update_resource_{mode}.log",
+            format="%(asctime)s %(message)s",
+            level=logging.INFO,
         )
 
-    def check_children(self):
-        # TODO: do we want to run this every time? do we want to run this maybe over the weekend or on demand?
-        children = self.as_client.get_all_children(self.resource)
+    def run(self, resource_uri):
+        children = walk_tree(resource_uri, self.as_client.aspace.client)
+        resource_json = next(children)
+        logging.info(f"Updating {resource_json['title']}")
         count = 0
         for child in children:
             count += 1
             if count % 500 == 0:
                 logging.info(f"{count} child - {child['display_string']}")
             fields_with_whitespace = leading_trailing(child)
-            for field in fields_with_whitespace:
-                self.as_client.update_aspace_field(child, field, child[field].strip())
-                child = self.as_client.get_json_response(child["uri"])
-                logging.info(f"{child['display_string']} stripped of whitespace")
             if child.get("title"):
                 without_linebreaks = (
                     child["title"].replace("\r\n", " ").replace("\n", " ")

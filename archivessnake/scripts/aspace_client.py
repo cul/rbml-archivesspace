@@ -1,5 +1,4 @@
 from asnake.aspace import ASpace
-from asnake.utils import walk_tree
 
 
 class ArchivesSpaceClient:
@@ -57,14 +56,6 @@ class ArchivesSpaceClient:
         response = self.aspace.client.get(uri)
         return response.json()
 
-    def get_all_children(self, resource):
-        """Prints out information from the tree of a resource."""
-        tree = walk_tree(resource, self.aspace.client)
-        next(tree)
-        for child in tree:
-            if len(child["ancestors"]) > 3:
-                print(child["display_string"], child["level"], len(child["ancestors"]))
-
     def get_assessments(self, repo_id):
         """Gets assessment information from an ArchivesSpace repository.
 
@@ -116,3 +107,12 @@ class ArchivesSpaceClient:
                 if not resource.title.startswith("Carnegie Corporation of New York"):
                     if not resource.metadata_rights_declarations:
                         yield resource
+                        
+    def get_json_response(self, uri):
+        """Get JSON response for ASpace get request
+
+        Args:
+            uri (str): ASpace URI
+        """
+        response = self.aspace.client.get(uri)
+        return response.json()
