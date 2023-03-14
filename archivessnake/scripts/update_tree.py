@@ -123,7 +123,7 @@ class TreeUpdater:
             level=logging.INFO,
         )
 
-    def run(self, resource_uri):
+    def run(self, resource_uri, log_only=False):
         children = walk_tree(resource_uri, self.as_client.aspace.client)
         resource_json = next(children)
         logging.info(f"Updating {resource_json['title']}")
@@ -132,17 +132,19 @@ class TreeUpdater:
             count += 1
             if count % 500 == 0:
                 logging.info(f"{count} child - {child['display_string']}")
-            fields_with_whitespace = leading_trailing(child)
             if child.get("title"):
                 without_linebreaks = (
                     child["title"].replace("\r\n", " ").replace("\n", " ")
                 )
                 if child["title"] != without_linebreaks:
-                    self.as_client.update_aspace_field(
-                        child, "title", without_linebreaks
+                    if not log_only:
+                        self.as_client.update_aspace_field(
+                            child, "title", without_linebreaks
+                        )
+                        child = self.as_client.get_json_response(child["uri"])
+                    logging.info(
+                        f"Line breaks removed from {child['display_string'] - {child['uri']}}"
                     )
-                    child = self.as_client.get_json_response(child["uri"])
-                    logging.info(f"Line breaks removed from {child['display_string']}")
             new_dates = []
             dates = child["dates"]
             if dates:
@@ -151,8 +153,13 @@ class TreeUpdater:
                         date = check_date(date)
                         new_dates.append(date)
                     if new_dates != dates:
-                        logging.info(f"{child['display_string']} dates updated")
-                        self.as_client.update_aspace_field(child, "dates", new_dates)
-                        child = self.as_client.get_json_response(child["uri"])
+                        logging.info(
+                            f"{child['display_string']} dates updated from {dates} to {new_dates}"
+                        )
+                        if not log_only:
+                            self.as_client.update_aspace_field(
+                                child, "dates", new_dates
+                            )
+                            child = self.as_client.get_json_response(child["uri"])
                 except DateException as e:
                     raise e
