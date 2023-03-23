@@ -57,14 +57,6 @@ class ArchivesSpaceClient:
         response = self.aspace.client.get(uri)
         return response.json()
 
-    def get_all_children(self, resource):
-        """Prints out information from the tree of a resource."""
-        tree = walk_tree(resource, self.aspace.client)
-        next(tree)
-        for child in tree:
-            if len(child["ancestors"]) > 3:
-                print(child["display_string"], child["level"], len(child["ancestors"]))
-
     def get_assessments(self, repo_id):
         """Gets assessment information from an ArchivesSpace repository.
 
@@ -135,3 +127,20 @@ class ArchivesSpaceClient:
         """Gets first language of closest lang_materials."""
         languages = find_closest_value(ao, "lang_materials", self.aspace.client)
         return languages[0]["language_and_script"]["language"]
+
+    def resources_without_rights(self, repo_id):
+        repo = self.aspace.repositories(repo_id)
+        for resource in repo.resources:
+            if resource.publish and not resource.suppressed:
+                if not resource.title.startswith("Carnegie Corporation of New York"):
+                    if not resource.metadata_rights_declarations:
+                        yield resource
+
+    def get_json_response(self, uri):
+        """Get JSON response for ASpace get request.
+
+        Args:
+            uri (str): ASpace URI
+        """
+        response = self.aspace.client.get(uri)
+        return response.json()
