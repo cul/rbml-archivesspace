@@ -7,7 +7,8 @@ from scripts.aspace_client import ArchivesSpaceClient
 
 
 class OrderUpdater(object):
-    def __init__(self, mode="dev", repo_id=2):
+    def __init__(self, series_id, mode="dev", repo_id=2):
+        self.series_id = series_id
         self.config = ConfigParser()
         self.config.read("local_settings.cfg")
         self.as_client = ArchivesSpaceClient(
@@ -23,8 +24,8 @@ class OrderUpdater(object):
         )
         self.repo = self.as_client.aspace.repositories(repo_id)
 
-    def get_wayfinders(self, series_id, stop_id, filename):
-        series = self.repo.archival_objects(series_id)
+    def get_wayfinders(self, stop_id, filename):
+        series = self.repo.archival_objects(self.series_id)
         tree = walk_tree(series, self.as_client.aspace.client)
         next(tree)
         wayfinders_to_delete = []
@@ -42,12 +43,12 @@ class OrderUpdater(object):
                 f.write(x)
         return wayfinders_to_delete
 
-    def reorder_objects_from_file(self, wayfinders_list_filename, series_id):
+    def reorder_objects_from_file(self, wayfinders_list_filename):
         with open(wayfinders_list_filename, "r") as f:
             wayfinders_to_delete = [line.rstrip() for line in f]
-        self.reorder_objects(wayfinders_to_delete, series_id)
+        self.reorder_objects(wayfinders_to_delete)
 
-    def reorder_objects(self, wayfinders_to_delete, series_id):
+    def reorder_objects(self, wayfinders_to_delete):
         for w in wayfinders_to_delete:
             wayfinder_json = self.as_client.aspace.client.get(w).json()
             position = wayfinder_json["position"]
@@ -55,7 +56,7 @@ class OrderUpdater(object):
             for child in tree:
                 if child["parent"]["ref"] == w:
                     position += 1
-                    params = {"parent": series_id, "position": position}
+                    params = {"parent": self.series_id, "position": position}
                     logging.info(f"Updating {child['uri']}...")
                     self.as_client.aspace.client.post(
                         f"{child['uri']}/parent", params=params
