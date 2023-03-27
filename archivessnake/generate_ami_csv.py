@@ -1,6 +1,6 @@
 import argparse
 
-from scripts.update_tree import TreeUpdater
+from scripts.ami_csv import AMISpreadsheet
 
 
 def main():
@@ -12,7 +12,7 @@ def main():
         "series_id", help="ArchivesSpace ID for AV series. Example: 1234",
     )
     args = parser.parse_args()
-    TreeUpdater(args.mode).create(args.series_id)
+    AMISpreadsheet(args.mode).create(args.series_id)
 
 
 if __name__ == "__main__":
