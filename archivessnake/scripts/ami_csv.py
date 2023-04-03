@@ -1,3 +1,4 @@
+import logging
 from configparser import ConfigParser
 
 from .aspace_client import ArchivesSpaceClient
@@ -16,6 +17,12 @@ class AMISpreadsheet(object):
         self.rights_info = "In Copyright"
         self.restrictions = "On-site Access"
         self.repo_code = "US-NNC-RB"
+        logging.basicConfig(
+            datefmt="%m/%d/%Y %I:%M:%S %p",
+            filename=f"create_ami_csv{mode}.log",
+            format="%(asctime)s %(message)s",
+            level=logging.INFO,
+        )
 
     def create(self, series_id):
         """Create a spreadsheet for AMI digitization.
@@ -52,6 +59,9 @@ class AMISpreadsheet(object):
             ]
         )
         self.av_series = self.as_client.get_abstract_series(series_id)
+        logging.info(
+            f"Creating AMI CSV for {self.av_series.display_string} ({self.av_series.ref_id})"
+        )
         creators = self.as_client.get_creators(self.av_series.resource)
         self.creator_1 = creators[0].names[0].sort_name
         self.creator_1_id = creators[0].names[0].authority_id
@@ -63,6 +73,8 @@ class AMISpreadsheet(object):
         self.count = 1
         for child in children:
             try:
+                if self.count % 50 == 0:
+                    logging.info(f"On child {self.count} - {child.ref_id}")
                 row = self.create_row(child)
                 sheet_data.append(row)
             except Exception as e:
