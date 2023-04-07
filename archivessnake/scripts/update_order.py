@@ -24,7 +24,18 @@ class OrderUpdater(object):
         )
         self.repo = self.as_client.aspace.repositories(repo_id)
 
-    def get_wayfinders(self, stop_id, filename):
+    def get_wayfinders(self, stop_id, filename=None):
+        """Get list of archival objects in series that have children and 2 ancestors.
+        
+        If filename is provided, writes list to a file.
+        
+        Args:
+            stop_id (int): ID of archival object to stop traversing series tree
+            filename (str): filename to write list to.
+        
+        Returns:
+            list
+        """
         series = self.repo.archival_objects(self.series_id)
         tree = walk_tree(series, self.as_client.aspace.client)
         next(tree)
@@ -38,17 +49,24 @@ class OrderUpdater(object):
                 parent_id = child_obj.parent.uri
                 if parent_id not in wayfinders_to_delete:
                     wayfinders_to_delete.append(parent_id)
-        with open(filename, "w") as f:
-            for x in wayfinders_to_delete:
-                f.write(x)
+        if filename:
+            with open(filename, "w") as f:
+                for x in wayfinders_to_delete:
+                    f.write(x)
         return wayfinders_to_delete
 
     def reorder_objects_from_file(self, wayfinders_list_filename):
+        """Reorders archival objects using list in a file."""
         with open(wayfinders_list_filename, "r") as f:
             wayfinders_to_delete = [line.rstrip() for line in f]
         self.reorder_objects(wayfinders_to_delete)
 
     def reorder_objects(self, wayfinders_to_delete):
+        """For each archival object in a list, move each child up one level.
+        
+        Args:
+            wayfinders_to_delete (list): ASpace archival object URIs
+        """
         for w in wayfinders_to_delete:
             wayfinder_json = self.as_client.aspace.client.get(w).json()
             position = wayfinder_json["position"]
