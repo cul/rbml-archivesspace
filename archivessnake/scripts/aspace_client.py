@@ -107,12 +107,21 @@ class ArchivesSpaceClient:
                 if not resource.title.startswith("Carnegie Corporation of New York"):
                     if not resource.metadata_rights_declarations:
                         yield resource
-                        
+
     def get_json_response(self, uri):
-        """Get JSON response for ASpace get request
+        """Get JSON response for ASpace get request.
 
         Args:
             uri (str): ASpace URI
         """
         response = self.aspace.client.get(uri)
         return response.json()
+
+    def find_by_bibid(self, bibid, repo_id=2):
+        resources = self.aspace.client.get(
+            f'/repositories/{repo_id}/find_by_id/resources?identifier[]=["{bibid}"]'
+        )
+        if len(resources) < 1:
+            return False
+        else:
+            return resources["resources"][0]["ref"]
