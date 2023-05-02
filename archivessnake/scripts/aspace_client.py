@@ -120,8 +120,8 @@ class ArchivesSpaceClient:
     def find_by_bibid(self, bibid, repo_id=2):
         resources = self.aspace.client.get(
             f'/repositories/{repo_id}/find_by_id/resources?identifier[]=["{bibid}"]'
-        ).json()
+        ).json()["resources"]
         if len(resources) < 1:
             return False
         else:
-            return resources["resources"][0]["ref"]
+            return resources[0]["ref"]

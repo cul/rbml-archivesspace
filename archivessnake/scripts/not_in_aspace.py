@@ -23,6 +23,9 @@ class AspaceFinder(object):
                 bibids_in_portal[row[0]] = row[1]
         not_in_aspace = []
         for bibid, repo_id in bibids_in_portal.items():
-            if not self.as_client.find_by_bibid(bibid, repo_id):
-                not_in_aspace.append([bibid, repo_id])
+            try:
+                if not self.as_client.find_by_bibid(bibid, repo_id):
+                    not_in_aspace.append([bibid, repo_id])
+            except Exception as e:
+                print(e, bibid)
         write_data_to_csv(not_in_aspace, "not_in_aspace.csv")
