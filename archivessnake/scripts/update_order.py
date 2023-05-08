@@ -6,9 +6,10 @@ from asnake.utils import walk_tree
 
 from scripts.aspace_client import ArchivesSpaceClient
 
+
 class DateException(Exception):
     pass
-        
+
 
 class OrderUpdater(object):
     def __init__(self, series_id, mode="dev", repo_id=2):
@@ -57,7 +58,7 @@ class OrderUpdater(object):
         if filename:
             with open(filename, "w") as f:
                 for x in wayfinders_to_delete:
-                    f.write(x)
+                    f.write(f"{x}\n")
         return wayfinders_to_delete
 
     def reorder_objects_from_file(self, wayfinders_list_filename):
@@ -85,6 +86,22 @@ class OrderUpdater(object):
                         f"{child['uri']}/parent", params=params
                     )
 
+    def add_date_from_wayfinder_display_string(self, wayfinder_ao_uri):
+        wayfinder_json = self.as_client.get_json_response(wayfinder_ao_uri)
+        wayfinder_display_string = wayfinder_json["display_string"]
+        position = wayfinder_json["position"]
+        tree = walk_tree(wayfinder_ao_uri, self.as_client.aspace.client)
+        next(tree)
+        for child in tree:
+            self.add_date_from_string(wayfinder_display_string, child["uri"])
+            if child["parent"]["ref"] == wayfinder_ao_uri:
+                position += 1
+                params = {"parent": self.series_id, "position": position}
+                logging.info(f"Updating {child['uri']}...")
+                self.as_client.aspace.client.post(
+                    f"{child['uri']}/parent", params=params
+                )
+
     def add_date_from_string(self, date_string, ao_uri):
         date_formats = [
             r"\d\d\d\d",
@@ -97,9 +114,10 @@ class OrderUpdater(object):
             if ao_json["dates"]:
                 logging.info(f"Dates already exist for {ao_uri}")
             else:
-                self.create_date_object(date_string)
+                date_obj = self.create_date_object(date_string)
+                self.as_client.update_aspace_field(ao_json, "dates", [date_obj])
         else:
-            raise Exception(f"Unexpected date format {date_string}")
+            raise DateException(f"Unexpected date format {date_string}")
 
     def create_date_object(self, date_string):
         date_object = {"label": "creation", "jsonmodel_type": "date"}
@@ -116,18 +134,3 @@ class OrderUpdater(object):
             return date_object
         else:
             raise DateException
-            
-
-
-{"begin": }
-
-		{
-			"expression": "1920, 1961-2018",
-			"begin": "1920",
-			"end": "2018",
-			"date_type": "inclusive",
-			"label": "creation",
-			"jsonmodel_type": "date"
-		}
-
-
