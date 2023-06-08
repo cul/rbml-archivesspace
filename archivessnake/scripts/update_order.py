@@ -12,9 +12,8 @@ class DateException(Exception):
 
 
 class OrderUpdater(object):
-    def __init__(self, series_id, mode="dev", repo_id=2):
+    def __init__(self, mode="dev", repo_id=2):
         # TODO: remove series_id from init
-        self.series_id = series_id
         self.config = ConfigParser()
         self.config.read("local_settings.cfg")
         self.as_client = ArchivesSpaceClient(
@@ -30,79 +29,98 @@ class OrderUpdater(object):
         )
         self.repo = self.as_client.aspace.repositories(repo_id)
 
-    def get_wayfinders(self, stop_id, filename=None):
+    def get_wayfinders(self, series_uri, stop_uri, filename=None):
         """Get list of archival objects in series that have children and 2 ancestors.
 
         If filename is provided, writes list to a file.
 
         Args:
-            stop_id (int): ID of archival object to stop traversing series tree
-            filename (str): filename to write list to.
+            stop_uri (str): URI of archival object to stop traversing series tree
+            filename (str): filename to write list to
 
         Returns:
             list
         """
-        series = self.repo.archival_objects(self.series_id)
-        tree = walk_tree(series, self.as_client.aspace.client)
+        tree = walk_tree(series_uri, self.as_client.aspace.client)
         next(tree)
         wayfinders_to_delete = []
         for child in tree:
+            if child["uri"] == stop_uri:
+                break
             if len(child["ancestors"]) == 3:
-                child_id = child["uri"].split("/")[-1]
-                if child_id == stop_id:
-                    break
-                child_obj = self.repo.archival_objects(child_id)
-                parent_id = child_obj.parent.uri
-                if parent_id not in wayfinders_to_delete:
-                    wayfinders_to_delete.append(parent_id)
+                parent_uri = child["parent"]["ref"]
+                if parent_uri not in wayfinders_to_delete:
+                    wayfinders_to_delete.append(parent_uri)
+                    print(parent_uri)
         if filename:
             with open(filename, "w") as f:
                 for x in wayfinders_to_delete:
                     f.write(f"{x}\n")
         return wayfinders_to_delete
 
-    def reorder_objects_from_file(self, wayfinders_list_filename):
+    def reorder_objects_from_file(self, series_uri, wayfinders_list_filename):
         """Reorders archival objects using list in a file."""
         with open(wayfinders_list_filename, "r") as f:
+            print(f"Opening {wayfinders_list_filename}...")
             wayfinders_to_delete = [line.rstrip() for line in f]
-        self.reorder_objects(wayfinders_to_delete)
+        self.reorder_objects(series_uri.split("/")[-1], wayfinders_to_delete)
 
-    def reorder_objects(self, wayfinders_to_delete):
+    def reorder_objects(self, series_id, wayfinders_to_delete, delete=False):
         """For each archival object in a list, move each child up one level.
 
         Args:
+            series_id (int): ASpace id of parent series (e.g., 1234)
             wayfinders_to_delete (list): ASpace archival object URIs
+            delete (bool): remove wayfinder after reording children
         """
         for w in wayfinders_to_delete:
+            print(f"Reordering children of {w}...")
             wayfinder_json = self.as_client.aspace.client.get(w).json()
             position = wayfinder_json["position"]
             tree = walk_tree(w, self.as_client.aspace.client)
+            logging.info(f"Moving children of {w}")
             for child in tree:
                 if child["parent"]["ref"] == w:
                     position += 1
-                    params = {"parent": self.series_id, "position": position}
+                    params = {"parent": series_id, "position": position}
                     logging.info(f"Updating {child['uri']}...")
                     self.as_client.aspace.client.post(
                         f"{child['uri']}/parent", params=params
                     )
+            if delete:
+                self.as_client.delete_in_aspace(w)
+                logging.info(f"Deleting {w}")
 
-    def add_date_from_wayfinder_display_string(self, wayfinder_ao_uri):
+    def add_date_from_wayfinder_display_string(self, wayfinder_ao_uri, series_id):
+        """
+
+        Args:
+            wayfinder_ao_uri (str): ASpace URI for archival object with children and a display string that is a date
+            series_id (str): ASpace id of parent series (e.g., 1234)
+        """
         wayfinder_json = self.as_client.get_json_response(wayfinder_ao_uri)
-        wayfinder_display_string = wayfinder_json["display_string"]
         position = wayfinder_json["position"]
         tree = walk_tree(wayfinder_ao_uri, self.as_client.aspace.client)
         next(tree)
         for child in tree:
-            self.add_date_from_string(wayfinder_display_string, child["uri"])
+            self.add_date_from_string(wayfinder_json["display_string"], child["uri"])
             if child["parent"]["ref"] == wayfinder_ao_uri:
                 position += 1
-                params = {"parent": self.series_id, "position": position}
+                params = {"parent": series_id, "position": position}
                 logging.info(f"Updating {child['uri']}...")
                 self.as_client.aspace.client.post(
                     f"{child['uri']}/parent", params=params
                 )
 
     def add_date_from_string(self, date_string, ao_uri):
+        """Updates ASpace record with date if date matches certain format.
+
+        Only adds date if record does not already have a date.
+
+        Args:
+            ao_uri (str): ASpace URI
+            date_string (str): date formatted YYYY, YYYY-DD, YYYY-MM-DD, or YYYY-YYYY
+        """
         date_formats = [
             r"\d\d\d\d",
             r"\d\d\d\d-\d\d\d\d",
@@ -120,6 +138,14 @@ class OrderUpdater(object):
             raise DateException(f"Unexpected date format {date_string}")
 
     def create_date_object(self, date_string):
+        """Turns a date string into an ASpace date.
+
+        Args:
+            date_string (str): date formatted YYYY, YYYY-DD, YYYY-MM-DD, or YYYY-YYYY
+
+        Returns:
+            dict: ASpace date object
+        """
         date_object = {"label": "creation", "jsonmodel_type": "date"}
         single_date_formats = [r"\d\d\d\d", r"\d\d\d\d-\d\d", r"\d\d\d\d-\d\d-\d\d"]
         if [True for x in single_date_formats if fullmatch(x, date_string)]:
@@ -127,9 +153,8 @@ class OrderUpdater(object):
             date_object["date_type"] = "single"
             return date_object
         elif fullmatch(r"\d\d\d\d-\d\d\d\d", date_string):
-            begin, end = date_string.split("-")
-            date_object["begin"] = begin
-            date_object["end"] = end
+            date_object["begin"] = date_string.split("-")[0]
+            date_object["end"] = date_string.split("-")[-1]
             date_object["date_type"] = "inclusive"
             return date_object
         else:
