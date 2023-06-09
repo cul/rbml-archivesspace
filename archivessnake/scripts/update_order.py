@@ -13,7 +13,6 @@ class DateException(Exception):
 
 class OrderUpdater(object):
     def __init__(self, mode="dev", repo_id=2):
-        # TODO: remove series_id from init
         self.config = ConfigParser()
         self.config.read("local_settings.cfg")
         self.as_client = ArchivesSpaceClient(
@@ -27,7 +26,6 @@ class OrderUpdater(object):
             format="%(asctime)s %(message)s",
             level=logging.INFO,
         )
-        self.repo = self.as_client.aspace.repositories(repo_id)
 
     def get_wayfinders(self, series_uri, stop_uri, filename=None):
         """Get list of archival objects in series that have children and 2 ancestors.
@@ -58,12 +56,14 @@ class OrderUpdater(object):
                     f.write(f"{x}\n")
         return wayfinders_to_delete
 
-    def reorder_objects_from_file(self, series_uri, wayfinders_list_filename):
+    def reorder_objects_from_file(
+        self, series_uri, wayfinders_list_filename, delete=False
+    ):
         """Reorders archival objects using list in a file."""
         with open(wayfinders_list_filename, "r") as f:
             print(f"Opening {wayfinders_list_filename}...")
             wayfinders_to_delete = [line.rstrip() for line in f]
-        self.reorder_objects(series_uri.split("/")[-1], wayfinders_to_delete)
+        self.reorder_objects(series_uri.split("/")[-1], wayfinders_to_delete, delete)
 
     def reorder_objects(self, series_id, wayfinders_to_delete, delete=False):
         """For each archival object in a list, move each child up one level.
@@ -92,7 +92,9 @@ class OrderUpdater(object):
                 logging.info(f"Deleting {w}")
 
     def add_date_from_wayfinder_display_string(self, wayfinder_ao_uri, series_id):
-        """
+        """Takes a parent whose display string is a date, adds date to children.
+
+        Reorders children to be at same level as parent.
 
         Args:
             wayfinder_ao_uri (str): ASpace URI for archival object with children and a display string that is a date
