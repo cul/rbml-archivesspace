@@ -1,4 +1,5 @@
 from asnake.aspace import ASpace
+from asnake.utils import get_note_text
 
 
 class ArchivesSpaceClient:
@@ -107,7 +108,7 @@ class ArchivesSpaceClient:
                 if not resource.title.startswith("Carnegie Corporation of New York"):
                     if not resource.metadata_rights_declarations:
                         yield resource
-                        
+
     def get_json_response(self, uri):
         """Get JSON response for ASpace get request
 
@@ -116,3 +117,20 @@ class ArchivesSpaceClient:
         """
         response = self.aspace.client.get(uri)
         return response.json()
+
+    def replace_title_with_note(
+        self, ao_json, note_type, strip_parens=True, delete_note=True
+    ):
+        notes = [x for x in ao_json["notes"] if x["type"] == note_type]
+        if len(notes) == 1:
+            note = notes[0]
+            note_content = get_note_text(note, self.aspace.client)[0]
+            new_title = note_content.strip("()") if strip_parens else note_content
+            self.update_aspace_field(ao_json, "title", new_title)
+            if delete_note:
+                new_json = self.get_json_response(ao_json["uri"])
+                self.update_aspace_field(
+                    new_json, "notes", new_json["notes"].remove(note)
+                )
+        else:
+            raise Exception(f"Expected 1 {note_type} note, found {len(notes)}.")
