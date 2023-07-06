@@ -91,7 +91,7 @@ class OrderUpdater(object):
                 self.as_client.delete_in_aspace(w)
                 logging.info(f"Deleting {w}")
 
-    def add_date_from_wayfinder_display_string(self, wayfinder_ao_uri, series_id):
+    def add_date_from_wayfinder_display_string(self, wayfinder_ao_uri, series_id, delete=False):
         """Takes a parent whose display string is a date, adds date to children.
 
         Reorders children to be at same level as parent.
@@ -113,6 +113,9 @@ class OrderUpdater(object):
                 self.as_client.aspace.client.post(
                     f"{child['uri']}/parent", params=params
                 )
+        if delete:
+            self.as_client.delete_in_aspace(wayfinder_ao_uri)
+            logging.info(f"Deleting {wayfinder_ao_uri}")
 
     def add_date_from_string(self, date_string, ao_uri):
         """Updates ASpace record with date if date matches certain format.
@@ -129,13 +132,14 @@ class OrderUpdater(object):
             r"\d\d\d\d-\d\d",
             r"\d\d\d\d-\d\d-\d\d",
         ]
-        ao_json = self.as_client.get_json(ao_uri)
         if [True for x in date_formats if fullmatch(x, date_string)]:
+            ao_json = self.as_client.get_json(ao_uri)
             if ao_json["dates"]:
-                logging.info(f"Dates already exist for {ao_uri}")
+                return f"Dates already exist for {ao_uri}"
             else:
                 date_obj = self.create_date_object(date_string)
                 self.as_client.update_aspace_field(ao_json, "dates", [date_obj])
+                return f"{date_string} added to {ao_uri}"
         else:
             raise DateException(f"Unexpected date format {date_string}")
 

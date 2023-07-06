@@ -1,4 +1,6 @@
+import json
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 from scripts.update_order import DateException, OrderUpdater
@@ -9,6 +11,28 @@ class TestOrderUpdater(unittest.TestCase):
     def test_init(self, mock_aspace):
         update_order = OrderUpdater()
         self.assertTrue(update_order)
+
+    @patch(
+        "scripts.update_order.ArchivesSpaceClient.update_aspace_field",
+        return_value=None,
+    )
+    @patch("scripts.aspace_client.ArchivesSpaceClient.get_json")
+    @patch("scripts.aspace_client.ArchivesSpaceClient.__init__", return_value=None)
+    def test_add_date_from_string(
+        self, mock_init, mock_get_json, mock_update_aspace_field
+    ):
+        with open(Path("fixtures", "ao_without_date.json")) as s:
+            ao_without_date = json.load(s)
+        mock_get_json.return_value = ao_without_date
+        added_date = OrderUpdater().add_date_from_string("1974", "/fake/uri")
+        self.assertTrue(added_date)
+        with self.assertRaises(DateException):
+            OrderUpdater().add_date_from_string("This is a title", "/fake/uri")
+        with open(Path("fixtures", "ao_with_date.json")) as s:
+            ao_with_date = json.load(s)
+        mock_get_json.return_value = ao_with_date
+        not_added_date = OrderUpdater().add_date_from_string("1974", "/fake/uri")
+        self.assertTrue(not_added_date)
 
     @patch("scripts.update_order.OrderUpdater.__init__", return_value=None)
     def test_create_date_object(self, mock_init):
