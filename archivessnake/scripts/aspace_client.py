@@ -134,3 +134,43 @@ class ArchivesSpaceClient:
                 )
         else:
             raise Exception(f"Expected 1 {note_type} note, found {len(notes)}.")
+
+    def strip_parens_from_content(self, ao_json):
+        notes = ao_json["notes"]
+        for x in notes:
+            if x.get("subnotes"):
+                x["subnotes"][0]["content"] = x["subnotes"][0]["content"].strip("()")
+        self.update_aspace_field(ao_json, "notes", notes)
+
+    def replace_rbml_title_tags(self, ref_id):
+        ao_json = self.aspace.client.get(
+            f"/repositories/2/find_by_id/archival_objects?ref_id[]={ref_id};resolve[]=archival_objects"
+        ).json()["archival_objects"][0]["_resolved"]
+        self.update_aspace_field(
+            ao_json,
+            "title",
+            ao_json["title"].replace("<title>", '<title render="italic">'),
+        )
+
+    # '[1]:<title altrender="italics">Time Magazine,</title>vol. 66, no. 12 (September 19, 1955). "The New Churches," pp. 76-81"; includes illustration of Congregation Beth El, Springfield, Mass., p. 79.'
+    #
+    # 'Article, "Discover New York: Some Old Survivors in Changing Chelsea," <title altrender="italics"> Herald Tribune</title>'
+    #
+    # '<title altrender="italic">A.I.A. Journal</title>,<title altrender="italic">Architectural Record</title>,<title altrender="italic">Progressive Architecture</title>, Interior Design, catalogues and flyers.'
+    #
+    # 'Includes "A Modern School" by Abraham Flexner, "Behind the Scene and Under The Rug" by Howard E. Shuman, articles about Geo W.W. Brewster, and<title altrender="italics">Profile</title>magazine'
+
+    def replace_avery_title_altender(self, ref_id):
+        ao_json = self.aspace.client.get(
+            f"/repositories/3/find_by_id/archival_objects?ref_id[]={ref_id};resolve[]=archival_objects"
+        ).json()["archival_objects"][0]["_resolved"]
+
+        ao_json["title"] = ao_json["title"].replace(
+            "<title altrender=", "<title render="
+        )
+
+    def has_physdesc(self, ao):
+        if getattr(ao, "notes", False):
+            physdesc_notes = [x for x in ao.notes if x.type == "physdesc"]
+            if physdesc_notes:
+                return True
