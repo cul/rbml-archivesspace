@@ -1,0 +1,111 @@
+{
+	"lock_version": 0,
+	"position": 8232,
+	"publish": true,
+	"ref_id": "cef33b4d44f5f58ad7903cd74f0ba7f8",
+	"title": "R--Miscellaneous",
+	"display_string": "R--Miscellaneous, 1982-1984",
+	"restrictions_apply": false,
+	"created_by": "admin",
+	"last_modified_by": "admin",
+	"create_time": "2019-05-21T16:28:20Z",
+	"system_mtime": "2023-03-20T15:14:05Z",
+	"user_mtime": "2019-05-21T16:28:20Z",
+	"suppressed": false,
+	"is_slug_auto": false,
+	"level": "file",
+	"jsonmodel_type": "archival_object",
+	"external_ids": [
+
+	],
+	"subjects": [
+
+	],
+	"linked_events": [
+
+	],
+	"extents": [
+
+	],
+	"lang_materials": [
+
+	],
+	"dates": [
+		{
+			"lock_version": 0,
+			"expression": "1982-1984",
+			"created_by": "admin",
+			"last_modified_by": "admin",
+			"create_time": "2019-05-21T16:28:20Z",
+			"system_mtime": "2019-05-21T16:28:20Z",
+			"user_mtime": "2019-05-21T16:28:20Z",
+			"date_type": "inclusive",
+			"label": "creation",
+			"jsonmodel_type": "date"
+		}
+	],
+	"external_documents": [
+
+	],
+	"rights_statements": [
+
+	],
+	"linked_agents": [
+
+	],
+	"import_previous_arks": [
+
+	],
+	"ancestors": [
+		{
+			"ref": "/repositories/2/archival_objects/181601",
+			"level": "series"
+		},
+		{
+			"ref": "/repositories/2/resources/5189",
+			"level": "collection"
+		}
+	],
+	"instances": [
+		{
+			"lock_version": 0,
+			"created_by": "admin",
+			"last_modified_by": "admin",
+			"create_time": "2019-05-21T16:28:20Z",
+			"system_mtime": "2019-05-21T16:28:20Z",
+			"user_mtime": "2019-05-21T16:28:20Z",
+			"instance_type": "box",
+			"jsonmodel_type": "instance",
+			"is_representative": false,
+			"sub_container": {
+				"lock_version": 0,
+				"created_by": "admin",
+				"last_modified_by": "admin",
+				"create_time": "2019-05-21T16:28:20Z",
+				"system_mtime": "2019-05-21T16:28:20Z",
+				"user_mtime": "2019-05-21T16:28:20Z",
+				"jsonmodel_type": "sub_container",
+				"top_container": {
+					"ref": "/repositories/2/top_containers/19221"
+				}
+			}
+		}
+	],
+	"notes": [
+
+	],
+	"accession_links": [
+
+	],
+	"uri": "/repositories/2/archival_objects/190075",
+	"repository": {
+		"ref": "/repositories/2"
+	},
+	"resource": {
+		"ref": "/repositories/2/resources/5189"
+	},
+	"parent": {
+		"ref": "/repositories/2/archival_objects/181601"
+	},
+	"has_unpublished_ancestor": false
+}

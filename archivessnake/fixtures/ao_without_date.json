@@ -1,0 +1,100 @@
+{
+	"lock_version": 0,
+	"position": 5698,
+	"publish": true,
+	"ref_id": "ad234bcda4de58dfaa180aab442e91c3",
+	"title": "Gray, Sanford D.",
+	"display_string": "Gray, Sanford D.",
+	"restrictions_apply": false,
+	"created_by": "admin",
+	"last_modified_by": "admin",
+	"create_time": "2019-05-21T16:27:48Z",
+	"system_mtime": "2023-03-20T15:14:05Z",
+	"user_mtime": "2019-05-21T16:27:48Z",
+	"suppressed": false,
+	"is_slug_auto": false,
+	"level": "file",
+	"jsonmodel_type": "archival_object",
+	"external_ids": [
+
+	],
+	"subjects": [
+
+	],
+	"linked_events": [
+
+	],
+	"extents": [
+
+	],
+	"lang_materials": [
+
+	],
+	"dates": [
+
+	],
+	"external_documents": [
+
+	],
+	"rights_statements": [
+
+	],
+	"linked_agents": [
+
+	],
+	"import_previous_arks": [
+
+	],
+	"ancestors": [
+		{
+			"ref": "/repositories/2/archival_objects/181601",
+			"level": "series"
+		},
+		{
+			"ref": "/repositories/2/resources/5189",
+			"level": "collection"
+		}
+	],
+	"instances": [
+		{
+			"lock_version": 0,
+			"created_by": "admin",
+			"last_modified_by": "admin",
+			"create_time": "2019-05-21T16:27:48Z",
+			"system_mtime": "2019-05-21T16:27:48Z",
+			"user_mtime": "2019-05-21T16:27:48Z",
+			"instance_type": "box",
+			"jsonmodel_type": "instance",
+			"is_representative": false,
+			"sub_container": {
+				"lock_version": 0,
+				"created_by": "admin",
+				"last_modified_by": "admin",
+				"create_time": "2019-05-21T16:27:48Z",
+				"system_mtime": "2019-05-21T16:27:48Z",
+				"user_mtime": "2019-05-21T16:27:48Z",
+				"jsonmodel_type": "sub_container",
+				"top_container": {
+					"ref": "/repositories/2/top_containers/18853"
+				}
+			}
+		}
+	],
+	"notes": [
+
+	],
+	"accession_links": [
+
+	],
+	"uri": "/repositories/2/archival_objects/187541",
+	"repository": {
+		"ref": "/repositories/2"
+	},
+	"resource": {
+		"ref": "/repositories/2/resources/5189"
+	},
+	"parent": {
+		"ref": "/repositories/2/archival_objects/181601"
+	},
+	"has_unpublished_ancestor": false
+}

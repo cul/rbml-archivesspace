@@ -1,0 +1,267 @@
+{
+	"lock_version": 5,
+	"accession_report": false,
+	"appraisal": false,
+	"container_list": true,
+	"catalog_record": true,
+	"control_file": false,
+	"finding_aid_ead": false,
+	"finding_aid_paper": false,
+	"finding_aid_word": false,
+	"finding_aid_spreadsheet": false,
+	"surveyed_duration": "~5 hours",
+	"surveyed_extent": "Entire collection surveyed",
+	"review_required": false,
+	"purpose": "Hidden Collections",
+	"sensitive_material": false,
+	"general_assessment_note": "Fifteen of the 18 boxes contain well-organized photographs of African and Oceanic artwork. It is not limited to masks and figures as the collection title suggests; there are weapons, utensils, tools, musical instruments, and many other items. The photos are still housed in their original file boxes, which were placed two at a time into record cartons or tall square boxes when the collection was accessioned.  All photos are black and white, professionally taken, and usually featuring the artwork alone on a white or black background. Each photo has been attached to a brown paper backing using photo corners, which has kept the photos in very good condition. Some photos show slight yellowing, but it isn’t clear if the brown paper is beginning to react with the photos. The photos are organized by region and then by specific location, ethnic or cultural group, and/or type of artifact (masks, knives, etc.). The divisions are written on folders or dividers within each box. A few photos have individual labels as well, some of which are falling off, but most are labeled only with a handwritten number on the backing paper. There is no corresponding guide to the numbering system.  In most cases the folders look to be in the correct original order, but the file boxes themselves were packed out of order.  \r\n\r\nThe remaining 3 boxes contain mostly articles and book drafts by Wingert, copies published articles and books by Wingert and others, additional photographs and negatives that do not seem to be part of the photo file, and small amounts of correspondence and other documents. These are also in generally good condition, though there are a few fragile newspaper clippings and other items. \r\n\r\n Condition: \r\nThe photos and documents are in very good condition overall. There is no sign of mold or other damage. However the original file boxes and folders are in very bad condition; the boxes are crumbling and leaving dust at the bottom of the cartons. The folders and dividers are acidic. There are some rusty paperclips and a few brittle pages among the articles and drafts. \r\n\r\nSurvey and Processing:\r\nThe collection was surveyed at the folder level, since most contents were clearly labeled. A few of the box labels are badly faded but might be read with some additional effort.  One damaged box was replaced during the survey and a flat box was added to hold items that fit poorly in the cartons. Loose items in boxes 10-12 were housed in folders for ease of access. Because it is well organized and consists mainly of photos, this collection should be easy to process. The photos should be rehoused into new folders and all of the original file boxes should be removed.  Unless they have become especially dirty, most of the record cartons can be kept, though it would be best to trade out the oversize square boxes for standard record cartons. Physical order should be restored where obvious, as this will add almost no additional processing time. The collection will become noticeably smaller as a result of rehousing. \r\n\r\nConservation should look at a sample of photos to determine if they can safely remain on the brown paper, and whether interleaving is suggested. Photos and negatives in boxes 10-12 should also be examined to see if their housing is appropriate. \r\n",
+	"deed_of_gift": false,
+	"finding_aid_online": true,
+	"related_eac_records": false,
+	"existing_description_notes": "Current description (author unknown): \"Paul S. Wingert was professor of art history at Columbia University and an innovator in treating the art of primitive peoples as a part of art history as well as cultural anthropology. Wingert's early research was in the art of the North American Indians. Later, he worked on the art of the peoples of Oceania; He aided Rene d'Harnoncourt of the Museum of Modern Art and Dr. Ralph Linton, professor of anthropology at Columbia, in organizing the \"Art of the South Seas\" exhibition at the museum. His “Outline Guide to the Art of the South Pacific” was published in 1946. In 1949, he was co-author with Edward M, Upjohn and Jane Gaston Mahler of “History of World Art.”. That year Dr. Wingert also published “Coast Salish Painting.” Later books included “The Sculpture of Negro Africa” (1950)“The Art of the South Pacific Islands (1953) and “Primitive Art: Its Traditions and Styles” (1962). He retired in 1966. Black and White, mostly of African and Oceanic masks and figures. I believe that they were all taken by him, as he was an avid photographer. There appear to be well over 1000 prints, all categorized by region or country.\"",
+	"survey_begin": "2019-03-18",
+	"survey_end": "2019-03-27",
+	"inactive": false,
+	"conservation_note": "Conservation should look at a sample of photos to determine if they can safely remain on the brown paper, and whether interleaving is suggested. Photos and negatives in boxes 10-12 should also be examined to see if their housing is appropriate. ",
+	"created_by": "admin",
+	"last_modified_by": "admin",
+	"create_time": "2019-05-21T22:44:40Z",
+	"system_mtime": "2021-12-17T21:03:12Z",
+	"user_mtime": "2019-05-21T22:44:40Z",
+	"jsonmodel_type": "assessment",
+	"records": [
+		{
+			"ref": "/repositories/2/accessions/3418"
+		},
+		{
+			"ref": "/repositories/2/resources/5933"
+		}
+	],
+	"surveyed_by": [
+		{
+			"ref": "/agents/people/14"
+		}
+	],
+	"reviewer": [
+
+	],
+	"formats": [
+		{
+			"global": true,
+			"label": "Architectural Materials",
+			"readonly": false,
+			"definition_id": 9
+		},
+		{
+			"global": true,
+			"label": "Art Originals",
+			"readonly": false,
+			"definition_id": 10
+		},
+		{
+			"global": true,
+			"label": "Artifacts",
+			"readonly": false,
+			"definition_id": 11
+		},
+		{
+			"global": true,
+			"label": "Audio Materials",
+			"readonly": false,
+			"definition_id": 12
+		},
+		{
+			"global": true,
+			"label": "Biological Specimens",
+			"readonly": false,
+			"definition_id": 13
+		},
+		{
+			"global": true,
+			"label": "Botanical Specimens",
+			"readonly": false,
+			"definition_id": 14
+		},
+		{
+			"global": true,
+			"label": "Computer Storage Units",
+			"readonly": false,
+			"definition_id": 15
+		},
+		{
+			"global": true,
+			"label": "Film (negative, slide, or motion picture)",
+			"readonly": false,
+			"definition_id": 16
+		},
+		{
+			"global": true,
+			"label": "Glass",
+			"readonly": false,
+			"definition_id": 17
+		},
+		{
+			"global": true,
+			"label": "Photographs",
+			"value": "true",
+			"readonly": false,
+			"definition_id": 18
+		},
+		{
+			"global": true,
+			"label": "Scrapbooks",
+			"readonly": false,
+			"definition_id": 19
+		},
+		{
+			"global": true,
+			"label": "Technical Drawings & Schematics",
+			"readonly": false,
+			"definition_id": 20
+		},
+		{
+			"global": true,
+			"label": "Textiles",
+			"readonly": false,
+			"definition_id": 21
+		},
+		{
+			"global": true,
+			"label": "Vellum & Parchment",
+			"readonly": false,
+			"definition_id": 22
+		},
+		{
+			"global": true,
+			"label": "Video Materials",
+			"readonly": false,
+			"definition_id": 23
+		},
+		{
+			"global": true,
+			"label": "Other",
+			"readonly": false,
+			"definition_id": 24
+		}
+	],
+	"conservation_issues": [
+		{
+			"global": true,
+			"label": "Potential Mold or Mold Damage",
+			"readonly": false,
+			"definition_id": 25
+		},
+		{
+			"global": true,
+			"label": "Recent Pest Damage",
+			"readonly": false,
+			"definition_id": 26
+		},
+		{
+			"global": true,
+			"label": "Deteriorating Film Base",
+			"readonly": false,
+			"definition_id": 27
+		},
+		{
+			"global": true,
+			"label": "Brittle Paper",
+			"value": "true",
+			"readonly": false,
+			"definition_id": 28
+		},
+		{
+			"global": true,
+			"label": "Metal Fasteners",
+			"readonly": false,
+			"definition_id": 29
+		},
+		{
+			"global": true,
+			"label": "Newspaper",
+			"readonly": false,
+			"definition_id": 30
+		},
+		{
+			"global": true,
+			"label": "Tape",
+			"readonly": false,
+			"definition_id": 31
+		},
+		{
+			"global": true,
+			"label": "Heat-Sensitive Paper",
+			"readonly": false,
+			"definition_id": 32
+		},
+		{
+			"global": true,
+			"label": "Water Damage",
+			"readonly": false,
+			"definition_id": 33
+		}
+	],
+	"ratings": [
+		{
+			"global": true,
+			"label": "Reformatting Readiness",
+			"readonly": false,
+			"definition_id": 1
+		},
+		{
+			"global": true,
+			"label": "Housing Quality",
+			"readonly": false,
+			"definition_id": 2
+		},
+		{
+			"global": true,
+			"label": "Physical Condition",
+			"readonly": false,
+			"definition_id": 3
+		},
+		{
+			"global": true,
+			"label": "Physical Access (arrangement)",
+			"readonly": false,
+			"definition_id": 4
+		},
+		{
+			"global": true,
+			"label": "Intellectual Access (description)",
+			"readonly": false,
+			"definition_id": 5
+		},
+		{
+			"global": true,
+			"label": "Interest",
+			"readonly": false,
+			"definition_id": 6
+		},
+		{
+			"global": true,
+			"label": "Documentation Quality",
+			"readonly": false,
+			"definition_id": 7
+		},
+		{
+			"global": true,
+			"label": "Research Value",
+			"readonly": true,
+			"definition_id": 8
+		}
+	],
+	"external_documents": [
+
+	],
+	"collections": [
+		{
+			"ref": "/repositories/2/resources/5933"
+		}
+	],
+	"uri": "/repositories/2/assessments/117",
+	"repository": {
+		"ref": "/repositories/2"
+	},
+	"display_string": "117"
+}
