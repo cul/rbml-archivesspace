@@ -171,6 +171,8 @@ class ArchivesSpaceClient:
 
     def has_physdesc(self, ao):
         if getattr(ao, "notes", False):
-            physdesc_notes = [x for x in ao.notes if x.type == "physdesc"]
-            if physdesc_notes:
-                return True
+            physdesc_notes = []
+            for note in ao.notes:
+                if note.type == "physdesc":
+                    physdesc_notes.append(note)
+            return physdesc_notes
