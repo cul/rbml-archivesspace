@@ -12,7 +12,7 @@ class DateException(Exception):
 
 
 class OrderUpdater(object):
-    def __init__(self, mode="dev", repo_id=2):
+    def __init__(self, mode="dev"):
         self.config = ConfigParser()
         self.config.read("local_settings.cfg")
         self.as_client = ArchivesSpaceClient(
