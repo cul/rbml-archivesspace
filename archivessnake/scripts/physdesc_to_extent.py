@@ -1,5 +1,4 @@
 import logging
-from asnake.utils import get_note_text
 from configparser import ConfigParser
 
 from .aspace_client import ArchivesSpaceClient
@@ -26,40 +25,39 @@ class PhysdescToExtent(object):
         archival_objects = self.as_client.repositories(self.repo_id).archival_objects
         for ao in archival_objects:
             physdesc_notes = self.as_client.has_physdesc(ao)
-            if len(physdesc_notes) <= 12:
-                extent_list = physdesc_notes.strip("()").split(" ")
-            elif len(physdesc_notes) > 12:
-                physdesc_csv(physdesc_notes)
-                # log physdesc to csv if len > 12 
+            extent_possible = [self.parse_physdesc(note) for note in physdesc_notes]
+            if len(extent_possible) == 1:
+                pass
+
+    def parse_physdesc(self, physdesc_note):
+        physdesc_list = physdesc_note.strip("()").lower().split(" ")
+        if len(physdesc_list) == 2:
+            if physdesc_list[0].isnumeric() and "folder" in physdesc_list[1]:
+                return physdesc_list
 
     # def physdesc_csv(self, physdesc_notes, filename=None):
-        # with open('filename.csv', 'w', newline='') as outfile:
-            # writer = csv.writer(outfile)
-          #  key_list = list(test.keys())
-          # ugh this is gonna involve some weirdness with the ao isn't it
+    # with open('filename.csv', 'w', newline='') as outfile:
+    # writer = csv.writer(outfile)
+    #  key_list = list(test.keys())
+    # ugh this is gonna involve some weirdness with the ao isn't it
 
-
-            
-              
     # this is a train wreck
     # def folders_instance(self, ao):
-        # if getattr(ao, "container", False):
-          #  container2_folder = []
-          #  for container in ao.notes:
-          #      if type_1.lower() == "folders":
-          #         del physdesc_notes
-          #      else: update_extent
+    # if getattr(ao, "container", False):
+    #  container2_folder = []
+    #  for container in ao.notes:
+    #      if type_1.lower() == "folders":
+    #         del physdesc_notes
+    #      else: update_extent
     # if container/type_1 exists we don't want to do anything to the *container*
-    # we want to delete the physdesc note and then move on to the next ao with a physdesc note             
+    # we want to delete the physdesc note and then move on to the next ao with a physdesc note
 
     # def update_extent(self, extent_list)
-        # extent_value = int(extent_list[0])
-        # for extent in [what?]:
-        #   number.append(extent_value)
-        #for extent in [what again?]:
-        #   extent_type.append(lower(extent_list[1]))
-
-
+    # extent_value = int(extent_list[0])
+    # for extent in [what?]:
+    #   number.append(extent_value)
+    # for extent in [what again?]:
+    #   extent_type.append(lower(extent_list[1]))
 
     # identify physdesc notes that have a folder count
     # use a regex to limit to folders and ignore other physdesc notes
