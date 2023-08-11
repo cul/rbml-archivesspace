@@ -1,3 +1,5 @@
+import json
+
 from asnake.aspace import ASpace
 from asnake.utils import get_note_text
 
@@ -152,13 +154,34 @@ class ArchivesSpaceClient:
             ao_json["title"].replace("<title>", '<title render="italic">'),
         )
 
-    # '[1]:<title altrender="italics">Time Magazine,</title>vol. 66, no. 12 (September 19, 1955). "The New Churches," pp. 76-81"; includes illustration of Congregation Beth El, Springfield, Mass., p. 79.'
-    #
-    # 'Article, "Discover New York: Some Old Survivors in Changing Chelsea," <title altrender="italics"> Herald Tribune</title>'
-    #
-    # '<title altrender="italic">A.I.A. Journal</title>,<title altrender="italic">Architectural Record</title>,<title altrender="italic">Progressive Architecture</title>, Interior Design, catalogues and flyers.'
-    #
-    # 'Includes "A Modern School" by Abraham Flexner, "Behind the Scene and Under The Rug" by Howard E. Shuman, articles about Geo W.W. Brewster, and<title altrender="italics">Profile</title>magazine'
+    def update_altrender_avery(self, ref_id):
+        try:
+            ao_json = self.aspace.client.get(
+                f"/repositories/3/find_by_id/archival_objects?ref_id[]={ref_id};resolve[]=archival_objects"
+            ).json()["archival_objects"][0]["_resolved"]
+            if "<title altrender" in json.dumps(ao_json):
+                if ao_json.get("title"):
+                    if "<title altrender" in ao_json["title"]:
+                        ao_title = ao_json["title"].replace(
+                            "<title altrender=", "<title render="
+                        )
+                        ao_title = ao_title.replace("italics", "italic")
+                        self.update_aspace_field(
+                            ao_json, "title", ao_title,
+                        )
+                        ao_json = self.aspace.client.get(
+                            f"/repositories/3/find_by_id/archival_objects?ref_id[]={ref_id};resolve[]=archival_objects"
+                        ).json()["archival_objects"][0]["_resolved"]
+                ao_notes = json.dumps(ao_json["notes"])
+                if "<title altrender" in ao_notes:
+                    ao_notes = ao_notes.replace("<title altrender=", "<title render=")
+                    ao_notes = ao_notes.replace("italics", "italic")
+                    self.update_aspace_field(
+                        ao_json, "notes", json.loads(ao_notes),
+                    )
+                return True
+        except Exception:
+            pass
 
     def replace_avery_title_altender(self, ref_id):
         ao_json = self.aspace.client.get(
