@@ -29,20 +29,25 @@ class PhysdescToExtent(object):
             if len(extent_possible) == 1:
                 pass
 
-    def parse_physdesc(self, physdesc_note):
-        physdesc_list = physdesc_note.strip("()").lower().split(" ")
+    def parse_physdesc(self, physdesc_notes):
+        physdesc_list = physdesc_notes.strip("()").lower().split(" ")
         if len(physdesc_list) == 2:
             if physdesc_list[0].isnumeric() and "folder" in physdesc_list[1]:
                 return physdesc_list
+            # else write to csv
 
-    # def physdesc_csv(self, physdesc_notes, filename=None):
-    # with open('filename.csv', 'w', newline='') as outfile:
-    # writer = csv.writer(outfile)
-    #  key_list = list(test.keys())
-    # ugh this is gonna involve some weirdness with the ao isn't it
+    # this is less of a train wreck now??
+     def folders_instance(self, ao):
+        for ao in archival_objects:
+            if hasattr(ao, "type_1") == False:
+                "type_1".append(physdesc_list[1]) and "indicator_1".append(physdesc_list[0])
+            elif hasattr(ao, "type_1") == True and "folder" in "type_1".lower():
+                del physdesc_list
+            else 
+                pass 
+                # write to csv and/or freak out
 
-    # this is a train wreck
-    # def folders_instance(self, ao):
+
     # if getattr(ao, "container", False):
     #  container2_folder = []
     #  for container in ao.notes:
@@ -58,6 +63,13 @@ class PhysdescToExtent(object):
     #   number.append(extent_value)
     # for extent in [what again?]:
     #   extent_type.append(lower(extent_list[1]))
+
+    # def physdesc_csv(self, physdesc_notes, filename=None):
+    # with open('filename.csv', 'w', newline='') as outfile:
+    # writer = csv.writer(outfile)
+    #  key_list = list(test.keys())
+    # ugh this is gonna involve some weirdness with the ao isn't it
+
 
     # identify physdesc notes that have a folder count
     # use a regex to limit to folders and ignore other physdesc notes
