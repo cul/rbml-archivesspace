@@ -193,6 +193,14 @@ class ArchivesSpaceClient:
         )
 
     def has_physdesc(self, ao):
+        """Checks wheter an archival object has physdesc note(s)
+        
+        Args:
+            ao (obj): ASnake archival object
+        
+        Returns:
+            list: list of physdesc notes
+        """
         if getattr(ao, "notes", False):
             physdesc_notes = []
             for note in ao.notes:
