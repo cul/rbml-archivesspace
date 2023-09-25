@@ -1,6 +1,8 @@
 import logging
 from configparser import ConfigParser
 
+from asnake.utils import get_note_text
+
 from .aspace_client import ArchivesSpaceClient
 
 
@@ -24,26 +26,54 @@ class PhysdescToExtent(object):
     def run(self):
         archival_objects = self.repo.archival_objects
         for ao in archival_objects:
-            physdesc_notes = self.as_client.has_physdesc(ao)
-            extent_possible = [
-                self.parse_physdesc(physdesc_note, "folder")
-                for physdesc_note in physdesc_notes
-            ]
-            if len(extent_possible) == 1:
-                pass
+            if ao.extents:
+                logging.info(f"{ao.uri} has an extent statement. Skipping...")
+            else:
+                physdesc_notes = self.as_client.has_physdesc(ao)
+                extent_possible = [
+                    self.parse_physdesc(physdesc_note, "folder")
+                    for physdesc_note in physdesc_notes
+                ]
+                if len(extent_possible) == 1:
+                    physdesc_note = extent_possible[0]
+                    extent_statement = {
+                        "portion": "whole",
+                        "extent_type": "folder",
+                        "jsonmodel_type": "extent",
+                    }
+                    extent_statement["number"] = self.parse_physdesc_number(
+                        physdesc_note
+                    )
 
-    def parse_physdesc(self, physdesc_note, extent_type):
-        """
+    def parsable_physdesc(self, physdesc, extent_type):
+        """Parses an ASnake note object to determine if it matches an extent statement.
+
+        Extent statements have a number followed by an extent type.
 
         Args:
-            physdesc_note () :
-            extent_type :
+            physdesc (obj): ASnake abstraction layer
+            extent_type (str): extent type, e.g., folder
 
         """
+        physdesc_note = get_note_text(physdesc.json(), self.as_client.aspace.client)[0]
         physdesc_list = physdesc_note.strip("()").lower().split(" ")
         if len(physdesc_list) == 2:
             if physdesc_list[0].isnumeric() and extent_type in physdesc_list[1]:
-                return physdesc_list
+                return physdesc
+
+    def parse_physdesc_number(self, physdesc):
+        """Parses an ASnake note object to determine if it matches an extent statement.
+
+        Extent statements have a number followed by an extent type.
+
+        Args:
+            physdesc (obj): ASnake abstraction layer
+
+        """
+        physdesc_note = get_note_text(physdesc.json(), self.as_client.aspace.client)[0]
+        physdesc_list = physdesc_note.strip("()").lower().split(" ")
+        if len(physdesc_list) == 2 and physdesc_list[0].isnumeric():
+            return physdesc_list[0]
 
     # # this is less of a train wreck now??
     #  def folders_instance(self, ao):
