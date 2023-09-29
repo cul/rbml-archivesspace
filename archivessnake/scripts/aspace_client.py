@@ -194,10 +194,10 @@ class ArchivesSpaceClient:
 
     def has_physdesc(self, ao):
         """Checks wheter an archival object has physdesc note(s)
-        
+
         Args:
             ao (obj): ASnake archival object
-        
+
         Returns:
             list: list of physdesc notes
         """
@@ -208,7 +208,7 @@ class ArchivesSpaceClient:
                     physdesc_notes.append(note)
             return physdesc_notes
 
-    def get_ead_records(self, repo_id, timestamp):
+    def get_ead_records(self, repo_id):
         """Get EAD for resources in an ASpace repository.
 
         Args:
