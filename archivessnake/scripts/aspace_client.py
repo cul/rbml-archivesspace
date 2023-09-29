@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 from asnake.aspace import ASpace
 from asnake.utils import get_note_text
@@ -227,3 +228,35 @@ class ArchivesSpaceClient:
                 params={"include_unpublished": False, "include_daos": True},
             ).content.decode("utf-8")
             yield ead
+
+    def save_ead_records(self, ead_cache, repo_id, timestamp):
+        """Save EAD for resources in an ASpace repository.
+
+        Uses filename convention as_ead_ldpd_[id_0].xml
+
+        Args:
+            ead_cahe (str or Path obj): directory to save EAD files
+            repo_id (int): ASpace repository ID (e.g., 2)
+            timestamp (int): A UTC timestamp coerced to an integer
+
+        Yields:
+            string: EAD for ASpace resource
+        """
+        resource_ids = self.aspace.client.get(
+            f"/repositories/{repo_id}/resources",
+            params={"all_ids": True, "publish": True},
+        ).json()
+        for resource_id in resource_ids:
+            resource = self.aspace.repositories(repo_id).resources(resource_id)
+            ead = self.aspace.client.get(
+                f"/repositories/{repo_id}/resource_descriptions/{resource_id}.xml",
+                params={
+                    "include_unpublished": False,
+                    "include_daos": True,
+                    "modified_since": timestamp,
+                },
+            ).content.decode("utf-8")
+            with open(
+                Path(ead_cache, f"as_ead_ldpd_{resource.id_0}.xml"), "w"
+            ) as ead_file:
+                ead_file.write(ead)
