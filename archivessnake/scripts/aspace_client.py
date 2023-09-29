@@ -207,3 +207,23 @@ class ArchivesSpaceClient:
                 if note.type == "physdesc":
                     physdesc_notes.append(note)
             return physdesc_notes
+
+    def get_ead_records(self, repo_id, timestamp):
+        """Get EAD for resources in an ASpace repository.
+
+        Args:
+            repo_id (int): ASpace repository ID (e.g., 2)
+
+        Yields:
+            string: EAD for ASpace resource
+        """
+        resource_ids = self.aspace.client.get(
+            f"/repositories/{repo_id}/resources",
+            params={"all_ids": True, "publish": True},
+        ).json()
+        for resource_id in resource_ids:
+            ead = self.aspace.client.get(
+                f"/repositories/{repo_id}/resource_descriptions/{resource_id}.xml",
+                params={"include_unpublished": False, "include_daos": True},
+            ).content.decode("utf-8")
+            yield ead
