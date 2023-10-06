@@ -28,21 +28,24 @@ class PhysdescToExtent(object):
     def run(self, repo_id=2):
         archival_objects = self.as_client.aspace.repositories(repo_id).archival_objects
         for ao in archival_objects:
-            physdesc_notes = self.as_client.has_physdesc(ao)
-            extent_possible = [
-                self.parsable_physdesc(physdesc_note, "folder")
-                for physdesc_note in physdesc_notes
-            ]
-            if len(extent_possible) == 1:
-                if ao.extents:
-                    logging.info(f"{ao.uri} has an extent statement. Skipping...")
-                else:
-                    physdesc_note = extent_possible[0]
-                    extent_number = self.parse_physdesc_number(physdesc_note)
-                    self.move_to_extent_statement(
-                        extent_number, physdesc_note.json(), ao.json()
-                    )
-                    logging.info(f"Moved physdesc to extent statement: {ao.uri}")
+            try:
+                physdesc_notes = self.as_client.has_physdesc(ao)
+                extent_possible = [
+                    self.parsable_physdesc(physdesc_note, "folder")
+                    for physdesc_note in physdesc_notes
+                ]
+                if len(extent_possible) == 1:
+                    if ao.extents:
+                        logging.info(f"{ao.uri} has an extent statement. Skipping...")
+                    else:
+                        physdesc_note = extent_possible[0]
+                        extent_number = self.parse_physdesc_number(physdesc_note)
+                        self.move_to_extent_statement(
+                            extent_number, physdesc_note.json(), ao.json()
+                        )
+                        logging.info(f"Moved physdesc to extent statement: {ao.uri}")
+            except Exception as e:
+                logging.error(f"{ao.uri}: {e}")
 
     def move_to_extent_statement(self, extent_number, physdesc_note, ao_json):
         """Creates an extent statement and deletes a physdesc note.
