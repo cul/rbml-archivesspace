@@ -37,6 +37,8 @@ class PhysdescToExtent(object):
                 if len(extent_possible) == 1:
                     if ao.extents:
                         logging.info(f"{ao.uri} has an extent statement. Skipping...")
+                    elif extent_possible[0] == None:
+                        pass
                     else:
                         physdesc_note = extent_possible[0]
                         extent_number = self.parse_physdesc_number(physdesc_note)
