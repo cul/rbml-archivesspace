@@ -7,7 +7,7 @@ from .aspace_client import ArchivesSpaceClient
 
 
 class PhysdescToExtent(object):
-    def __init__(self, mode="dev", repo_id=2):
+    def __init__(self, mode="dev"):
         logging.basicConfig(
             datefmt="%m/%d/%Y %I:%M:%S %p",
             filename=f"physdesc_to_extent_{mode}.log",
@@ -21,10 +21,9 @@ class PhysdescToExtent(object):
             self.config.get("ArchivesSpace", "username"),
             self.config.get("ArchivesSpace", "password"),
         )
-        self.repo = self.as_client.aspace.repositories(repo_id)
 
-    def run(self):
-        archival_objects = self.repo.archival_objects
+    def run(self, repo_id=2):
+        archival_objects = self.as_client.aspace.repositories(repo_id).archival_objects
         for ao in archival_objects:
             physdesc_notes = self.as_client.has_physdesc(ao)
             extent_possible = [
@@ -37,10 +36,14 @@ class PhysdescToExtent(object):
                 else:
                     physdesc_note = extent_possible[0]
                     extent_number = self.parse_physdesc_number(physdesc_note)
-                    self.move_to_extent_statement(extent_number, physdesc_note.json(), ao.json())
+                    self.move_to_extent_statement(
+                        extent_number, physdesc_note.json(), ao.json()
+                    )
+                    logging.info(f"Moved physdesc to extent statement: {ao.uri}")
 
     def move_to_extent_statement(self, extent_number, physdesc_note, ao_json):
-        """
+        """Creates an extent statement and deletes a physdesc note.
+
         Args:
             extent_number (str): extent number
             physdesc_note (dict): physdesc note
