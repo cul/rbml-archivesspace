@@ -201,9 +201,9 @@ class ArchivesSpaceClient:
         Returns:
             list: list of physdesc notes
         """
+        physdesc_notes = []
         if getattr(ao, "notes", False):
-            physdesc_notes = []
             for note in ao.notes:
                 if note.type == "physdesc":
                     physdesc_notes.append(note)
-            return physdesc_notes
+        return physdesc_notes
