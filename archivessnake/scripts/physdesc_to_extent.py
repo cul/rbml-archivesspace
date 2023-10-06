@@ -10,9 +10,12 @@ class PhysdescToExtent(object):
     def __init__(self, mode="dev"):
         logging.basicConfig(
             datefmt="%m/%d/%Y %I:%M:%S %p",
-            filename=f"physdesc_to_extent_{mode}.log",
             format="%(asctime)s %(message)s",
             level=logging.INFO,
+            handlers=[
+                logging.FileHandler(f"physdesc_to_extent_{mode}.log",),
+                logging.StreamHandler(),
+            ],
         )
         self.config = ConfigParser()
         self.config.read("local_settings.cfg")
