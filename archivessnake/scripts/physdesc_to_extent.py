@@ -30,7 +30,7 @@ class PhysdescToExtent(object):
         for ao in archival_objects:
             physdesc_notes = self.as_client.has_physdesc(ao)
             extent_possible = [
-                self.parse_physdesc(physdesc_note, "folder")
+                self.parsable_physdesc(physdesc_note, "folder")
                 for physdesc_note in physdesc_notes
             ]
             if len(extent_possible) == 1:
