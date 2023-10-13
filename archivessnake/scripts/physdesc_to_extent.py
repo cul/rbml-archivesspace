@@ -62,8 +62,8 @@ class PhysdescToExtent(object):
         instances_with_folder = []
         for instance in ao_json.get("instances", []):
             if instance["instance_type"] != "digital_object":
-                if instance.get("subcontainer"):
-                    subcontainer_type = instance["subcontainer"]["type_2"]
+                if instance.get("sub_container"):
+                    subcontainer_type = instance["sub_container"]["type_2"]
                     if "folder" in subcontainer_type.lower():
                         instances_with_folder.append(instance)
         if instances_with_folder:
