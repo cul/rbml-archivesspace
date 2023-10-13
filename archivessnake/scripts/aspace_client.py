@@ -244,19 +244,16 @@ class ArchivesSpaceClient:
         """
         resource_ids = self.aspace.client.get(
             f"/repositories/{repo_id}/resources",
-            params={"all_ids": True, "publish": True},
+            params={"all_ids": True, "modified_since": timestamp},
         ).json()
         for resource_id in resource_ids:
             resource = self.aspace.repositories(repo_id).resources(resource_id)
-            ead = self.aspace.client.get(
-                f"/repositories/{repo_id}/resource_descriptions/{resource_id}.xml",
-                params={
-                    "include_unpublished": False,
-                    "include_daos": True,
-                    "modified_since": timestamp,
-                },
-            ).content.decode("utf-8")
-            with open(
-                Path(ead_cache, f"as_ead_ldpd_{resource.id_0}.xml"), "w"
-            ) as ead_file:
-                ead_file.write(ead)
+            if resource.publish and not resource.suppressed:
+                ead = self.aspace.client.get(
+                    f"/repositories/{repo_id}/resource_descriptions/{resource_id}.xml",
+                    params={"include_unpublished": False, "include_daos": True},
+                ).content.decode("utf-8")
+                with open(
+                    Path(ead_cache, f"as_ead_ldpd_{resource.id_0}.xml"), "w"
+                ) as ead_file:
+                    ead_file.write(ead)
