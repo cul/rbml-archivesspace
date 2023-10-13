@@ -35,10 +35,14 @@ class PhysdescToExtent(object):
                     for physdesc_note in physdesc_notes
                 ]
                 if len(extent_possible) == 1:
-                    if extent_possible[0] == None:
+                    if extent_possible[0] is None:
                         pass
                     elif ao.extents:
                         logging.info(f"{ao.uri} has an extent statement. Skipping...")
+                    elif self.has_folder_instance(ao.json()):
+                        logging.info(
+                            f"{ao.uri} has folder information in an instance. Skipping..."
+                        )
                     else:
                         physdesc_note = extent_possible[0]
                         extent_number = self.parse_physdesc_number(physdesc_note)
@@ -48,6 +52,22 @@ class PhysdescToExtent(object):
                         logging.info(f"Moved physdesc to extent statement: {ao.uri}")
             except Exception as e:
                 logging.error(f"{ao.uri}: {e}")
+
+    def has_folder_instance(self, ao_json):
+        """Checks whether an archival object has folder information in at least one instance.
+
+        Args:
+            ao_json (dict): JSON of an ASpace archival object
+        """
+        instances_with_folder = []
+        for instance in ao_json.get("instances", []):
+            if instance["instance_type"] != "digital_object":
+                if instance.get("subcontainer"):
+                    subcontainer_type = instance["subcontainer"]["type_2"]
+                    if "folder" in subcontainer_type.lower():
+                        instances_with_folder.append(instance)
+        if instances_with_folder:
+            return True
 
     def move_to_extent_statement(self, extent_number, physdesc_note, ao_json):
         """Creates an extent statement and deletes a physdesc note.
