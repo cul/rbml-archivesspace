@@ -194,10 +194,10 @@ class ArchivesSpaceClient:
 
     def has_physdesc(self, ao):
         """Checks wheter an archival object has physdesc note(s)
-        
+
         Args:
             ao (obj): ASnake archival object
-        
+
         Returns:
             list: list of physdesc notes
         """
@@ -207,3 +207,21 @@ class ArchivesSpaceClient:
                 if note.type == "physdesc":
                     physdesc_notes.append(note)
         return physdesc_notes
+
+    def move_to_extent_statement(self, extent_number, physdesc_note, ao_json):
+        """Creates an extent statement and deletes a physdesc note.
+
+        Args:
+            extent_number (str): extent number
+            physdesc_note (dict): physdesc note
+            ao_json (dict): ASpace archival object or resource json
+        """
+        extent_statement = {
+            "portion": "whole",
+            "extent_type": "folders",
+            "jsonmodel_type": "extent",
+        }
+        extent_statement["number"] = extent_number
+        ao_json["extents"] = [extent_statement]
+        ao_json["notes"] = ao_json["notes"].remove(physdesc_note)
+        self.aspace.client.post(ao_json["uri"], json=ao_json)
