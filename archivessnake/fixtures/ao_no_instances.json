@@ -1,0 +1,161 @@
+{
+    "lock_version": 0,
+    "position": 461,
+    "publish": true,
+    "ref_id": "7e747621c3e4a5ac1c05727308473fe4",
+    "title": "[?]",
+    "display_string": "[?]",
+    "restrictions_apply": false,
+    "created_by": "admin",
+    "last_modified_by": "admin",
+    "create_time": "2019-05-21T19:40:26Z",
+    "system_mtime": "2023-02-09T21:10:18Z",
+    "user_mtime": "2019-05-21T19:40:26Z",
+    "suppressed": false,
+    "is_slug_auto": false,
+    "level": "file",
+    "jsonmodel_type": "archival_object",
+    "external_ids": [],
+    "subjects": [],
+    "linked_events": [],
+    "extents": [],
+    "lang_materials": [],
+    "dates": [],
+    "external_documents": [],
+    "rights_statements": [],
+    "linked_agents": [],
+    "import_previous_arks": [],
+    "ancestors": [
+        {
+            "ref": "/repositories/2/archival_objects/775578",
+            "level": "subseries"
+        },
+        {
+            "ref": "/repositories/2/archival_objects/774953",
+            "level": "series"
+        },
+        {
+            "ref": "/repositories/2/resources/6034",
+            "level": "collection"
+        }
+    ],
+    "instances": [],
+    "notes": [
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "Name of subject(s): Unknown"
+                }
+            ],
+            "type": "odd",
+            "persistent_id": "6676d31a7b5d716e0155acde30201881",
+            "publish": true
+        },
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "ID: SPA_16196"
+                }
+            ],
+            "type": "odd",
+            "persistent_id": "7d8032b02df77dcca10820aadc8408c9",
+            "publish": true
+        },
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "Date: 1938-xx-xx (approximate)"
+                }
+            ],
+            "type": "odd",
+            "persistent_id": "7c87e861fa1e3aa48c079cbb289a9c48",
+            "publish": true
+        },
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "Document type: Photograph"
+                }
+            ],
+            "type": "odd",
+            "persistent_id": "bd734971476f2f5726fbe46c1d887cf2",
+            "publish": true
+        },
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "Format: digital"
+                }
+            ],
+            "type": "odd",
+            "persistent_id": "d8c9468530ad96a267a4bc9f83066de7",
+            "publish": true
+        },
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "File path: Contemporary to SP/photo_album/1936-1940/193809s.jpg"
+                }
+            ],
+            "type": "odd",
+            "persistent_id": "861ead5c148fd6f3b1bd085d03404c87",
+            "publish": true
+        },
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "Previous holding library: Serge Prokofiev Archive at Goldsmiths College, University of London"
+                }
+            ],
+            "type": "odd",
+            "persistent_id": "b1ae14e08387dcb5aedea788393cba91",
+            "publish": true
+        },
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "Goldsmiths ID: 193809s"
+                }
+            ],
+            "type": "odd",
+            "persistent_id": "446499e41350dbdd7df04f6e15dde920",
+            "publish": true
+        }
+    ],
+    "accession_links": [],
+    "uri": "/repositories/2/archival_objects/791188",
+    "repository": {
+        "ref": "/repositories/2"
+    },
+    "resource": {
+        "ref": "/repositories/2/resources/6034"
+    },
+    "parent": {
+        "ref": "/repositories/2/archival_objects/775578"
+    },
+    "has_unpublished_ancestor": false
+}

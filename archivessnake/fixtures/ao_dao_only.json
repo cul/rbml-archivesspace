@@ -1,0 +1,98 @@
+{
+    "lock_version": 2,
+    "position": 3,
+    "publish": true,
+    "ref_id": "6e61cdb3468d5e1d1a1332fab4d77cc9",
+    "title": "22nd Congressional Black Caucus, Foreign Affairs Workshop",
+    "display_string": "22nd Congressional Black Caucus, Foreign Affairs Workshop, 9/25/1992",
+    "restrictions_apply": false,
+    "created_by": "kws2126",
+    "last_modified_by": "kws2126",
+    "create_time": "2019-07-09T17:26:17Z",
+    "system_mtime": "2023-09-07T18:43:22Z",
+    "user_mtime": "2019-07-09T17:26:17Z",
+    "suppressed": false,
+    "is_slug_auto": false,
+    "level": "file",
+    "jsonmodel_type": "archival_object",
+    "external_ids": [],
+    "subjects": [],
+    "linked_events": [],
+    "extents": [],
+    "lang_materials": [],
+    "dates": [
+        {
+            "lock_version": 0,
+            "expression": "9/25/1992",
+            "created_by": "kws2126",
+            "last_modified_by": "kws2126",
+            "create_time": "2019-07-09T17:26:17Z",
+            "system_mtime": "2019-07-09T17:26:17Z",
+            "user_mtime": "2019-07-09T17:26:17Z",
+            "date_type": "inclusive",
+            "label": "creation",
+            "jsonmodel_type": "date"
+        }
+    ],
+    "external_documents": [],
+    "rights_statements": [],
+    "linked_agents": [],
+    "import_previous_arks": [],
+    "ancestors": [
+        {
+            "ref": "/repositories/2/archival_objects/906882",
+            "level": "subseries"
+        },
+        {
+            "ref": "/repositories/2/archival_objects/351947",
+            "level": "series"
+        },
+        {
+            "ref": "/repositories/2/resources/5432",
+            "level": "collection"
+        }
+    ],
+    "instances": [
+        {
+            "lock_version": 0,
+            "created_by": "kws2126",
+            "last_modified_by": "kws2126",
+            "create_time": "2019-07-09T17:26:17Z",
+            "system_mtime": "2019-07-09T17:26:17Z",
+            "user_mtime": "2019-07-09T17:26:17Z",
+            "instance_type": "digital_object",
+            "jsonmodel_type": "instance",
+            "is_representative": false,
+            "digital_object": {
+                "ref": "/repositories/2/digital_objects/5461"
+            }
+        }
+    ],
+    "notes": [
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "jsonmodel_type": "note_text",
+                    "content": "Filename: RBML_Carnegie_BlackCaucusForeignAffairsWorkshop_4079753; Original format: VHS",
+                    "publish": true
+                }
+            ],
+            "type": "scopecontent",
+            "persistent_id": "70533fb7faccc481e40f8a03c9c7877c",
+            "publish": true
+        }
+    ],
+    "accession_links": [],
+    "uri": "/repositories/2/archival_objects/906886",
+    "repository": {
+        "ref": "/repositories/2"
+    },
+    "resource": {
+        "ref": "/repositories/2/resources/5432"
+    },
+    "parent": {
+        "ref": "/repositories/2/archival_objects/906882"
+    },
+    "has_unpublished_ancestor": false
+}

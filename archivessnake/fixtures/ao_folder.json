@@ -1,0 +1,132 @@
+{
+    "lock_version": 2,
+    "position": 4,
+    "publish": true,
+    "ref_id": "97eac609157d960253470c26814046b3",
+    "title": "Bambara, Toni Cade: \"The Salt Eaters\"",
+    "display_string": "Bambara, Toni Cade: \"The Salt Eaters\", 1977, 1979-1981",
+    "restrictions_apply": false,
+    "created_by": "clb2195",
+    "last_modified_by": "clb2195",
+    "create_time": "2022-01-19T14:38:19Z",
+    "system_mtime": "2023-02-09T20:25:20Z",
+    "user_mtime": "2022-01-19T14:48:10Z",
+    "suppressed": false,
+    "is_slug_auto": false,
+    "level": "file",
+    "jsonmodel_type": "archival_object",
+    "external_ids": [],
+    "subjects": [],
+    "linked_events": [],
+    "extents": [
+        {
+            "lock_version": 0,
+            "number": "4",
+            "created_by": "clb2195",
+            "last_modified_by": "clb2195",
+            "create_time": "2022-01-19T14:48:10Z",
+            "system_mtime": "2022-01-19T14:48:10Z",
+            "user_mtime": "2022-01-19T14:48:10Z",
+            "portion": "whole",
+            "extent_type": "folders",
+            "jsonmodel_type": "extent"
+        }
+    ],
+    "lang_materials": [],
+    "dates": [
+        {
+            "lock_version": 0,
+            "expression": "1977, 1979-1981",
+            "begin": "1977",
+            "end": "1981",
+            "created_by": "clb2195",
+            "last_modified_by": "clb2195",
+            "create_time": "2022-01-19T14:48:10Z",
+            "system_mtime": "2022-01-19T14:48:10Z",
+            "user_mtime": "2022-01-19T14:48:10Z",
+            "date_type": "inclusive",
+            "label": "creation",
+            "jsonmodel_type": "date"
+        }
+    ],
+    "external_documents": [],
+    "rights_statements": [],
+    "linked_agents": [],
+    "import_previous_arks": [],
+    "ancestors": [
+        {
+            "ref": "/repositories/2/archival_objects/1401472",
+            "level": "file"
+        },
+        {
+            "ref": "/repositories/2/archival_objects/1388133",
+            "level": "sub-subseries"
+        },
+        {
+            "ref": "/repositories/2/archival_objects/1069733",
+            "level": "subseries"
+        },
+        {
+            "ref": "/repositories/2/archival_objects/1068152",
+            "level": "series"
+        },
+        {
+            "ref": "/repositories/2/resources/3350",
+            "level": "collection"
+        }
+    ],
+    "instances": [
+        {
+            "lock_version": 0,
+            "created_by": "clb2195",
+            "last_modified_by": "clb2195",
+            "create_time": "2022-01-19T14:48:10Z",
+            "system_mtime": "2022-01-19T14:48:10Z",
+            "user_mtime": "2022-01-19T14:48:10Z",
+            "instance_type": "box",
+            "jsonmodel_type": "instance",
+            "is_representative": false,
+            "sub_container": {
+                "lock_version": 0,
+                "indicator_2": "3-6",
+                "created_by": "clb2195",
+                "last_modified_by": "clb2195",
+                "create_time": "2022-01-19T14:48:10Z",
+                "system_mtime": "2022-01-19T14:48:10Z",
+                "user_mtime": "2022-01-19T14:48:10Z",
+                "type_2": "folder",
+                "jsonmodel_type": "sub_container",
+                "top_container": {
+                    "ref": "/repositories/2/top_containers/116059"
+                }
+            }
+        }
+    ],
+    "notes": [
+        {
+            "jsonmodel_type": "note_multipart",
+            "persistent_id": "b314d93840b61e88799bc0fb1fdea2b3",
+            "type": "scopecontent",
+            "subnotes": [
+                {
+                    "jsonmodel_type": "note_text",
+                    "content": "Manuscript changes, production, publicity and reviews, subsidiary rights.",
+                    "publish": true
+                }
+            ],
+            "publish": true
+        }
+    ],
+    "accession_links": [],
+    "uri": "/repositories/2/archival_objects/1401477",
+    "repository": {
+        "ref": "/repositories/2"
+    },
+    "resource": {
+        "ref": "/repositories/2/resources/3350"
+    },
+    "parent": {
+        "ref": "/repositories/2/archival_objects/1401472"
+    },
+    "has_unpublished_ancestor": false
+}

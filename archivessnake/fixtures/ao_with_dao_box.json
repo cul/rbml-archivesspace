@@ -1,0 +1,122 @@
+{
+    "lock_version": 2,
+    "position": 11,
+    "publish": true,
+    "ref_id": "2cdb511355302c18b06eb84ea339fa17",
+    "title": "3 Endorsements Campaign, Bella Abzug on day care, DPM on CBS state committee",
+    "display_string": "3 Endorsements Campaign, Bella Abzug on day care, DPM on CBS state committee, 1976 June 07-29",
+    "restrictions_apply": false,
+    "created_by": "yh3112",
+    "last_modified_by": "kws2126",
+    "create_time": "2020-02-25T19:23:43Z",
+    "system_mtime": "2023-02-09T20:34:37Z",
+    "user_mtime": "2020-12-01T22:28:53Z",
+    "suppressed": false,
+    "is_slug_auto": true,
+    "level": "file",
+    "jsonmodel_type": "archival_object",
+    "external_ids": [],
+    "subjects": [],
+    "linked_events": [],
+    "extents": [
+        {
+            "lock_version": 0,
+            "number": "1",
+            "created_by": "kws2126",
+            "last_modified_by": "kws2126",
+            "create_time": "2020-12-01T22:28:53Z",
+            "system_mtime": "2020-12-01T22:28:53Z",
+            "user_mtime": "2020-12-01T22:28:53Z",
+            "portion": "whole",
+            "extent_type": "audiocassettes",
+            "jsonmodel_type": "extent"
+        }
+    ],
+    "lang_materials": [],
+    "dates": [
+        {
+            "lock_version": 0,
+            "expression": "1976 June 07-29",
+            "begin": "1976-06-07",
+            "end": "1976-06-29",
+            "created_by": "kws2126",
+            "last_modified_by": "kws2126",
+            "create_time": "2020-12-01T22:28:53Z",
+            "system_mtime": "2020-12-01T22:28:53Z",
+            "user_mtime": "2020-12-01T22:28:53Z",
+            "date_type": "inclusive",
+            "label": "creation",
+            "jsonmodel_type": "date"
+        }
+    ],
+    "external_documents": [],
+    "rights_statements": [],
+    "linked_agents": [],
+    "import_previous_arks": [],
+    "ancestors": [
+        {
+            "ref": "/repositories/2/archival_objects/1128290",
+            "level": "subseries"
+        },
+        {
+            "ref": "/repositories/2/archival_objects/14577",
+            "level": "series"
+        },
+        {
+            "ref": "/repositories/2/resources/4851",
+            "level": "collection"
+        }
+    ],
+    "instances": [
+        {
+            "lock_version": 0,
+            "created_by": "kws2126",
+            "last_modified_by": "kws2126",
+            "create_time": "2020-12-01T22:28:53Z",
+            "system_mtime": "2020-12-01T22:28:53Z",
+            "user_mtime": "2020-12-01T22:28:53Z",
+            "instance_type": "box",
+            "jsonmodel_type": "instance",
+            "is_representative": false,
+            "sub_container": {
+                "lock_version": 0,
+                "created_by": "kws2126",
+                "last_modified_by": "kws2126",
+                "create_time": "2020-12-01T22:28:53Z",
+                "system_mtime": "2020-12-01T22:28:53Z",
+                "user_mtime": "2020-12-01T22:28:53Z",
+                "jsonmodel_type": "sub_container",
+                "top_container": {
+                    "ref": "/repositories/2/top_containers/88980"
+                }
+            }
+        },
+        {
+            "lock_version": 0,
+            "created_by": "kws2126",
+            "last_modified_by": "kws2126",
+            "create_time": "2020-12-01T22:28:53Z",
+            "system_mtime": "2020-12-01T22:28:53Z",
+            "user_mtime": "2020-12-01T22:28:53Z",
+            "instance_type": "digital_object",
+            "jsonmodel_type": "instance",
+            "is_representative": false,
+            "digital_object": {
+                "ref": "/repositories/2/digital_objects/10228"
+            }
+        }
+    ],
+    "notes": [],
+    "accession_links": [],
+    "uri": "/repositories/2/archival_objects/1128319",
+    "repository": {
+        "ref": "/repositories/2"
+    },
+    "resource": {
+        "ref": "/repositories/2/resources/4851"
+    },
+    "parent": {
+        "ref": "/repositories/2/archival_objects/1128290"
+    },
+    "has_unpublished_ancestor": false
+}
