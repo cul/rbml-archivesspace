@@ -52,6 +52,9 @@ class PhysdescToExtent(object):
 
         Args:
             ao_json (dict): archival object json
+
+        Returns:
+            bool
         """
         if ao_json["extents"]:
             logging.info(f"{ao_json['uri']} has an extent statement. Skipping...")
