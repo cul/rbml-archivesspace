@@ -4,6 +4,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.physdesc_to_extent import PhysdescToExtent
+from asnake.utils import get_note_text
 
 
 class TestPhysdescToExtent(unittest.TestCase):
@@ -42,40 +43,33 @@ class TestPhysdescToExtent(unittest.TestCase):
         # writing to ASpace
         pass
 
-    # @patch("asnake.utils.get_note_text", return_value=None)
-        # Do I need this here or am I confused bc we get_note_text in parse_physdesc_number method also
+    @patch("asnake.utils.get_note_text")
     @patch("scripts.physdesc_to_extent.PhysdescToExtent.__init__", return_value=None)
-    def test_parsable_physdesc(self, mock_init):
-            # If I need to mock get_note_text here it should be a parameter in test_parsable_physdesc
-        pass
+    def test_parsable_physdesc(self, mock_init, mock_note_text):
+        mock_note_text.return_value = "something"
 
-        # fixtures:
-            # has physdesc that matches extent form
-            # has physdesc that doesn't match
-            # doesn't have physdesc
-        # args: 
-            # physdesc (obj): ASnake abstraction layer note
-            # extent_type (str): extent type, e.g., folder
+    # fixtures:
+    # has physdesc that matches extent form
+    # has physdesc that doesn't match
+    # doesn't have physdesc
+    # args:
+    #   physdesc (obj): ASnake abstraction layer note
+    #   extent_type (str): extent type, e.g., folder
 
-       # with open(Path("fixtures", "extent_physdesc.json")) as f:
-            # json_data = json.load(f)
-        #self.assertIsInstance((PhysdescToExtent().parsable_physdesc(json_data)), list)
-                    # **** Help!
-                    # The physdesc_list in this fixture would match: 
-                        # list, len of 2, numeric first item in list, string second item
-                    # So the method would return physdesc, an Asnake abstraction layer note object
-                    # So what are we asserting? 
-                        # Just that physdesc is a list?
-                        # A list with two items? 
-                        # Or even that physdesc isn't None?
-        # for filename in ["physdesc_legit.json", "ao_with_date.json"]:
-            # with open(Path("fixtures", "physdesc_legit.json")) as f:
-                #json_data = json.load(f)
-            #self.assertIsNone(PhysdescToExtent().parsable_physdesc(json_data))
+    # with open(Path("fixtures", "extent_physdesc.json")) as f:
+    #   json_data = json.load(f)
+    # parsed_with_folder = PhysdescToExtent().parsable_physdesc(json_data)
+    # self.assertIsInstance(parsed_with_folder, object)
+    # self.assertEqual(parsed_with_folder, json_data)
+
+    # for filename in ["physdesc_legit.json", "ao_with_date.json"]:
+    #   with open(Path("fixtures", f"{filename}.json")) as f:
+    #       json_data = json.load(f)
+    #   self.assertIsNone(PhysdescToExtent().parsable_physdesc(json_data))
 
     # mock get_note_text
     # @patch("asnake.utils.get_note_text", return_value=None)
-        # This is probably wrong but it's a start
+    # This is probably wrong but it's a start
     @patch("scripts.physdesc_to_extent.PhysdescToExtent.__init__", return_value=None)
     def test_parse_physdesc_number(self):
         pass
