@@ -1,0 +1,133 @@
+{
+    "lock_version": 0,
+    "position": 0,
+    "publish": true,
+    "ref_id": "075b23d067fc9259ca18675044afe9d9",
+    "title": "Oates, Joyce Carol The Assassins, [n.p.]",
+    "display_string": "Oates, Joyce Carol The Assassins, [n.p.], 23 July 1975",
+    "restrictions_apply": false,
+    "created_by": "admin",
+    "last_modified_by": "admin",
+    "create_time": "2019-05-21T16:39:58Z",
+    "system_mtime": "2023-03-08T21:45:01Z",
+    "user_mtime": "2019-05-21T16:39:58Z",
+    "suppressed": false,
+    "is_slug_auto": false,
+    "level": "file",
+    "jsonmodel_type": "archival_object",
+    "external_ids":
+    [],
+    "subjects":
+    [],
+    "linked_events":
+    [],
+    "extents":
+    [],
+    "lang_materials":
+    [],
+    "dates":
+    [
+        {
+            "lock_version": 0,
+            "expression": "23 July 1975",
+            "created_by": "admin",
+            "last_modified_by": "admin",
+            "create_time": "2019-05-21T16:39:58Z",
+            "system_mtime": "2019-05-21T16:39:58Z",
+            "user_mtime": "2019-05-21T16:39:58Z",
+            "date_type": "single",
+            "label": "creation",
+            "jsonmodel_type": "date"
+        }
+    ],
+    "external_documents":
+    [],
+    "rights_statements":
+    [],
+    "linked_agents":
+    [],
+    "import_previous_arks":
+    [],
+    "ancestors":
+    [
+        {
+            "ref": "/repositories/2/archival_objects/251221",
+            "level": "series"
+        },
+        {
+            "ref": "/repositories/2/resources/5281",
+            "level": "collection"
+        }
+    ],
+    "instances":
+    [
+        {
+            "lock_version": 0,
+            "created_by": "admin",
+            "last_modified_by": "admin",
+            "create_time": "2019-05-21T16:39:58Z",
+            "system_mtime": "2019-05-21T16:39:58Z",
+            "user_mtime": "2019-05-21T16:39:58Z",
+            "instance_type": "flat box",
+            "jsonmodel_type": "instance",
+            "is_representative": false,
+            "sub_container":
+            {
+                "lock_version": 0,
+                "created_by": "admin",
+                "last_modified_by": "admin",
+                "create_time": "2019-05-21T16:39:58Z",
+                "system_mtime": "2019-05-21T16:39:58Z",
+                "user_mtime": "2019-05-21T16:39:58Z",
+                "jsonmodel_type": "sub_container",
+                "top_container":
+                {
+                    "ref": "/repositories/2/top_containers/22973"
+                }
+            }
+        }
+    ],
+    "notes":
+    [
+        {
+            "jsonmodel_type": "note_singlepart",
+            "content":
+            [
+                "[ca. 194p.] galley sheets"
+            ],
+            "type": "physdesc",
+            "persistent_id": "a6cbb43034469015e9dcf2438047ab95",
+            "publish": true
+        },
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes":
+            [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "[With the author's and editor's ms. corrections]"
+                }
+            ],
+            "type": "scopecontent",
+            "persistent_id": "ac7827fcd5b4c42df4ab4f23124718b2",
+            "publish": true
+        }
+    ],
+    "accession_links":
+    [],
+    "uri": "/repositories/2/archival_objects/251351",
+    "repository":
+    {
+        "ref": "/repositories/2"
+    },
+    "resource":
+    {
+        "ref": "/repositories/2/resources/5281"
+    },
+    "parent":
+    {
+        "ref": "/repositories/2/archival_objects/251221"
+    },
+    "has_unpublished_ancestor": false
+}
