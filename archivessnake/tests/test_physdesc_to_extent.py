@@ -46,26 +46,26 @@ class TestPhysdescToExtent(unittest.TestCase):
     @patch("asnake.utils.get_note_text")
     @patch("scripts.physdesc_to_extent.PhysdescToExtent.__init__", return_value=None)
     def test_parsable_physdesc(self, mock_init, mock_note_text):
-        mock_note_text.return_value = "something"
-
+        
     # fixtures:
-    # has physdesc that matches extent form
-    # has physdesc that doesn't match
-    # doesn't have physdesc
+    # extent_physdesc has physdesc that matches extent form
+    # physdesc_legit has physdesc that doesn't match
+    # ao_with_date doesn't have physdesc
     # args:
     #   physdesc (obj): ASnake abstraction layer note
     #   extent_type (str): extent type, e.g., folder
 
-    # with open(Path("fixtures", "extent_physdesc.json")) as f:
-    #   json_data = json.load(f)
-    # parsed_with_folder = PhysdescToExtent().parsable_physdesc(json_data)
-    # self.assertIsInstance(parsed_with_folder, object)
-    # self.assertEqual(parsed_with_folder, json_data)
-
-    # for filename in ["physdesc_legit.json", "ao_with_date.json"]:
-    #   with open(Path("fixtures", f"{filename}.json")) as f:
-    #       json_data = json.load(f)
-    #   self.assertIsNone(PhysdescToExtent().parsable_physdesc(json_data))
+    with open(Path("fixtures", "extent_physdesc.json")) as f:
+        json_data = json.load(f)
+        mock_note_text.return_value = "(2 folders)"
+    parsed_with_folder = PhysdescToExtent().parsable_physdesc(json_data)
+    self.assertIsInstance(parsed_with_folder, object)
+    self.assertEqual(parsed_with_folder, json_data)
+    for filename in ["physdesc_legit", "ao_with_date"]:
+        with open(Path("fixtures", f"{filename}.json")) as f:
+           json_data = json.load(f)
+           mock_note_text.return_value = "[ca. 194p.] galley sheets"
+       self.assertIsNone(PhysdescToExtent().parsable_physdesc(json_data))
 
     # mock get_note_text
     # @patch("asnake.utils.get_note_text", return_value=None)
