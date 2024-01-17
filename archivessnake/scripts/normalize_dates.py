@@ -13,10 +13,15 @@ def get_dates(self):
                 end = date.json().get("end")
                 date_type = date.json().get("date_type")
 
+
 def normalize_expression(self, expression):
-    if fullmatch(r"\d\d\d\d-\d\d\d\d", expression) and begin == "None" and end == "None":
+    if (
+        fullmatch(r"\d\d\d\d-\d\d\d\d", expression)
+        and begin == "None"
+        and end == "None"
+    ):
         begin = expression.split("-")[0]
         end = expression.split("-")[-1]
         date_type = "inclusive"
-    else: 
+    else:
         pass
