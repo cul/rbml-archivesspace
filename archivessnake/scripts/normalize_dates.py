@@ -27,20 +27,19 @@ class NormalizeDates(object):
     def run(self, repo_id=2):
         for resource in self.as_client.aspace.repositories(repo_id).resources:
             if resource.publish and not resource.suppressed:
-                self.update_dates(resource)
+                self.update_dates_with_timewalk(resource)
 
-    def update_dates(self, resource):
+    def update_dates_with_timewalk(self, resource):
         resource_json = resource.json()
         dates = resource_json["dates"]
         new_dates = []
+        update = False
         for date in dates:
-            new_date = self.normalize_expression(date)
-            if new_date:
-                new_dates.append(new_date)
-            else:
-                new_dates.append(date)
-        if dates != new_dates:
-            resource_json["dates"] = new_dates
+            if date.get("begin") is None:
+                update = True
+            elif date.get("date_type") != "single" and date.get("end") is None:
+                update = True
+        if update:
             self.as_client.aspace.client.post(resource.uri, json=resource_json)
             logging.info(f"Updated {resource.title} ({resource.uri})")
             # TODO: what happens when you push a single date with a begin and end date to ArchivesSpace via the API?
