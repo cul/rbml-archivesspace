@@ -34,6 +34,7 @@ class UpdateDateInfo(object):
             try:
                 ao_uri = f"/repositories/2/archival_objects/{row[2].split('_')[-1]}"
                 ao_json = self.as_client.aspace.client.get(ao_uri).json()
+                series_begin, series_end = self.get_series_dates(ao_json)
                 dates = ao_json.get("dates", [])
                 for date in dates:
                     if date.get("expression"):
@@ -43,3 +44,25 @@ class UpdateDateInfo(object):
                 logging.info(f"Updated {ao_uri}")
             except Exception as e:
                 logging.error(f"ao_uri: {e}")
+
+    def get_series_dates(self, ao_json):
+        begin, end = None, None
+        series_json = self.as_client.aspace.client.get(
+            ao_json["ancestors"][-2]["ref"]
+        ).json()
+        if series_json.get("dates"):
+            series_date = series_json["dates"][0]
+            if series_date.get("begin"):
+                begin = series_date["begin"]
+                if series_date.get("end"):
+                    end = series_date["end"]
+                else:
+                    end = series_date["begin"]
+            else:
+                if len(series_date.split("-")) == 2:
+                    begin = series_date.split("-")[0]
+                    end = series_date.split("-")[1]
+        if begin is None:
+            raise Exception("No year range in series date information")
+        else:
+            return begin, end
