@@ -13,7 +13,7 @@ class GetMoreInfo(object):
             format="%(asctime)s %(message)s",
             level=logging.INFO,
             handlers=[
-                logging.FileHandler(f"get_aos_{mode}.log",),
+                logging.FileHandler(f"more_info_dates_{mode}.log",),
                 logging.StreamHandler(),
             ],
         )
@@ -40,27 +40,30 @@ class GetMoreInfo(object):
             ]
         ]
         for input_row in input_rows:
-            ao_uri = input_row[1]
-            ao = self.as_client.aspace.client.get(ao_uri).json()
-            (
-                collection_title,
-                collection_dates,
-                collection_url,
-            ) = self.get_collection_info(ao["resource"]["ref"])
-            ao_url = (
-                f"{collection_url}#tree::archival_object_{ao['uri'].split('/')[-1]}"
-            )
-            output_row = [
-                collection_title,
-                collection_dates,
-                ao_url,
-                ao["ref_id"],
-                ao["display_string"],
-            ]
-            for date in ao["dates"]:
-                output_row.append(date.get("expression"))
-            output_sheet_data.append(output_row)
-            write_data_to_csv(output_sheet_data, output_csv)
+            try:
+                ao_uri = input_row[1]
+                ao = self.as_client.aspace.client.get(ao_uri).json()
+                (
+                    collection_title,
+                    collection_dates,
+                    collection_url,
+                ) = self.get_collection_info(ao["resource"]["ref"])
+                ao_url = (
+                    f"{collection_url}#tree::archival_object_{ao['uri'].split('/')[-1]}"
+                )
+                output_row = [
+                    collection_title,
+                    collection_dates,
+                    ao_url,
+                    ao["ref_id"],
+                    ao["display_string"],
+                ]
+                for date in ao["dates"]:
+                    output_row.append(date.get("expression"))
+                output_sheet_data.append(output_row)
+                write_data_to_csv(output_sheet_data, output_csv)
+            except Exception as e:
+                logging.error(f"ao_uri: {e}")
 
     def get_collection_info(self, resource_uri):
         resource = self.as_client.aspace.client.get(resource_uri).json()
@@ -68,4 +71,4 @@ class GetMoreInfo(object):
         for date in resource["dates"]:
             resource_dates.append(f"{date['expression']} ({date['date_type']})")
         collection_url = f"https://aspace.library.columbia.edu/resources/{resource['uri'].split('/')[-1]}"
-        return resource["title"], resource_dates.join(", "), collection_url
+        return resource["title"], ", ".join(resource_dates), collection_url
