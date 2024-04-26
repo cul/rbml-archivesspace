@@ -38,8 +38,10 @@ class UpdateDateInfo(object):
                 dates = ao_json.get("dates", [])
                 for date in dates:
                     if date.get("expression"):
-                        if date["expression"] in ao_json.get("title", ""):
-                            dates.remove(date)
+                        if date["expression"].isnumeric():
+                            if date["expression"] < series_begin or date["expression"] > series_end:
+                                if date["expression"] in ao_json.get("title", ""):
+                                    dates.remove(date)
                 self.as_client.update_aspace_field(ao_json, "dates", dates)
                 logging.info(f"Updated {ao_uri}")
             except Exception as e:
@@ -59,9 +61,9 @@ class UpdateDateInfo(object):
                 else:
                     end = series_date["begin"]
             else:
-                if len(series_date.split("-")) == 2:
-                    begin = series_date.split("-")[0]
-                    end = series_date.split("-")[1]
+                if len(series_date.get("expression").split("-")) == 2:
+                    begin = series_date.get("expression").split("-")[0]
+                    end = series_date.get("expression").split("-")[1]
         if begin is None:
             raise Exception("No year range in series date information")
         else:
