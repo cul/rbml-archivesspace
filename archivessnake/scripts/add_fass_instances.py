@@ -1,8 +1,10 @@
-import csv
 import logging
 from configparser import ConfigParser
 
+from asnake.utils import walk_tree
+
 from .aspace_client import ArchivesSpaceClient
+from .helpers import write_data_to_csv
 
 
 class AddFassInstances(object):
@@ -26,15 +28,15 @@ class AddFassInstances(object):
             self.config.get("ArchivesSpace", "password"),
         )
 
-    def get_subseries_data(self, subseries_uri):
+    def get_subseries_data(self, subseries_uri, output_csv):
         tree = walk_tree(subseries_uri, self.as_client.aspace.client)
         next(tree)
         sheet_data = []
         sheet_data.append(["display_string", "uri"])
         for child in tree:
             sheet_data.append([child["display_string"], child["uri"]])
+        write_data_to_csv(sheet_data, output_csv)
 
-    def write_data_to_csv(sheet_data, subseries_from_AS):
-        with open(subseries_from_AS, "w") as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerows(sheet_data)
+    def add_instances_extents(self, subseries_csv):
+        with open(subseries_csv, "r") as csvfile:
+            pass
