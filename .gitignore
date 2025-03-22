@@ -1,3 +1,7 @@
+.DS_store
 **/secrets.py
 **/secretsDev.py
 **/config.ini
+local_settings.cfg
+__pycache__
+.coverage

@@ -1,0 +1,19 @@
+repos:
+- repo: https://github.com/ambv/black
+  rev: 22.6.0
+  hooks:
+  - id: black
+    args: [--safe, --quiet]
+- repo: https://gitlab.com/pycqa/flake8
+  rev: 4.0.1
+  hooks:
+  - id: flake8
+- repo: https://github.com/pycqa/isort
+  rev: 5.10.1
+  hooks:
+  - id: isort
+    args: [--profile, black]
+- repo: https://github.com/jazzband/pip-tools
+  rev: 6.8.0
+  hooks:
+    - id: pip-compile
