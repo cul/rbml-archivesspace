@@ -5,3 +5,4 @@
 local_settings.cfg
 __pycache__
 .coverage
+*.log
