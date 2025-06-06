@@ -4,5 +4,7 @@
 **/config.ini
 local_settings.cfg
 __pycache__
-.coverage
+**/.coverage
 *.log
+**/config.ini
+as_config.cfg
