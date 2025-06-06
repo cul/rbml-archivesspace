@@ -1,0 +1,129 @@
+{
+	"lock_version": 0,
+	"position": 9,
+	"publish": true,
+	"ref_id": "869f3bfaf67c17bd7e5bb2670dbe8d51",
+	"title": "Architecture Journals",
+	"display_string": "Architecture Journals, 1981",
+	"restrictions_apply": false,
+	"created_by": "admin",
+	"last_modified_by": "admin",
+	"create_time": "2019-05-21T20:28:08Z",
+	"system_mtime": "2021-11-12T12:52:07Z",
+	"user_mtime": "2019-05-21T20:28:08Z",
+	"suppressed": false,
+	"is_slug_auto": false,
+	"level": "file",
+	"jsonmodel_type": "archival_object",
+	"external_ids": [
+
+	],
+	"subjects": [
+
+	],
+	"linked_events": [
+
+	],
+	"extents": [
+
+	],
+	"lang_materials": [
+
+	],
+	"dates": [
+		{
+			"lock_version": 0,
+			"expression": "1981",
+			"created_by": "admin",
+			"last_modified_by": "admin",
+			"create_time": "2019-05-21T20:28:08Z",
+			"system_mtime": "2019-05-21T20:28:08Z",
+			"user_mtime": "2019-05-21T20:28:08Z",
+			"date_type": "single",
+			"label": "creation",
+			"jsonmodel_type": "date"
+		}
+	],
+	"external_documents": [
+
+	],
+	"rights_statements": [
+
+	],
+	"linked_agents": [
+
+	],
+	"import_previous_arks": [
+
+	],
+	"ancestors": [
+		{
+			"ref": "/repositories/3/archival_objects/878216",
+			"level": "subseries"
+		},
+		{
+			"ref": "/repositories/3/archival_objects/878074",
+			"level": "series"
+		},
+		{
+			"ref": "/repositories/3/resources/6195",
+			"level": "collection"
+		}
+	],
+	"instances": [
+		{
+			"lock_version": 0,
+			"created_by": "admin",
+			"last_modified_by": "admin",
+			"create_time": "2019-05-21T20:28:08Z",
+			"system_mtime": "2019-05-21T20:28:08Z",
+			"user_mtime": "2019-05-21T20:28:08Z",
+			"instance_type": "box",
+			"jsonmodel_type": "instance",
+			"is_representative": false,
+			"sub_container": {
+				"lock_version": 0,
+				"indicator_2": "02",
+				"created_by": "admin",
+				"last_modified_by": "admin",
+				"create_time": "2019-05-21T20:28:08Z",
+				"system_mtime": "2019-05-21T20:28:08Z",
+				"user_mtime": "2019-05-21T20:28:08Z",
+				"type_2": "folder",
+				"jsonmodel_type": "sub_container",
+				"top_container": {
+					"ref": "/repositories/3/top_containers/79958"
+				}
+			}
+		}
+	],
+	"notes": [
+		{
+			"jsonmodel_type": "note_multipart",
+			"subnotes": [
+				{
+					"publish": true,
+					"jsonmodel_type": "note_text",
+					"content": "<title altrender=\"italic\">A.I.A. Journal</title>(1981 Mid-May)"
+				}
+			],
+			"type": "scopecontent",
+			"persistent_id": "1f92d99dd3acd063da1aacacc6ce46fa",
+			"publish": true
+		}
+	],
+	"accession_links": [
+
+	],
+	"uri": "/repositories/3/archival_objects/878515",
+	"repository": {
+		"ref": "/repositories/3"
+	},
+	"resource": {
+		"ref": "/repositories/3/resources/6195"
+	},
+	"parent": {
+		"ref": "/repositories/3/archival_objects/878216"
+	},
+	"has_unpublished_ancestor": false
+}

@@ -1,0 +1,729 @@
+{
+	"lock_version": 62,
+	"title": "New York City Opera records",
+	"publish": true,
+	"restrictions": false,
+	"ead_id": "10567054",
+	"ead_location": "https://findingaids.library.columbia.edu/ead/nnc-rb/ldpd_10567054",
+	"created_by": "admin",
+	"last_modified_by": "yh3112",
+	"create_time": "2018-06-03T16:50:11Z",
+	"system_mtime": "2022-12-21T20:31:44Z",
+	"user_mtime": "2022-12-20T17:55:48Z",
+	"suppressed": false,
+	"is_slug_auto": false,
+	"id_0": "10567054",
+	"level": "collection",
+	"finding_aid_description_rules": "DACS",
+	"finding_aid_language": "eng",
+	"finding_aid_script": "Latn",
+	"finding_aid_status": "in_progress",
+	"jsonmodel_type": "resource",
+	"external_ids": [
+
+	],
+	"subjects": [
+		{
+			"ref": "/subjects/5308"
+		},
+		{
+			"ref": "/subjects/10748"
+		},
+		{
+			"ref": "/subjects/2945"
+		},
+		{
+			"ref": "/subjects/8997"
+		},
+		{
+			"ref": "/subjects/9772"
+		},
+		{
+			"ref": "/subjects/2"
+		},
+		{
+			"ref": "/subjects/708"
+		},
+		{
+			"ref": "/subjects/4276"
+		},
+		{
+			"ref": "/subjects/5807"
+		},
+		{
+			"ref": "/subjects/10942"
+		},
+		{
+			"ref": "/subjects/7138"
+		},
+		{
+			"ref": "/subjects/6585"
+		},
+		{
+			"ref": "/subjects/10614"
+		},
+		{
+			"ref": "/subjects/10561"
+		},
+		{
+			"ref": "/subjects/9696"
+		},
+		{
+			"ref": "/subjects/3118"
+		},
+		{
+			"ref": "/subjects/8787"
+		},
+		{
+			"ref": "/subjects/10858"
+		},
+		{
+			"ref": "/subjects/8788"
+		},
+		{
+			"ref": "/subjects/3119"
+		},
+		{
+			"ref": "/subjects/5032"
+		},
+		{
+			"ref": "/subjects/2942"
+		},
+		{
+			"ref": "/subjects/7547"
+		},
+		{
+			"ref": "/subjects/3355"
+		},
+		{
+			"ref": "/subjects/2060"
+		},
+		{
+			"ref": "/subjects/5023"
+		},
+		{
+			"ref": "/subjects/10890"
+		},
+		{
+			"ref": "/subjects/695"
+		},
+		{
+			"ref": "/subjects/4266"
+		},
+		{
+			"ref": "/subjects/1472"
+		},
+		{
+			"ref": "/subjects/11848"
+		},
+		{
+			"ref": "/subjects/7692"
+		},
+		{
+			"ref": "/subjects/3451"
+		},
+		{
+			"ref": "/subjects/6188"
+		},
+		{
+			"ref": "/subjects/3372"
+		},
+		{
+			"ref": "/subjects/9997"
+		},
+		{
+			"ref": "/subjects/1398"
+		},
+		{
+			"ref": "/subjects/4650"
+		},
+		{
+			"ref": "/subjects/2942"
+		},
+		{
+			"ref": "/subjects/2058"
+		},
+		{
+			"ref": "/subjects/4876"
+		},
+		{
+			"ref": "/subjects/2301"
+		},
+		{
+			"ref": "/subjects/3698"
+		},
+		{
+			"ref": "/subjects/3261"
+		},
+		{
+			"ref": "/subjects/16955"
+		}
+	],
+	"linked_events": [
+
+	],
+	"extents": [
+		{
+			"lock_version": 0,
+			"number": "214",
+			"container_summary": "Processed: 148 record cartons, 57 manuscript boxes, 13 XL flat boxes, 5 small flat boxes, 2 LP boxes, 2 CD boxes, 1 oversize mapcase folder, 3 costumes\n",
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:48Z",
+			"system_mtime": "2022-12-20T17:55:48Z",
+			"user_mtime": "2022-12-20T17:55:48Z",
+			"portion": "part",
+			"extent_type": "linear feet",
+			"jsonmodel_type": "extent"
+		},
+		{
+			"lock_version": 0,
+			"number": "189",
+			"container_summary": "Unprocessed: 185 record cartons, 2 tube boxes, 14 hard drives with 35 TB of digitized material",
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:48Z",
+			"system_mtime": "2022-12-20T17:55:48Z",
+			"user_mtime": "2022-12-20T17:55:48Z",
+			"portion": "part",
+			"extent_type": "linear feet",
+			"jsonmodel_type": "extent"
+		}
+	],
+	"lang_materials": [
+		{
+			"lock_version": 0,
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:48Z",
+			"system_mtime": "2022-12-20T17:55:48Z",
+			"user_mtime": "2022-12-20T17:55:48Z",
+			"jsonmodel_type": "lang_material",
+			"notes": [
+
+			],
+			"language_and_script": {
+				"lock_version": 0,
+				"created_by": "yh3112",
+				"last_modified_by": "yh3112",
+				"create_time": "2022-12-20T17:55:49Z",
+				"system_mtime": "2022-12-20T17:55:49Z",
+				"user_mtime": "2022-12-20T17:55:49Z",
+				"language": "eng",
+				"script": "Latn",
+				"jsonmodel_type": "language_and_script"
+			}
+		},
+		{
+			"lock_version": 0,
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:49Z",
+			"system_mtime": "2022-12-20T17:55:49Z",
+			"user_mtime": "2022-12-20T17:55:49Z",
+			"jsonmodel_type": "lang_material",
+			"notes": [
+
+			],
+			"language_and_script": {
+				"lock_version": 0,
+				"created_by": "yh3112",
+				"last_modified_by": "yh3112",
+				"create_time": "2022-12-20T17:55:49Z",
+				"system_mtime": "2022-12-20T17:55:49Z",
+				"user_mtime": "2022-12-20T17:55:49Z",
+				"language": "ger",
+				"script": "Latn",
+				"jsonmodel_type": "language_and_script"
+			}
+		},
+		{
+			"lock_version": 0,
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:49Z",
+			"system_mtime": "2022-12-20T17:55:49Z",
+			"user_mtime": "2022-12-20T17:55:49Z",
+			"jsonmodel_type": "lang_material",
+			"notes": [
+
+			],
+			"language_and_script": {
+				"lock_version": 0,
+				"created_by": "yh3112",
+				"last_modified_by": "yh3112",
+				"create_time": "2022-12-20T17:55:49Z",
+				"system_mtime": "2022-12-20T17:55:49Z",
+				"user_mtime": "2022-12-20T17:55:49Z",
+				"language": "ita",
+				"script": "Latn",
+				"jsonmodel_type": "language_and_script"
+			}
+		},
+		{
+			"lock_version": 0,
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:49Z",
+			"system_mtime": "2022-12-20T17:55:49Z",
+			"user_mtime": "2022-12-20T17:55:49Z",
+			"jsonmodel_type": "lang_material",
+			"notes": [
+
+			],
+			"language_and_script": {
+				"lock_version": 0,
+				"created_by": "yh3112",
+				"last_modified_by": "yh3112",
+				"create_time": "2022-12-20T17:55:49Z",
+				"system_mtime": "2022-12-20T17:55:49Z",
+				"user_mtime": "2022-12-20T17:55:49Z",
+				"language": "fre",
+				"script": "Latn",
+				"jsonmodel_type": "language_and_script"
+			}
+		}
+	],
+	"dates": [
+		{
+			"lock_version": 0,
+			"expression": "1924-2019",
+			"begin": "1924",
+			"end": "2019",
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:48Z",
+			"system_mtime": "2022-12-20T17:55:48Z",
+			"user_mtime": "2022-12-20T17:55:48Z",
+			"date_type": "inclusive",
+			"label": "creation",
+			"jsonmodel_type": "date"
+		},
+		{
+			"lock_version": 0,
+			"expression": "1965-1991",
+			"begin": "1965",
+			"end": "1991",
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:48Z",
+			"system_mtime": "2022-12-20T17:55:48Z",
+			"user_mtime": "2022-12-20T17:55:48Z",
+			"date_type": "bulk",
+			"label": "creation",
+			"jsonmodel_type": "date"
+		}
+	],
+	"external_documents": [
+		{
+			"lock_version": 0,
+			"title": "Deed of Gift, 2021",
+			"location": "https://drive.google.com/file/d/1VJfn11CNTG36818JIK4YRxgeUS2X3tWm/view?usp=sharing",
+			"publish": false,
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:49Z",
+			"system_mtime": "2022-12-20T17:55:49Z",
+			"user_mtime": "2022-12-20T17:55:49Z",
+			"jsonmodel_type": "external_document"
+		},
+		{
+			"lock_version": 0,
+			"title": "Deed of Gift for James H. North addition, 2021",
+			"location": "https://drive.google.com/file/d/10UWPyzm59NCjB2BWcyivYF_aHF73ndZA/view?usp=sharing",
+			"publish": false,
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:49Z",
+			"system_mtime": "2022-12-20T17:55:49Z",
+			"user_mtime": "2022-12-20T17:55:49Z",
+			"jsonmodel_type": "external_document"
+		},
+		{
+			"lock_version": 0,
+			"title": "CUL Digital Projects: New York City Opera Records",
+			"location": "https://wiki.library.columbia.edu/pages/viewpage.action?spaceKey=digprog&title=New+York+City+Opera+Records",
+			"publish": false,
+			"created_by": "yh3112",
+			"last_modified_by": "yh3112",
+			"create_time": "2022-12-20T17:55:49Z",
+			"system_mtime": "2022-12-20T17:55:49Z",
+			"user_mtime": "2022-12-20T17:55:49Z",
+			"jsonmodel_type": "external_document"
+		}
+	],
+	"rights_statements": [
+
+	],
+	"linked_agents": [
+		{
+			"role": "creator",
+			"terms": [
+
+			],
+			"ref": "/agents/corporate_entities/4326"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/corporate_entities/4326"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19802"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/11533"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19830"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19831"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19832"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/7964"
+		}
+	],
+	"import_previous_arks": [
+
+	],
+	"revision_statements": [
+
+	],
+	"instances": [
+
+	],
+	"deaccessions": [
+
+	],
+	"related_accessions": [
+		{
+			"ref": "/repositories/2/accessions/2862"
+		},
+		{
+			"ref": "/repositories/2/accessions/3045"
+		},
+		{
+			"ref": "/repositories/2/accessions/3036"
+		},
+		{
+			"ref": "/repositories/2/accessions/5531"
+		},
+		{
+			"ref": "/repositories/2/accessions/2898"
+		},
+		{
+			"ref": "/repositories/2/accessions/3112"
+		}
+	],
+	"classifications": [
+
+	],
+	"notes": [
+		{
+			"jsonmodel_type": "note_bibliography",
+			"persistent_id": "9d7c8d3b07a5559c5e607edd0f45f1fe",
+			"content": [
+				"Sokol, M. L. (1981). The New York City Opera: An American adventure. New York: Macmillan. \n\nWaleson, H. (2018). Mad scenes and exit arias: The death of the New York City Opera and the future of opera in America. New York: Metropolitan Books, Henry Holt and Company.\n\nNorth, James H. New York City Opera Annals 1981-2013."
+			],
+			"items": [
+
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_singlepart",
+			"persistent_id": "33d4f3c61f1bc256351c7694c051923f",
+			"type": "abstract",
+			"content": [
+				"New York City Opera (NYCO) was famously dubbed \"The People's Opera\" by Mayor Fiorello LaGuardia at its founding in 1943. The Opera company's mission is to inspire audiences with innovative and theatrically compelling opera at an affordable price. This collection documents the artistic productions and the daily administrative functions and operations attest to the mission of the company. The materials in this collection consist of administrative and financial records, production files, stage guides, scores, correspondence, programs, photographs, posters, scenery plans, memorabilia, printed materials, and audio and video recordings, dating from 1924 to 2019, with its bulk dating from 1965 to 1991."
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "e50655f5f2964ef510997e63f2d7c32d",
+			"label": " Restrictions on Access",
+			"type": "accessrestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "This collection is located on-site.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "0eb3651122fb4bd8f1423442c732a95b",
+			"label": " Restrictions on Access",
+			"type": "accessrestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Subseries II.2: Contracts in Box 101-104 are restricted as they contain personally identifiable information (PII) of living individuals. Please email rbml@columbia.edu for access.\n\nAdditional Folder-level restrictions are marked in the container list.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "51684ea704fc4ba0a7f955f42e30f2a6",
+			"type": "accessrestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "All original copies of audio and moving image media are closed until after reformatting. Please contact the RBML at rbml@columbia.edu to discuss access options.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "6e0334fa2b537940866685cef4d47af6",
+			"type": "accessrestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "The collection also includes an extensive amount of digital material which has been preserved but is unprocessed. Please contact the RBML at rbml@columbia.edu to discuss access options.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "9a0655b886c5c812192d14f79f038b5c",
+			"type": "accruals",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Materials may have been added to the collection since this finding aid was prepared. Contact rbml@columbia.edu for more information.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "87763706e992b839715890cfbcd7eeea",
+			"label": "Immediate Source of Acquisition",
+			"type": "acqinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Source of acquisition--New York City Opera. Method of acquisition--Deposit (converted to gift in 2021); Date of acquisition--2013. Accession number--2013-2014-M073.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "7fa6e0358646882980e9c3f339077b1d",
+			"type": "acqinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Gift of James H. North, addition, 2021.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "ed48c8e3adc7f63706c9949926b3aac9",
+			"type": "arrangement",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "The collection is in 12 series.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "c20c9f00da9ee3f5d0b3482e235b8688",
+			"type": "bioghist",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "New York City Opera (NYCO) was famously dubbed \"The People's Opera\" by Mayor Fiorello LaGuardia at its founding in 1943. The Opera's mission is to inspire audiences with innovative and theatrically compelling opera at an affordable price. The opera company first opened its doors in 1944 at the City Center West 55th Street Theater, with a performance of TOSCA on February 21, 1944.The first season of eight performances was only one week long and the repertory contained only three operas. In 1966, City Opera moved to the Lincoln Center for the Performing Arts at the New York State Theater from 1966. The company left Lincoln Center and moved its offices to 75 Broad Street in Lower Manhattan in 2011. The company declared bankruptcy in 2006, came back in 2013, and re-opened in 2016.\n\nMusic Directors: Laszlo Halasz, 1943-1951; Joseph Rosenstock, 1951-1956; Erich Leinsdorf, 1956; Julius Rudel, 1957-1979; Beverly Sills, 1979-1988; Christopher Keene, 1989-1995; Paul Kellogg, 1996-2007; George Steel, 2009-2013\n\nFor more information about the history of the New York City Opera, please consult the following bibliography:\n\nSokol, M. L. (1981). The New York City Opera: An American adventure. New York: Macmillan.\n\nWaleson, H. (2018). Mad scenes and exit arias: The death of the New York City Opera and the future of opera in America. New York: Metropolitan Books, Henry Holt and Company.\n\nNorth, James H. New York City Opera Annals 1981-2013.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "7504d92412fa1bcfe782b795fb737c1d",
+			"type": "custodhist",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Processed portion: The records (Accession 2013.2014.M073) came from the storage at the Lincoln Center State Theater and were delivered to the Butler Library without notice just before NYCO declared bankruptcy during October 2013. The boxes arrived in two very large wooden bins marked NYC Ballet. The boxes were unpacked by Patrick Lawlor and stored on site. These were processed as box 1-227 along with the James North addition (2020.2021.M072) by Yingwen Huang in 2021-2022.\n\nUnprocessed portion: A total of 291.6 cubic feet of NYC opera records were severely damaged during Hurricane Sandy in 2012. NYCO received funding from FEMA to rescue the records and for digitization. The undamaged paper materials comprise 176 boxes. They have been scanned by Scantek in Willow Grove, Pa. onto 2 hard discs. Scantek scanned the dry boxes that were located near the Battery and moved to a higher floor. The physical boxes went to ReCAP and they are mostly Administrative/Business files (2014-2015-M040). The damaged records were scanned by Polygon. They scanned the wet/oily boxes that were two floors below ground when the hurricane hit after the elevator broke. The physical records were discarded after digitization. The Digital Accessions are: 2013.2014.M109.DIGITAL, 2013.2014.M111.DIGITAL, 2014.2015.M049.DIGITAL, 2014.2015.M117.DIGITAL.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "704e4f39b0932baa5704aa638073cd1d",
+			"label": "Preferred Citation",
+			"type": "prefercite",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Identification of specific item; Date (if known); New York City Opera records; Box and Folder; Rare Book and Manuscript Library, Columbia University Library.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "c1ad2eedca8455ed516edc5b9551ed9c",
+			"label": "Processing Information",
+			"type": "processinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Collection-level record describing unprocessed material made public in summer 2018 as part of the Hidden Collections initiative.\n\nBox 1-227 (Accession 2013.2014.M073; 2020-2021-M072) processed by Yingwen Huang, 2021-2022. Most of the records retain their original folder titles and original order during processing. In cases where materials were untitled or undated, the archivist derived the title from the content or added the circa date based on the Annals found in the bibliography. Loose papers and folders inside stage guides were rehoused in new folders and described. Production files and stage guides originally housed in binders containing curtain calls, scene props, prop lists, photographs, etc. were rehoused in folders. Photographs, negatives, and color slides were also rehoused in mylars and sleeves; envelopes with notes are kept in the same folder. The photographs series was processed with the assistance of Virginia Barrett Hellmann. Excessive duplicates of programs and marketing materials were deaccessioned. \n\n1 record carton of 1975-1979 programs were sent to mold remediation due to apparent water damage, 2023.\n\n",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "a429e779a736c8390b704eac9d71de05",
+			"type": "relatedmaterial",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Julius Rudel papers 1945-2015. The New School Archives and Special Collections.\n\nJack Beeson papers; Rare Book and Manuscript Library, Columbia University Library.\n\nNew York Public Library also has collections and materials related to NYCO:\n\nMorton Baum Papers, 1938-1968 *LPA Mss 1992-001 . Jerome Robbins Dance Division, The New York Public Library for the Performing Arts.\n\nImages of the New York City Opera / by Fred Fehl, ca. 1940-1980, Music Division, The New York Public Library.\n\nPlot summaries, recorded by the New York City Opera, Rodgers and Hammerstein Archives of Recorded Sound, The New York Public Library.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "6080aed35c3ccee00d2c4e555f6384b6",
+			"label": "Summary",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "The New York City Opera (NYCO) records document the repertoire and its creative productions as well as the collective history of the people at company from its founding in 1943 to 2019, with the bulk of its materials dating from 1965 to 1991. The records consist of administrative and financial records, production files, stage guides, scores, correspondence, programs, photographs, posters, scenery plans, memorabilia, printed materials, and audio and video recordings.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "f043670b2cda67f9430a9a5978855aab",
+			"label": "Terms Governing Use and Reproduction",
+			"type": "userestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Single photocopies may be made for research purposes. The RBML maintains ownership of the physical material only. Copyright remains with the creator and his/her heirs. The responsibility to secure copyright permission rests with the patron.",
+					"publish": true
+				}
+			],
+			"publish": true
+		}
+	],
+	"metadata_rights_declarations": [
+
+	],
+	"uri": "/repositories/2/resources/4042",
+	"repository": {
+		"ref": "/repositories/2"
+	},
+	"user_defined": {
+		"lock_version": 0,
+		"boolean_1": false,
+		"boolean_2": false,
+		"boolean_3": false,
+		"integer_1": "10567054",
+		"string_1": "MS#1684",
+		"string_2": "(NNC)10567054",
+		"created_by": "yh3112",
+		"last_modified_by": "yh3112",
+		"create_time": "2022-12-20T17:55:49Z",
+		"system_mtime": "2022-12-20T17:55:49Z",
+		"user_mtime": "2022-12-20T17:55:49Z",
+		"enum_4": "PERF_ARTS",
+		"jsonmodel_type": "user_defined",
+		"repository": {
+			"ref": "/repositories/2"
+		}
+	},
+	"tree": {
+		"ref": "/repositories/2/resources/4042/tree"
+	}
+}

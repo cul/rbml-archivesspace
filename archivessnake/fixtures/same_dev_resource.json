@@ -1,0 +1,885 @@
+{
+	"lock_version": 99,
+	"title": "Tony Kushner papers",
+	"publish": true,
+	"restrictions": false,
+	"repository_processing_note": "as of 2/14/2022: Posters from the collection are in 15-A-14 posters that need to be returned are at 15-K-14. \nBox 7 moved to vault in manuscript sequence, 43w:3:3. November 2022.",
+	"ead_id": "10504557",
+	"ead_location": "http://findingaids.cul.columbia.edu/ead/nnc-rb/ldpd_10504557",
+	"created_by": "admin",
+	"last_modified_by": "kws2126",
+	"create_time": "2018-06-03T16:50:01Z",
+	"system_mtime": "2022-12-02T20:06:00Z",
+	"user_mtime": "2022-11-30T21:04:23Z",
+	"suppressed": false,
+	"is_slug_auto": false,
+	"id_0": "10504557",
+	"level": "collection",
+	"finding_aid_description_rules": "DACS",
+	"finding_aid_language": "eng",
+	"finding_aid_script": "Latn",
+	"jsonmodel_type": "resource",
+	"external_ids": [
+
+	],
+	"subjects": [
+		{
+			"ref": "/subjects/11748"
+		},
+		{
+			"ref": "/subjects/6406"
+		},
+		{
+			"ref": "/subjects/4065"
+		},
+		{
+			"ref": "/subjects/695"
+		},
+		{
+			"ref": "/subjects/4754"
+		},
+		{
+			"ref": "/subjects/4323"
+		},
+		{
+			"ref": "/subjects/16865"
+		},
+		{
+			"ref": "/subjects/4978"
+		},
+		{
+			"ref": "/subjects/5136"
+		},
+		{
+			"ref": "/subjects/5306"
+		},
+		{
+			"ref": "/subjects/4744"
+		},
+		{
+			"ref": "/subjects/1264"
+		},
+		{
+			"ref": "/subjects/2"
+		},
+		{
+			"ref": "/subjects/5902"
+		},
+		{
+			"ref": "/subjects/11059"
+		},
+		{
+			"ref": "/subjects/708"
+		},
+		{
+			"ref": "/subjects/9772"
+		},
+		{
+			"ref": "/subjects/2941"
+		},
+		{
+			"ref": "/subjects/10625"
+		},
+		{
+			"ref": "/subjects/4693"
+		},
+		{
+			"ref": "/subjects/3142"
+		},
+		{
+			"ref": "/subjects/5621"
+		},
+		{
+			"ref": "/subjects/6783"
+		},
+		{
+			"ref": "/subjects/16866"
+		},
+		{
+			"ref": "/subjects/10509"
+		}
+	],
+	"linked_events": [
+
+	],
+	"extents": [
+		{
+			"lock_version": 0,
+			"number": "84",
+			"container_summary": "153 document boxes, 6 ½ document boxes, 9 record storage cartons, 16 flat boxes, 3 card file boxes, 1 phonograph record box, 8 tube boxes, 8 oversized folders, 1 oversized item",
+			"created_by": "kws2126",
+			"last_modified_by": "kws2126",
+			"create_time": "2022-11-30T21:04:23Z",
+			"system_mtime": "2022-11-30T21:04:23Z",
+			"user_mtime": "2022-11-30T21:04:23Z",
+			"portion": "whole",
+			"extent_type": "linear feet",
+			"jsonmodel_type": "extent"
+		}
+	],
+	"lang_materials": [
+		{
+			"lock_version": 0,
+			"created_by": "kws2126",
+			"last_modified_by": "kws2126",
+			"create_time": "2022-11-30T21:04:23Z",
+			"system_mtime": "2022-11-30T21:04:23Z",
+			"user_mtime": "2022-11-30T21:04:23Z",
+			"jsonmodel_type": "lang_material",
+			"notes": [
+
+			],
+			"language_and_script": {
+				"lock_version": 0,
+				"created_by": "kws2126",
+				"last_modified_by": "kws2126",
+				"create_time": "2022-11-30T21:04:23Z",
+				"system_mtime": "2022-11-30T21:04:23Z",
+				"user_mtime": "2022-11-30T21:04:23Z",
+				"language": "eng",
+				"script": "Latn",
+				"jsonmodel_type": "language_and_script"
+			}
+		}
+	],
+	"dates": [
+		{
+			"lock_version": 0,
+			"expression": "1920, 1961-2018",
+			"begin": "1920",
+			"end": "2018",
+			"created_by": "kws2126",
+			"last_modified_by": "kws2126",
+			"create_time": "2022-11-30T21:04:23Z",
+			"system_mtime": "2022-11-30T21:04:23Z",
+			"user_mtime": "2022-11-30T21:04:23Z",
+			"date_type": "inclusive",
+			"label": "creation",
+			"jsonmodel_type": "date"
+		}
+	],
+	"external_documents": [
+		{
+			"lock_version": 0,
+			"title": "Acquisitions Agreement",
+			"location": "https://drive.google.com/file/d/140OSsXUdHQpCvJUF0yhZojpe7_GGQVpj/ ",
+			"publish": true,
+			"created_by": "kws2126",
+			"last_modified_by": "kws2126",
+			"create_time": "2022-11-30T21:04:23Z",
+			"system_mtime": "2022-11-30T21:04:23Z",
+			"user_mtime": "2022-11-30T21:04:23Z",
+			"jsonmodel_type": "external_document"
+		}
+	],
+	"rights_statements": [
+
+	],
+	"linked_agents": [
+		{
+			"role": "creator",
+			"terms": [
+
+			],
+			"ref": "/agents/people/14675"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/14546"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/5896"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19894"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19895"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19896"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19897"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/corporate_entities/40"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/corporate_entities/2432"
+		},
+		{
+			"role": "subject",
+			"terms": [
+				{
+					"id": 3760,
+					"lock_version": 0,
+					"json_schema_version": 1,
+					"vocab_id": 1,
+					"term": "Adaptations",
+					"term_type_id": 1275,
+					"created_by": "admin",
+					"last_modified_by": "admin",
+					"create_time": "2018-06-03T15:43:39Z",
+					"system_mtime": "2018-06-03T15:43:39Z",
+					"user_mtime": "2018-06-03T15:43:39Z",
+					"x_foreign_key_x": 402761,
+					"term_type": "topical",
+					"jsonmodel_type": "term",
+					"uri": "/terms/3760",
+					"vocabulary": "/vocabularies/1"
+				}
+			],
+			"ref": "/agents/people/19898"
+		},
+		{
+			"role": "subject",
+			"terms": [
+				{
+					"id": 3760,
+					"lock_version": 0,
+					"json_schema_version": 1,
+					"vocab_id": 1,
+					"term": "Adaptations",
+					"term_type_id": 1275,
+					"created_by": "admin",
+					"last_modified_by": "admin",
+					"create_time": "2018-06-03T15:43:39Z",
+					"system_mtime": "2018-06-03T15:43:39Z",
+					"user_mtime": "2018-06-03T15:43:39Z",
+					"x_foreign_key_x": 402762,
+					"term_type": "topical",
+					"jsonmodel_type": "term",
+					"uri": "/terms/3760",
+					"vocabulary": "/vocabularies/1"
+				}
+			],
+			"ref": "/agents/people/19899"
+		},
+		{
+			"role": "subject",
+			"terms": [
+				{
+					"id": 3760,
+					"lock_version": 0,
+					"json_schema_version": 1,
+					"vocab_id": 1,
+					"term": "Adaptations",
+					"term_type_id": 1275,
+					"created_by": "admin",
+					"last_modified_by": "admin",
+					"create_time": "2018-06-03T15:43:39Z",
+					"system_mtime": "2018-06-03T15:43:39Z",
+					"user_mtime": "2018-06-03T15:43:39Z",
+					"x_foreign_key_x": 402763,
+					"term_type": "topical",
+					"jsonmodel_type": "term",
+					"uri": "/terms/3760",
+					"vocabulary": "/vocabularies/1"
+				}
+			],
+			"ref": "/agents/people/19900"
+		},
+		{
+			"role": "subject",
+			"terms": [
+				{
+					"id": 3760,
+					"lock_version": 0,
+					"json_schema_version": 1,
+					"vocab_id": 1,
+					"term": "Adaptations",
+					"term_type_id": 1275,
+					"created_by": "admin",
+					"last_modified_by": "admin",
+					"create_time": "2018-06-03T15:43:39Z",
+					"system_mtime": "2018-06-03T15:43:39Z",
+					"user_mtime": "2018-06-03T15:43:39Z",
+					"x_foreign_key_x": 402764,
+					"term_type": "topical",
+					"jsonmodel_type": "term",
+					"uri": "/terms/3760",
+					"vocabulary": "/vocabularies/1"
+				}
+			],
+			"ref": "/agents/people/14502"
+		},
+		{
+			"role": "subject",
+			"terms": [
+				{
+					"id": 3760,
+					"lock_version": 0,
+					"json_schema_version": 1,
+					"vocab_id": 1,
+					"term": "Adaptations",
+					"term_type_id": 1275,
+					"created_by": "admin",
+					"last_modified_by": "admin",
+					"create_time": "2018-06-03T15:43:39Z",
+					"system_mtime": "2018-06-03T15:43:39Z",
+					"user_mtime": "2018-06-03T15:43:39Z",
+					"x_foreign_key_x": 402765,
+					"term_type": "topical",
+					"jsonmodel_type": "term",
+					"uri": "/terms/3760",
+					"vocabulary": "/vocabularies/1"
+				}
+			],
+			"ref": "/agents/people/19901"
+		},
+		{
+			"role": "subject",
+			"terms": [
+				{
+					"id": 3760,
+					"lock_version": 0,
+					"json_schema_version": 1,
+					"vocab_id": 1,
+					"term": "Adaptations",
+					"term_type_id": 1275,
+					"created_by": "admin",
+					"last_modified_by": "admin",
+					"create_time": "2018-06-03T15:43:39Z",
+					"system_mtime": "2018-06-03T15:43:39Z",
+					"user_mtime": "2018-06-03T15:43:39Z",
+					"x_foreign_key_x": 402766,
+					"term_type": "topical",
+					"jsonmodel_type": "term",
+					"uri": "/terms/3760",
+					"vocabulary": "/vocabularies/1"
+				}
+			],
+			"ref": "/agents/people/19902"
+		},
+		{
+			"role": "subject",
+			"terms": [
+				{
+					"id": 3760,
+					"lock_version": 0,
+					"json_schema_version": 1,
+					"vocab_id": 1,
+					"term": "Adaptations",
+					"term_type_id": 1275,
+					"created_by": "admin",
+					"last_modified_by": "admin",
+					"create_time": "2018-06-03T15:43:39Z",
+					"system_mtime": "2018-06-03T15:43:39Z",
+					"user_mtime": "2018-06-03T15:43:39Z",
+					"x_foreign_key_x": 402767,
+					"term_type": "topical",
+					"jsonmodel_type": "term",
+					"uri": "/terms/3760",
+					"vocabulary": "/vocabularies/1"
+				}
+			],
+			"ref": "/agents/people/19903"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19904"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/people/19905"
+		},
+		{
+			"role": "subject",
+			"terms": [
+
+			],
+			"ref": "/agents/corporate_entities/4384"
+		}
+	],
+	"import_previous_arks": [
+
+	],
+	"revision_statements": [
+
+	],
+	"instances": [
+
+	],
+	"deaccessions": [
+
+	],
+	"related_accessions": [
+		{
+			"ref": "/repositories/2/accessions/5323"
+		},
+		{
+			"ref": "/repositories/2/accessions/5241"
+		},
+		{
+			"ref": "/repositories/2/accessions/2861"
+		},
+		{
+			"ref": "/repositories/2/accessions/2926"
+		},
+		{
+			"ref": "/repositories/2/accessions/3014"
+		}
+	],
+	"classifications": [
+
+	],
+	"notes": [
+		{
+			"jsonmodel_type": "note_singlepart",
+			"persistent_id": "587ac2b96b3e1ccaf5cbbbe24e6c904a",
+			"type": "abstract",
+			"content": [
+				"Tony Kushner (b. 1956) is an American author, playwright, and screenwriter.  He received a Pulitzer Prize for Drama for his play <title render=\"italic\">Angels in America: Millennium Approaches</title> in 1993.  The papers include address books, awards, certificates, correspondence, drafts and revisions, notebooks and notes, outlines, photographs, posters, press clippings, programs, production materials, promotional materials, proofs, props, research materials, scores, screenplays, scripts, speeches, and translations."
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "3ccd7e7e58b5e4ede8f8ae33ad56e84b",
+			"type": "accessrestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "This collection has no access restrictions other than those noted in the front matter of the finding aid, or at the folder level.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "e766ca9d9eaa742801795858f11023a9",
+			"type": "accessrestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Audiovisual and digital media is not fully processed.  If you would like to use these materials, please contact the library in advance of your visit to discuss access options.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "227e30eabfb17393d9b28c2ba00401d6",
+			"type": "accessrestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Awards and Props Awaiting Permanent Housing are processed, but not housed in permanent housing as yet.  These may be usable, but please check in advance of your visit.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "d458c0ee41a216271dacbe109104b85d",
+			"label": "Restrictions on Access",
+			"type": "accessrestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "This collection is located on-site.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "0ec27c65b96c06c27bc03437c28eefe0",
+			"type": "accruals",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Materials may have been added to the collection since this finding aid was prepared. Contact rbml@columbia.edu for more information.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "a188355b8c87d7c34e2edeae15ff17cd",
+			"type": "accruals",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Additions are expected.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "72552032c34cb4ae7dc7b0aea9cfef3d",
+			"label": "Immediate Source of Acquisition",
+			"type": "acqinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Source of acquisition--Tony Kushner. Method of acquisition--Deposit; Date of acquisition--2013. Accession number--2013-2014-M072.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "218e0ccd4f3f8904e16fe5f45ed9c60f",
+			"type": "acqinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Source of acquisition--Tony Kushner. Method of acquisition--Deposit; Date of acquisition--2014. Accession number--2013-2014-M139.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "e591e2bb695ced54b816b76524bb3b1b",
+			"type": "acqinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Source of acquisition--Tony Kushner. Method of acquisition--Deposit; Date of acquisition--2014. Accession number--2014-2015-M018.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "f65c14827d1e765ab7fa183caf37652d",
+			"type": "acqinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Source of acquisition--Tony Kushner. Method of acquisition--Deposit; Date of acquisition--2017. Accession number--2017-2018-M134.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "f14309546856b2033c169f0d87ff5c2a",
+			"type": "acqinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Source of acquisition--Tony Kushner (Represented by Glenn Horowitz). Method of acquisition--Purchase; Date of acquisition--2019. Accession number--2019-2020-M035.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "d6c3ec3072b0eba13f545d93c3c7a3bd",
+			"type": "arrangement",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "This collection is arranged in five series and several subseries.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "bf5a97b1c54d39aedab387e7eba24a0d",
+			"label": "Preferred Citation",
+			"type": "prefercite",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Identification of specific item; Date (if known); Tony Kushner Papers; Box and Folder; Rare Book and Manuscript Library, Columbia University Library.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "cdc6a9cca50375a0811a105fe93035c8",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Tony Kushner (b. 1956) is an American author, playwright, and screenwriter.  He received a Pulitzer Prize for Drama for his play <title render=\"italic\">Angels in America: Millennium Approaches</title> in 1993.  The papers include address books, awards, certificates, correspondence, drafts and revisions, notebooks and notes, outlines, photographs, posters, press clippings, programs, production materials, promotional materials, proofs, props, research materials, scores, screenplays, scripts, speeches, and translations.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "d333c64ee31c4d2f98c8fb39f45ecae3",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "The collection includes a wealth of material related to Kushner’s stage works.  The collection includes materials related not only to Kushner’s best-known work, but also to his early work and his student work.  These materials include correspondence, drafts and revisions, notes and notebooks, outlines, production files, programs, promotional materials, and research files.  For early works, programs and promotional materials were often designed by Kushner, and his design work is included in his files.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "31445eb06beec69f9af0a852b0e58123",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "The collection also includes files related to Kushner’s work in film and television.  These works include <title render=\"italic\">Angels in America</title> for HBO, <title render=\"italic\">Munich</title>, <title render=\"italic\">Lincoln</title>, and <title render=\"italic\">Fences</title>.  The papers include related materials such as correspondence, outlines, drafts, screenplays, revisions, and research materials, as well as posters, press clippings, promotional materials, and reviews.  There is also material related to three works that were ultimately unproduced: <title render=\"italic\">Grim(m)</title>, <title render=\"italic\">The Illusion</title>, and <title render=\"italic\">The Pushcart Wars</title>.  These materials include film treatments, drafts, outlines, manuscript pages, typescript pages, comments, and research.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "56ed8768317dcae09c046015646e2eac",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "There are records related to some of Kushner’s book projects in the collection.  There projects include <title render=\"italic\">The Art of Maurice Sendak: 1980 to the Present</title> (2003), <title render=\"italic\">Brundibar</title> (2003), <title render=\"italic\">Thinking About the Longstanding Problems of Virtue: Essays, A Play, Two Poems and a Prayer</title> (1995), and <title render=\"italic\">Wrestling with Zion: Progressive Jewish-American Responses to the Israeli-Palestinian Conflict</title> (2003), edited with Alisa Solomon.  For these projects, the files include corrections, correspondence, galleys, manuscripts, promotional materials, proofs, notes, typescripts, and reviews.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "3dcbfd640674163f40689ca85677a3c0",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Kushner’s other writing work is also represented in the collection.  The collection includes materials related to Kushner’s academic writing, articles, essays, introductions to books, and speeches.  These files include drafts, proofs, publications, notes, and other materials.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "60c00277717751a42fafa584486e7a79",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Kushner also kept correspondence files.  There is correspondence with the files for specific projects and professional files throughout the collection.  There are also correspondence files that contain cards, letters, and correspondence received by Kushner; however, these were not organized into a filing system and were filed in small groups in various mailing envelopes.  Most general correspondence is gathered in small groups that are similar by date; notes on letters from specific individuals were added to the finding aid based on notes from the seller’s inventory.  There are no outgoing correspondence files, and the collection does not include electronic mail files at this time.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "d9333268cf3d151699a8f1c9db9d217e",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Professional Files includes files related to awards, business, events, honorary degrees, organizations, professional activities, and research files.  In addition, there are photographs, articles and other press related to Kushner’s professional activities.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "3ebc5aa131569b28d242c5a4d99e99ef",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "There are a small number of personal and biographical files in the collection.  These files include address books, class notes, contact lists, family materials, transcripts, and yearbooks, as well as files with art, articles, clippings, programs, and other personal records.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "c85ef66f78de39c92de65ce58e984d7b",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "There is a small amount of material by others in the collection.  These manuscripts and other materials are filed in Series V: Material by Others.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "8fc180bf50a91979df3d17682f5991ca",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "The collection includes a small amount of analog and digital media as noted in the container list.  This material includes photographs and video related to auditions, productions, events, and interviews.  This material is not fully processed at this time.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "d830dfa188aee49b872c8e72c6ac8f25",
+			"type": "scopecontent",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "There are several items that still require permanent housing: these are listed at the end of the container list at this time.  These include two oversized props and several glass awards that did not originally have their own cases.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "093aeceec6ae6dd3ad1d10c38f29a3a5",
+			"label": "Terms Governing Use and Reproduction",
+			"type": "userestrict",
+			"rights_restriction": {
+				"local_access_restriction_type": [
+
+				]
+			},
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Single photocopies may be made for research purposes. The RBML maintains ownership of the physical material only. Copyright remains with the creator and his/her heirs. The responsibility to secure copyright permission rests with the patron.",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "99e06f1d7deee8877fd6bf75c9fd0f0f",
+			"type": "processinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "This collection was processed by Catherine C. Ricciardi, 2019-2022.  ",
+					"publish": true
+				}
+			],
+			"publish": true
+		},
+		{
+			"jsonmodel_type": "note_multipart",
+			"persistent_id": "a93becbc337c11d9c32bca0332a11354",
+			"type": "processinfo",
+			"subnotes": [
+				{
+					"jsonmodel_type": "note_text",
+					"content": "Finding aid written by Catherine C. Ricciardi, 2020-2022.",
+					"publish": true
+				}
+			],
+			"publish": true
+		}
+	],
+	"metadata_rights_declarations": [
+
+	],
+	"uri": "/repositories/2/resources/4027",
+	"repository": {
+		"ref": "/repositories/2"
+	},
+	"user_defined": {
+		"lock_version": 0,
+		"boolean_1": false,
+		"boolean_2": false,
+		"boolean_3": false,
+		"integer_1": "10504557",
+		"string_1": "MS#1682",
+		"string_2": "(NNC)10504557",
+		"created_by": "kws2126",
+		"last_modified_by": "kws2126",
+		"create_time": "2022-11-30T21:04:23Z",
+		"system_mtime": "2022-11-30T21:04:23Z",
+		"user_mtime": "2022-11-30T21:04:23Z",
+		"enum_3": "nmw",
+		"enum_4": "PERF_ARTS",
+		"jsonmodel_type": "user_defined",
+		"repository": {
+			"ref": "/repositories/2"
+		}
+	},
+	"tree": {
+		"ref": "/repositories/2/resources/4027/tree"
+	}
+}
